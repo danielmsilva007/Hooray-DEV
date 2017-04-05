@@ -6,7 +6,17 @@ if (!defined('HoorayWeb'))
 
 $esperaResultado = '<div align="center"><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></div>';
 
-// Enderços de entrega
+// Dados do carrinho
+$carrinho = getRest(str_replace('{IDCarrinho}', $dadosLogin['CarrinhoId'], $endPoint['obtercarrinho']));
+$parcelamento = getRest(str_replace(['{IDCarrinho}','{valorCarrinho}'], [$dadosLogin['CarrinhoId'], $carrinho['Total']], $endPoint['parcarrinho']));
+
+// Procura pela parcela Zero, referente boleto
+$parBoleto = array_search("0", array_column($parcelamento, 'Numero')); // busca pela parcela 0 (boleto)
+
+// Bandeiras de cartão
+$bandeirasCartão = getRest(str_replace("{valorCarrinho}", $dadosLogin['CarrinhoId'], $endPoint['formaspagamento']));
+
+// Endereços de entrega
 $enderecos = getRest(str_replace("{IDParceiro}", $dadosLogin['Parceiro']['ID'], $endPoint['endcadastral']));
 $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['Enderecos'][1] : $enderecos['Enderecos'][0];
 ?>
@@ -55,13 +65,38 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
 </script>
 
 <script type="text/javascript">
+    function valoresCarrinho()
+    {
+        $('#retornoResumoCarrinho').html('<?= $esperaResultado ?>');
+        $('#retornoTotalCarrinho').html('<?= $esperaResultado ?>');
+        
+        var IDEndEntrega = $('#tipoEndEntrega').val();
+        
+        $.post('/_pages/checkoutEditar.php', {postidparceiro:'<?= $dadosLogin['Parceiro']['ID'] ?>',
+                                              postidendereco:IDEndEntrega,
+                                              postidcarrinho:'<?= $dadosLogin['CarrinhoId'] ?>',
+                                              posttipoedicao:'<?= md5("resumoCarrinho") ?>'},
+        function(resultadoResumoCarrinho)
+        {
+            $('#retornoResumoCarrinho').html(resultadoResumoCarrinho);
+        });
+        
+        $.post('/_pages/checkoutEditar.php', {postidparceiro:'<?= $dadosLogin['Parceiro']['ID'] ?>',
+                                              postidendereco:IDEndEntrega,
+                                              postidcarrinho:'<?= $dadosLogin['CarrinhoId'] ?>',
+                                              posttipoedicao:'<?= md5("totalCarrinho") ?>'},
+        function(resultadoTotalCarrinho)
+        {
+            $('#retornoTotalCarrinho').html(resultadoTotalCarrinho);
+        });        
+    }    
+    
     function alterarEndCarrinho()
     {
         var IDEndEntrega = $('#tipoEndEntrega').val();
         
         $('#enderecoEntregaCarrinho').html('<?= $esperaResultado ?>');
         $('#opcoesEntregaCarrinho').html('<?= $esperaResultado ?>');
-        $('#formaPgtoCarrinho').html('<?= $esperaResultado ?>');
         $('#retornoResumoCarrinho').html('<?= $esperaResultado ?>');
         $('#retornoTotalCarrinho').html('<?= $esperaResultado ?>');
         
@@ -84,34 +119,47 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
             $('#opcoesEntregaCarrinho').html(resultadoOpcoes);
         });
         
+        valoresCarrinho();
+    }
 
+    function obterParcelasCartao()
+    {
+        var pgBandeira = $('#pgBandeira').val();
+        
         $.post('/_pages/checkoutEditar.php', {postidparceiro:'<?= $dadosLogin['Parceiro']['ID'] ?>',
-                                              postidendereco:IDEndEntrega,
                                               postidcarrinho:'<?= $dadosLogin['CarrinhoId'] ?>',
+                                              portidbandeira:pgBandeira,
                                               posttipoedicao:'<?= md5("opcoesPagto") ?>'},
-        function(resultadoPgto)
+        function(resultadoParcelas)
         {
-            $('#formaPgtoCarrinho').html(resultadoPgto);
+            $('#pgParcela').html(resultadoParcelas);
         });
-
+    }
+    
+    function opcoesEntrega(opcao)
+    {
+        var opcaoEntrega = $('input[name=' + opcao + ']:checked', '#chechoutForm').val();
+        var numOpcoes = $('#opNumOpcoes').val();
 
         $.post('/_pages/checkoutEditar.php', {postidparceiro:'<?= $dadosLogin['Parceiro']['ID'] ?>',
-                                              postidendereco:IDEndEntrega,
                                               postidcarrinho:'<?= $dadosLogin['CarrinhoId'] ?>',
-                                              posttipoedicao:'<?= md5("resumoCarrinho") ?>'},
-        function(resultadoResumoCarrinho)
+                                              portidbandeira:pgBandeira,
+                                              posttipoedicao:'<?= md5("opcoesPagto") ?>'},
+        function(resultadoParcelas)
         {
-            $('#retornoResumoCarrinho').html(resultadoResumoCarrinho);
+            $('#pgParcela').html(resultadoParcelas);
         });
+        
+        valoresCarrinho();
     }
     
     function finalizarCompra()
     {
-        var opcaoForma = $('input[name=opcoesforma]:checked', '#chechoutForm').val();
+        var formaPgto = $('input[name=pgFormaPgto]:checked', '#chechoutForm').val();
         var hash;
         var finalizar = false;
         
-        if (opcaoForma == '0')
+        if (formaPgto == '0')
         {
             hash = GerarHash();
             
@@ -139,7 +187,6 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
             {
                 $('#retornoFinalizarCompra').html(resultadoFinalizarCompra);
             }); 
-            
         }
     }
 </script>
@@ -175,18 +222,143 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                     </div>
                     <div class="panel panel-default ordem-forma-pagamento">
                         <div class="panel-heading">3. FORMA DE PAGAMENTO</div>
-                        <div class="panel-body" id="formaPgtoCarrinho"></div>
+                        <div class="panel-body" id="formaPgtoCarrinho">
+                            <?php
+                                if (isset($parBoleto) && is_numeric($parBoleto))
+                                {
+                                    $boletoHabititado = true;
+                            ?>
+                                    <div class="form-group">
+                                        <label><input type="radio" name="pgFormaPgto" id="pgFormaPgto" value="2" checked> Boleto Bancário</label>
+                                    </div>
+                            <?php
+                                }
+                                else 
+                                {
+                                    $boletoHabititado = false;
+                                }
+                            ?>
+                            <div class="form-group">
+                                <label><input type="radio" name="pgFormaPgto" id="pgFormaPgto" value="0" <?= ($boletoHabititado) ? "" : " checked" ?>> Cartão de crédito</label>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="pgBandeira" id="pgBandeira" onchange="obterParcelasCartao()">
+                                    <option disabled selected>Bandeira do cartão</option>
+                                    <?php
+                                    foreach ((array) $bandeirasCartão as $bandeira)
+                                    {
+                                        $descLowerCase = strtolower($bandeira['DescricaoSite']);
+                                        if (strpos($descLowerCase, "boleto") !== false) continue;
+
+                                        echo "<option value=\"" . $bandeira['PagamentoMetodoFormaID'] . "\">" . $bandeira['DescricaoSite'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>                              
+                            <div class="form-group input-icone">
+                                <input type="text" name="pgNumCartao" id="pgNumCartao" class="form-control"  placeholder="Número no cartão" maxlength="16" />
+                                <i class="glyphicon glyphicon-credit-card"></i>
+                            </div>
+                            <div class="form-group" id="parcelasCartao">
+                                <div class="input-group">
+                                    <select class="form-control" name="pgParcela" id="pgParcela">
+                                        <option disabled selected>Número de parcelas</option>
+                                    </select>
+                                    <span class="input-group-addon">
+                                        <a data-toggle="tooltip" data-placement="top" title="Por favor selecione a quantidade de parcelas para a sua compra.">
+                                            <i class="glyphicon glyphicon-info-sign"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="pgNomeCartao" id="pgNomeCartao" placeholder="Nome impresso no cartão">
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="form-group">
+                                        <select class="form-control" name="pgMedVenc" id="pgMedVenc">
+                                            <option disabled selected>Mês</option>
+                                            <?php
+                                            for ($i = 1; $i <= count($meses); $i++)
+                                            {
+                                                echo "<option value=\"" . $i . "\">" . $meses[$i] . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="form-group">
+                                        <select class="form-control" name="pgAnoVenc" id="pgAnoVenc">
+                                            <option disabled selected>Ano</option>
+                                            <?php
+                                            for ($i = date("Y"); $i < (date("Y") + 11); $i++)
+                                            {
+                                                echo "<option value=\"" . $i . "\">" . $i . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>	
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input name="pgCVC" id="pgCVC" type="password" class="form-control" placeholder="Código de segurança" maxlength="3" />
+                                    <span class="input-group-addon">
+                                        <a data-toggle="tooltip" data-placement="top" title="Por favor informe o código de segurança do cartão.">
+                                            <i class="glyphicon glyphicon-info-sign"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" name="pgSalvarCartao" value="1"> Salvar cartão para a próxima compra!</label>
+                            </div>
+                            <i>Para efetuar o pagamento, não há necessidade de salvar seu cartão. Esta função apenas facilita suas próximas compras com toda segurança.</i>                            
+                            
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">4. REVISÃO DO PEDIDO</div>
-                        <div id="retornoResumoCarrinho"></div>
-                    </div>
+                        <div class="panel-body ordem-pagamento-revisao">
+                            <ul>
+                                <?php
+                                foreach ((array) $carrinho['Itens'] as $item)
+                                {
+                                ?>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <img src="<?= $item['ProdutoImagemMobile'] ?>" title="<?= $item['ProdutoDescricao'] ?>"/>	
+                                        </div>
+                                        <div class="col-xs-5">
+                                            <p>
+                                                <?= $item['ProdutoDescricao'] ?><br>
+                                                Quantidade: <?= $item['Quantidade'] ?>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <div class="text-right">
+                                                <?= formatar_moeda($item['ValorTotal']) ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <?php
+                                }
+                                ?>
+                            </ul>
+                            <div class="ordem-pagamento-revisao-subtotal" id="retornoResumoCarrinho"></div>
+                        </div>                        
+                        <div class="panel-footer ordem-pagamento-revisao-total" id="retornoTotalCarrinho"></div>
+                    </div>  
                 </div>
             </div>
             <input type="hidden" name="posttipoedicao" id="posttipoedicao" value="<?= md5("finalizarCompra") ?>">
-            <input type="text" name="pgHash" id="pgHash" value="0">
+            <input type="hidden" name="pgHash" id="pgHash" value="0">
         </form>
 
         <script type="text/javascript">

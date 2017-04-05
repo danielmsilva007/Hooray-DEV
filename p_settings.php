@@ -4,8 +4,8 @@ if (!defined('HoorayWeb'))
     die;
 }
 
-define ('URLSite', 'http://localhost:8000/');
-//define ('URLSite', 'http://dev.hooray.com.br/');
+//define ('URLSite', 'http://localhost:8000/');
+define ('URLSite', 'http://dev.hooray.com.br/');
 define ('URLWebAPI', 'http://qasloja.hooray.com.br/');
 
 $endPoint = ['token'           => URLWebAPI . "Token",
@@ -56,6 +56,7 @@ $endPoint = ['token'           => URLWebAPI . "Token",
             'servicoentrega'   => URLWebAPI . "v1/carrinho/obterservicosentregamarketplace/",
             'atualizarfrete'   => URLWebAPI . "v1/carrinho/atualizarservicofrete/",
             'checkout'         => URLWebAPI . "v1/pedido/gravarpedido/",
+            'formaspagamento'  => URLWebAPI . "v1/pagamento/{valorCarrinho}/obterformaspagamentoloja2/",
             'parcarrinho'      => URLWebAPI . "v1/pagamento/{IDCarrinho}/{valorCarrinho}/obterparcelamentocarrinho/",
             'addwishlist'      => URLWebAPI . "v1/produto/adicionarwishlist/",
             'delwishlist'      => URLWebAPI . "v1/produto/removerwishlist/",

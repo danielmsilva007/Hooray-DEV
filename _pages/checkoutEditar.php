@@ -79,9 +79,10 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("opc
         array_push($opcoesFornecedor[$opEntrega['FornecedorID']]['Opcoes'], $opEntrega);
     }
     
-    $i = 1;
+    $i = 0;
     foreach ((array) $opcoesFornecedor as $opPorFornec)
     {
+        $i++;
     ?>
         <p>
             <a data-toggle="collapse" data-parent="#accordion" href="#opcao-<?= $i ?>"><b class="caret"></b> Carrinho <?= $opPorFornec['NomeFornecedor'] ?></a>
@@ -96,9 +97,9 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("opc
                     <li>
                         <label>
                             <div class="row">
-                                <div class="col-xs-5"><input type="radio" name="opEntrega<?= $i ?>" <?= ($ii == 1) ? " checked" : "" ?> value="<?= $opcoes['LocalidadeTransporteID'] ?>" /> <?= $opcoes['DescricaoServico'] ?></div>
-                                <div class="col-xs-3"><?= (!empty($opcoes['FreteGratis'])) ? "Frete grátis" : formatar_moeda($opcoes['ValorCobrarCliente']) ?></div>
-                                <div class="col-xs-2 text-right"><?= date_format(date_create($opcoes['DataEntrega']), "d/m/y") ?></div>
+                                <div class="col-xs-5"><input type="radio" name="opEntrega<?= $i ?>" id="opEntrega<?= $i ?>" value="<?= $opcoes['LocalidadeTransporteID'] ?>" onchange="opcoesEntrega('opEntrega<?= $i ?>');" /> <?= $opcoes['DescricaoServico'] ?></div>
+                                <div class="col-xs-4"><?= (!empty($opcoes['FreteGratis'])) ? "Frete Grátis" : formatar_moeda($opcoes['ValorCobrarCliente']) ?></div>
+                                <div class="col-xs-3 text-right"><?= date_format(date_create($opcoes['DataEntrega']), "d/m/y") ?></div>
                             </div>
                         </label>
                     </li>
@@ -109,158 +110,47 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("opc
             </ul>
         </div>
     <?php
-        $i ++;
     }
     ?>
+    <input type="hidden" name="opNumOpcoes" id="opNumOpcoes" value="<?= $i ?>">
     <p>Seu pedido será liberado logo após a confirmação do pagamento.</p>    
 <?php    
 }
 
-
 if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("opcoesPagto"))
 {
-    $carrinhoPgto = getRest(str_replace('{IDCarrinho}', $phpPost['postidcarrinho'], $endPoint['obtercarrinho']));
+    $carrinho = getRest(str_replace('{IDCarrinho}', $phpPost['postidcarrinho'], $endPoint['obtercarrinho']));
     
-    $parcelamento = getRest(str_replace(['{IDCarrinho}','{valorCarrinho}'], [$phpPost['postidcarrinho'], $carrinhoPgto['Total']], $endPoint['parcarrinho']));
-
-    $parBoleto = array_search("0", array_column($parcelamento, 'Numero')); // busca pela parcela 0 (boleto)
+    $parcelamento = getRest(str_replace(['{IDCarrinho}','{valorCarrinho}'], [$phpPost['postidcarrinho'], $carrinho['Total']], $endPoint['parcarrinho']));
     
-    if (isset($parBoleto) && is_numeric($parBoleto))
+    echo "<option disabled selected>Número de parcelas</option>";
+    foreach ((array) $parcelamento as $parcela)
     {
-        $boletoHabititado = true;
-?>
-        <div class="form-group">
-            <label><input type="radio" name="opcoesforma" id="opcoesforma" value="2" checked> Boleto Bancário</label>
-        </div>
-<?php
-    }
-    else 
-    {
-        $boletoHabititado = false;
-    }
-?>
-    <div class="form-group">
-        <label><input type="radio" name="opcoesforma" id="opcoesforma" value="0" <?= ($boletoHabititado) ? "" : " checked" ?>> Cartão de crédito</label>
-    </div>
-    <div class="form-group input-icone">
-        <input type="text" name="pgNumCartao" id="pgNumCartao" class="form-control"  placeholder="Número no cartão" required="required" maxlength="16" />
-        <i class="glyphicon glyphicon-credit-card"></i>
-    </div>
-    <div class="form-group">
-    </div>    
-    <div class="form-group">
-        <div class="input-group">
-            <select class="form-control" name="pgParcela" id="pgParcela" required="required">
-                <option disabled selected>Número de parcelas</option>
-                <?php
-                foreach ((array) $parcelamento as $parcela)
-                {
-                    if ($parcela['Numero'] == 0) continue;
+        if ($parcela['Numero'] == 0 || $parcela['PagamentoMetodoFormaID'] != $phpPost['portidbandeira']) continue;
 
-                    echo "<option value=\"" . $parcela['PagamentoMetodoFormaID'] . "\">" . $parcela['Numero'] . " x de " . formatar_moeda($parcela['Valor']) . " sem juros</option>";
-                }
-                ?>
-            </select>
-            <span class="input-group-addon">
-                <a data-toggle="tooltip" data-placement="top" title="Por favor selecione a quantidade de parcelas para a sua compra.">
-                    <i class="glyphicon glyphicon-info-sign"></i>
-                </a>
-            </span>
-        </div>
-    </div>
-    <div class="form-group">
-        <input type="text" class="form-control" name="pgNomeCartao" id="pgNomeCartao" placeholder="Nome impresso no cartão" required="required">
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-6">
-            <div class="form-group">
-                <select class="form-control" name="pgMedVenc" id="pgMedVenc" required="required">
-                    <option disabled selected>Mês</option>
-                    <?php
-                    for ($i = 1; $i <= count($meses); $i++)
-                    {
-                        echo "<option value=\" . $i . \">" . $meses[$i] . "</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-6">
-            <div class="form-group">
-                <select class="form-control" name="pgAnoVenc" id="pgAnoVenc" required="required">
-                    <option disabled selected>Ano</option>
-                    <?php
-                    for ($i = date("Y"); $i < (date("Y") + 11); $i++)
-                    {
-                        echo "<option value=\" . $i . \">" . $i . "</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-        </div>
-    </div>	
-    <div class="form-group">
-        <div class="input-group">
-            <input name="pgCVC" id="pgCVC" type="password" class="form-control" placeholder="Código de segurança" required="required" maxlength="3" />
-            <span class="input-group-addon">
-                <a data-toggle="tooltip" data-placement="top" title="Por favor informe o código de segurança do cartão.">
-                    <i class="glyphicon glyphicon-info-sign"></i>
-                </a>
-            </span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label><input type="checkbox" name="pgSalvarCartao" value="1" checked="checked"> Salvar cartão para a próxima compra!</label>
-    </div>
-    <i>Para efetuar o pagamento, não há necessidade de salvar seu cartão. Esta função apenas facilita suas próximas compras com toda segurança.</i>
-
-<?php   
+        echo "<option value=\"" . $parcela['PagamentoMetodoFormaID'] . "\">" . $parcela['Numero'] . " x de " . formatar_moeda($parcela['Valor']) . " sem juros</option>";
+    }    
 }
 
 if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("resumoCarrinho"))
 {
     $carrinho = getRest(str_replace("{IDCarrinho}", $phpPost['postidcarrinho'], $endPoint['obtercarrinho']));
 ?>
-    <div class="panel-body ordem-pagamento-revisao">
-        <ul>
-            <?php
-            foreach ((array) $carrinho['Itens'] as $item)
-            {
-            ?>
-            <li>
-                <div class="row">
-                    <div class="col-xs-3">
-                        <img src="<?= $item['ProdutoImagemMobile'] ?>" title="<?= $item['ProdutoDescricao'] ?>"/>	
-                    </div>
-                    <div class="col-xs-5">
-                        <p>
-                            <?= $item['ProdutoDescricao'] ?><br>
-                            Quantidade: <?= $item['Quantidade'] ?>
-                        </p>
-                    </div>
-                    <div class="col-xs-4">
-                        <div class="text-right">
-                            <?= formatar_moeda($item['ValorTotal']) ?>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <?php
-            }
-            ?>
-        </ul>
-        <div class="ordem-pagamento-revisao-subtotal">
-            <div class="row">
-                <div class="col-sm-6">Subtotal: </div>
-                <div class="col-sm-6 text-right"><?= formatar_moeda($carrinho['SubTotal']) ?></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">Entrega: </div>
-                <div class="col-sm-6 text-right"><?= (!empty($carrinho['Frete'] && is_numeric($carrinho['Frete']))) ? formatar_moeda($carrinho['Frete']) : formatar_moeda(0) ?></div>
-            </div>
-        </div>
+    <div class="row">
+        <div class="col-sm-6">Subtotal: </div>
+        <div class="col-sm-6 text-right"><?= formatar_moeda($carrinho['SubTotal']) ?></div>
     </div>
-    <div class="panel-footer ordem-pagamento-revisao-total">
+    <div class="row">
+        <div class="col-sm-6">Entrega: </div>
+        <div class="col-sm-6 text-right"><?= (!empty($carrinho['Frete'] && is_numeric($carrinho['Frete']))) ? formatar_moeda($carrinho['Frete']) : formatar_moeda(0) ?></div>
+    </div>
+<?php
+}
+
+if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("totalCarrinho"))
+{
+    $carrinho = getRest(str_replace("{IDCarrinho}", $phpPost['postidcarrinho'], $endPoint['obtercarrinho']));
+?>
     <div class="row">
         <div class="col-xs-4">
             &nbsp;&nbsp;Total:
@@ -275,8 +165,12 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("res
     <div class="ordem-botao-finalizar-bottom">
         <button type="button" onclick="finalizarCompra();" class="btn btn-lg btn-primary">Finalizar a compra</button>
     </div>
-</div>
 <?php
+}
+
+if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("totalCarrinho"))
+{
+    
 }
 
 if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("finalizarCompra"))
@@ -299,7 +193,7 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
                     ],
     ];
 
-    $finalizarPedido = sendRest($endPoint['checkout'], $dadosPedido, "POST");
+    //$finalizarPedido = sendRest($endPoint['checkout'], $dadosPedido, "POST");
 ?>
 
     <h3 class="text-center"><i class="glyphicon glyphicon-ok"></i> Seu pedido foi concluído com sucesso!</h3>
