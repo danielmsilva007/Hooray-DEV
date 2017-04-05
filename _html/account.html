@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Hooray</title>
+
+        <!-- Bootstrap -->
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
+
+        <link href="./stylesheets/styles.css" rel="stylesheet" type="text/css" />
+
+        <link href="./stylesheets/rangeslider.css" rel="stylesheet" type="text/css" />
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!--inicio header -->
+
+        <div class="navbar navbar-inverse " role="navigation" id="slide-nav">
+            <div class="container">
+                <div class="navbar-header clearfix">
+                    <div class="row">
+                        <div class="col-xs-7 col-sm-3">
+                            <div class="row">
+                                <div class="cont-toggle col-xs-3">
+                                    <a class="navbar-toggle"> 
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </a>
+                                </div>
+                                <div class="col-xs-9 col-md-12">
+                                    <a class="navbar-brand" href="#">
+                                        <img src="./images/logo.png" alt="hooray" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 hidden-xs">
+                            <form class="header-busca">
+                                <div class="form-group">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                    <input class="form-control" type="text" name="" placeholder="Equipamentos & Vestuário" />
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-xs-5">
+                            <ul class="nav submenu-header">
+                                <li>
+                                    <a href=""><span class="glyphicon glyphicon-earphone"></span><span class="hidden-xs hidden-sm"> Atendimento</span></a>
+                                </li>
+                                <li>
+                                    <a href="#modal-login" data-toggle="modal"><span class="glyphicon glyphicon-user"></span><span class="hidden-xs hidden-sm"> Minha conta</span></a>
+                                </li>
+                                <li class="submenu-header-carrinho">
+                                    <a href="#modal-carrinho" data-toggle="modal"><span class="glyphicon glyphicon-shopping-cart"></span><span class="hidden-xs hidden-sm"> #03</span></a>
+                                </li>
+                            </ul>
+                        </div>	
+                    </div>
+                </div>
+
+                <div id="slidemenu" class="hidden-lg hidden-md hidden-sm">
+
+
+                    <!-- menu responsivo -->
+                    <form class="header-busca">
+                        <div class="form-group">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <input class="form-control" type="text" name="" placeholder="Equipamentos & Vestuário" />
+                        </div>
+                    </form>
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="">Canoa</a></li>
+                        <li><a href="">Kayak</a></li>
+                        <li><a href="">Kite</a></li>
+                        <li><a href="">Roupas</a></li>
+                        <li><a href="">Ski Aquático</a></li>
+                        <li><a href="">SUP</a></li>
+                        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Surf <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-header">Acessórios</li>
+                                <li><a href="#">Capas</a></li>
+                                <li><a href="#">Decks</a></li>
+                                <li><a href="#">Kit Reparo</a></li>
+                                <li><a href="#">Leashes</a></li>
+                                <li><a href="#">Nadadeiras</a></li>
+                                <li><a href="#">Parafina</a></li>
+
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Body Board</li>
+                                <li><a href="#">GT</a></li>
+                                <li><a href="#">BZ</a></li>
+                                <li><a href="#">Genesis</a></li>
+                                <li><a href="#">Mike Stewart</a></li>
+                                <li><a href="#">Nomad</a></li>
+                                <li><a href="#">Hand Board</a></li>
+
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Hand Board</li>
+                                <li><a href="#">Marca</a></li>
+
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Pranchas</li>
+                                <li><a href="#">Al Merrick</a></li>
+                                <li><a href="#">Chilli</a></li>
+                                <li><a href="#">Tokoro</a></li>
+                                <li><a href="#">Aerofish</a></li>
+                                <li><a href="#">Rusty</a></li>
+
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Quilhas</li>
+                                <li><a href="#">FCS</a></li>
+                                <li><a href="#">Futures</a></li>
+
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Skim Board</li>
+                                <li><a href="#">Marca</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="">Wake</a></li>
+                        <li><a href="">Windsurf</a></li>
+                        <li><a href="">Marcas</a></li>
+                    </ul>
+                    <!-- menu responsivo // -->
+                </div>
+            </div>
+
+            <!-- menu mouseover -->
+            <div class="container hidden-xs hidden-sm ">
+                <div class="menu-grande">
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="">Canoa</a></li>
+                        <li><a href="">Kayak</a></li>
+                        <li><a href="">Kite</a></li>
+                        <li><a href="">Roupas</a></li>
+                        <li><a href="">Ski Aquático</a></li>
+                        <li><a href="">SUP</a></li>
+                        <li class="_dropdown">
+                            <a href="#" class="dropbtn">Surf</a>
+                            <div class="dropdown-conteudo">
+                                <div class="container">
+                                    <div class="row">
+                                        <ul class="col-md-2">
+                                            <li>Acessórios</li>
+                                            <li><a href="#">Capas</a></li>
+                                            <li><a href="#">Decks</a></li>
+                                            <li><a href="#">Kit Reparo</a></li>
+                                            <li><a href="#">Leashes</a></li>
+                                            <li><a href="#">Nadadeiras</a></li>
+                                            <li><a href="#">Parafina</a></li>
+                                        </ul>
+
+                                        <ul class="col-md-2">
+                                            <li>Body Board</li>
+                                            <li><a href="#">GT</a></li>
+                                            <li><a href="#">BZ</a></li>
+                                            <li><a href="#">Genesis</a></li>
+                                            <li><a href="#">Mike Stewart</a></li>
+                                            <li><a href="#">Nomad</a></li>
+                                            <li><a href="#">Hand Board</a></li>
+                                        </ul>
+
+                                        <ul class="col-md-2">
+                                            <li>Hand Board</li>
+                                            <li><a href="#">Marca</a></li>
+                                        </ul>
+
+
+                                        <ul class="col-md-2">
+                                            <li>Pranchas</li>
+                                            <li><a href="#">Al Merrick</a></li>
+                                            <li><a href="#">Chilli</a></li>
+                                            <li><a href="#">Tokoro</a></li>
+                                            <li><a href="#">Aerofish</a></li>
+                                            <li><a href="#">Rusty</a></li>
+                                        </ul>
+
+                                        <ul class="col-md-2">
+                                            <li>Quilhas</li>
+                                            <li><a href="#">FCS</a></li>
+                                            <li><a href="#">Futures</a></li>
+                                        </ul>
+
+                                        <ul class="col-md-2">
+                                            <li>Skim Board</li>
+                                            <li><a href="#">Marca</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="menu-grande-customize">
+                                    <a href="#">[ Customize sua Prancha ]</a>
+                                </div>
+
+                            </div>
+                        </li>
+                        <li><a href="">Wake</a></li>
+                        <li><a href="">Windsurf</a></li>
+                        <li><a href="">Marcas</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- menu mouseover //-->
+
+
+
+        </div>
+        <!--fim header -->
+
+
+        <section class="conta">
+
+            <h4>Minha conta</h4>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="nav tabs-left">	  					
+                        <li class="active"><a href="#inf-conta" data-toggle="tab">Informações de conta</a></li>
+                        <li><a href="#meus-end" data-toggle="tab">Meus endereços</a></li>
+                        <li><a href="#meus-ped" data-toggle="tab">Meus pedidos</a></li>
+                        <li><a href="#troc-dev" data-toggle="tab">Trocas e devoluções</a></li>
+                        <li><a href="#meus-fav" data-toggle="tab">Meus favoritos</a></li>
+                        <li><a href="">Sair</a></li>
+                    </ul>
+                </div>
+                <div class="tab-content col-md-9">
+
+
+
+                    <!-- pane troca devolucao envio -->
+                    <div class="tab-pane" id="troc-dev-send">
+                        <div class="conta-painel">
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    Pedido nº 45298775
+                                </div>
+                                <div class="col-md-2">
+                                    Data do pedido:
+                                    10/01/2017
+                                </div>
+                                <div class="col-md-2">
+                                    Qtde. de itens:
+                                    1
+
+                                </div>
+                                <div class="col-md-2">
+                                    Total do pedido:
+                                    R$ 370,00
+
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <a href="#troc-dev-msg" class="conta-painel-toggle" data-toggle="collapse">Ocultar </a>
+                                </div>
+                            </div>
+                            <div class="well">
+
+                                <div id="troc-dev-msg" class="collapse in text-center">
+                                    <p>E-mail enviado com sucesso!</p>
+                                    <p>Aguarde um de nossos atendentes entrar em contato por e-mail ou telefone.</p>
+                                    <p>Até breve.</p>
+                                    <button href="#troc-dev" data-toggle="tab" class="btn btn-default">Voltar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- fim pane -->
+
+
+                    <!-- pane troca devolucao -->
+                    <div class="tab-pane" id="troc-dev">
+                        <div class="conta-painel">
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    Pedido nº 45298775
+                                </div>
+                                <div class="col-md-2">
+                                    Data do pedido:
+                                    10/01/2017
+                                </div>
+                                <div class="col-md-2">
+                                    Qtde. de itens:
+                                    1
+
+                                </div>
+                                <div class="col-md-2">
+                                    Total do pedido:
+                                    R$ 370,00
+
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <a href="#conta-entrega-01" class="conta-painel-toggle" data-toggle="collapse">Ocultar </a>
+                                </div>
+                            </div>
+                            <div class="well">
+                                <div id="conta-entrega-01" class="collapse">
+                                    <p>Envie um e-mail com sua dúvida respondendo o formulário abaixo:</p>
+                                    <form>
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" placeholder="Nome" />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" placeholder="CPF/CNPJ" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <input type="number" class="form-control" placeholder="Pedido" />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="email" class="form-control" placeholder="E-mail" value="r.guazelli bol.com.br" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" placeholder="Telefone" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div><input type="text" class="form-control" placeholder="Assunto" /></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div><textarea type="textarea" class="form-control" placeholder="Mensagem"></textarea></div>
+                                        </div>
+                                        <button href="#troc-dev" data-toggle="tab" class="btn btn-default">Cancelar</button>
+                                        <button href="#troc-dev-send" data-toggle="tab" class="btn btn-primary">Salvar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- fim pane -->
+
+
+                    <!-- pane meus pedidos -->
+                    <div class="tab-pane" id="meus-ped">
+
+                        <div class="conta-painel">
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    Pedido nº 45298775
+                                </div>
+                                <div class="col-md-2">
+                                    Data do pedido:
+                                    10/01/2017
+                                </div>
+                                <div class="col-md-2">
+                                    Qtde. de itens:
+                                    1
+
+                                </div>
+                                <div class="col-md-2">
+                                    Total do pedido:
+                                    R$ 370,00
+
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <a href="#meus-ped-hide" class="conta-painel-toggle" data-toggle="collapse">Ocultar</a>
+                                </div>
+                            </div>
+                            <div class="well">
+                                <div id="meus-ped-hide" class="collapse in">
+                                    <div class="conta-painel-entrega">Entrega 1 de 2 - Entregue por <span>Hooray</span></div>
+                                    <div class="conta-checkpoint">
+                                        <div class="row">
+                                            <div class="linha">
+                                                <div class="col-xs-1"></div>
+                                                <div class="col-xs-2 first visited">
+                                                    <div class="circulo"></div>
+                                                    <span>Pedido</span>
+                                                    Recebido
+                                                </div>
+                                                <div class="col-xs-2 active">
+                                                    <div class="circulo"></div>
+                                                    <span>Pagamento</span>
+                                                    Cancelado
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <div class="circulo"></div>
+                                                    <span>Separação</span>
+                                                    Andamento
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <div class="circulo"></div>
+                                                    <span>Transporte</span>
+                                                </div>
+                                                <div class="col-xs-2 last">
+                                                    <div class="circulo"></div>
+                                                    <span>Entrega</span>
+                                                </div>
+                                                <div class="col-xs-1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <img src="./images/account-pedidos-thumb.png" alt="Camiseta Rip Curl"/>
+                                        </div>
+                                        <div class="col-md-7">
+                                            Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
+                                            SKU - PU839384740172938
+                                        </div>
+                                        <div class="col-md-2">
+                                            Quantidade: 1
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            R$ 150,00
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2 col-md-offset-8">
+                                            Total
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            R$ 150,00
+                                        </div>
+                                    </div>
+
+                                    <div class="conta-painel-entrega">Entrega 2 de 2 - Entregue por <span>Water Sports</span></div>
+                                    <div class="conta-checkpoint">
+                                        <div class="row">
+                                            <div class="linha">
+                                                <div class="col-xs-1"></div>
+                                                <div class="col-xs-2 first visited">
+                                                    <div class="circulo"></div>
+                                                    <span>Pedido</span>
+                                                    Recebido
+                                                </div>
+                                                <div class="col-xs-2 active">
+                                                    <div class="circulo"></div>
+                                                    <span>Pagamento</span>
+                                                    Cancelado
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <div class="circulo"></div>
+                                                    <span>Separação</span>
+                                                    Andamento
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <div class="circulo"></div>
+                                                    <span>Transporte</span>
+                                                </div>
+                                                <div class="col-xs-2 last">
+                                                    <div class="circulo"></div>
+                                                    <span>Entrega</span>
+                                                </div>
+                                                <div class="col-xs-1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <img src="./images/account-pedidos-thumb.png" alt="Camiseta Rip Curl"/>
+                                        </div>
+                                        <div class="col-md-7">
+                                            Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
+                                            SKU - PU839384740172938
+                                        </div>
+                                        <div class="col-md-2">
+                                            Quantidade: 1
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            R$ 150,00
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2 col-md-offset-8">
+                                            Total
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            R$ 220,00
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>Endereço de Entrega:</label>
+                                            <p>	Renato guazelli<br />
+                                                Avenida Rouxinol 771<br />
+                                                22 bloco B<br />
+                                                Moema | 04093-002<br />
+                                                Sao Paulo - SP<br />
+                                                (11) 3018-3816</p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Forma de Pagamento</label>
+                                            <p>
+                                                <a href="#modal-boleto" data-toggle="modal"><img src="./images/icon-boleto.png" alt="Boleto" class="img-responsive"/></a>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Total do pedido:</label>
+                                        </div>
+                                        <div class="col-md-3 text-right">
+                                            R$ 370,00
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- fim pane -->
+
+
+                    <!-- pane meus enderecos edit -->
+                    <div class="tab-pane" id="meus-end-edit">
+                        <div class="conta-painel">
+                            <form>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Nome</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" /></div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Sobrenome</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" /></div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">CEP</label>
+                                    <div class="col-sm-9 col-md-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" /><span class="input-group-addon"><a href="">Não sabe o CEP?</a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+
+                                    <label class="control-label col-sm-3">Endereço	</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" /></div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Número	</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" /></div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Complemento	</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" /></div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Bairro	</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" /></div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Cidade	</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" /></div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Estado	</label>
+                                    <div class="col-sm-9 col-md-6">
+                                        <select class="form-control">
+                                            <option>Selecione o Estado</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Telefone	</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" /></div>
+                                </div>
+                                <button href="#meus-end" data-toggle="tab" class="btn btn-default">Cancelar</button>
+                                <button href="#meus-end" data-toggle="tab" class="btn btn-primary">Salvar</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- fim pane -->
+
+
+
+                    <!-- pane meus enderecos -->
+                    <div class="tab-pane" id="meus-end">
+                        <div class="conta-painel">
+
+                            <div class="panel conta-painel">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="col-md-6">
+                                            <label class="control-label">Principal</label>
+                                            <p class="form-control-static">
+                                                Renato Guazelli<br/>
+                                                Avenida Rouxinol 771 22 bloco B<br/>
+                                                04093-002 - Moema<br/>
+                                                Sao Paulo - SP
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="control-label">Entrega</label>
+                                            <p class="form-control-static">
+                                                Seu endereço principal e de entrega são os mesmos no momento. Clique em editar para trocar.
+                                            </p>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <p class="">Endereços cadastrados</p>
+                                            <button href="#meus-end-edit" data-toggle="tab" class="btn btn-default">Editar informações</button>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group conta-painel-enderecos">
+                                        <label class="control-label col-sm-2">Renato Guazelli</label>
+                                        <div class="col-sm-10">
+                                            <p class="form-control-static">Avenida Rouxinol 771 - 22 bloco B - Moema - Sao Paulo - SP</p>
+                                            <div class="row">
+                                                <label class="col-md-4"><input type="radio" name=""> Endereço principal</label>
+                                                <label class="col-md-4"><input type="radio" name=""> Endereço de entrega</label>
+                                                <div class="col-md-2"><a href=""><span class="glyphicon glyphicon-edit"></span> Editar</a> </div>
+                                                <div class="col-md-2"><a href=""><span class="glyphicon glyphicon-remove"></span> Excluir</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group conta-painel-enderecos">
+                                        <label class="control-label col-sm-2">Renato Guazelli</label>
+                                        <div class="col-sm-10">
+                                            <p class="form-control-static">Alameda dos Arapanes 1071 - 44 - Paraisópolis - Sao Paulo - SP</p>
+                                            <div class="row">
+                                                <label class="col-md-4"><input type="radio" name=""> Endereço principal</label>
+                                                <label class="col-md-4"><input type="radio" name=""> Endereço de entrega</label>
+                                                <div class="col-md-2"><a href=""><span class="glyphicon glyphicon-edit"></span> Editar</a> </div>
+                                                <div class="col-md-2"><a href=""><span class="glyphicon glyphicon-remove"></span> Excluir</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- fim pane -->
+
+
+                    <!-- pane infos -->
+                    <div class="tab-pane active" id="inf-conta">
+                        <div class="conta-painel">
+                            <form>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Nome</label>
+                                    <div class="col-sm-9"><p class="form-control-static">Renato</p></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Sobrenome</label>
+                                    <div class="col-sm-9"><p class="form-control-static">Guazelli</p></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">E-mail</label>
+                                    <div class="col-sm-9"><p class="form-control-static">r.guazelli@bol.com.br</p></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Sexo	</label>
+                                    <div class="col-sm-9"><p class="form-control-static">masculino</p></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">CPF/CNPJ	</label>
+                                    <div class="col-sm-9"><p class="form-control-static">288.101.234-54</p></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Data de nascimento	</label>
+                                    <div class="col-sm-9"><p class="form-control-static">30/02/1972</p></div>
+                                </div>
+                                <button href="#inf-conta-edit" data-toggle="tab" class="btn btn-default">Editar informações</button>
+                                <button href="#inf-conta-edit-pass" data-toggle="tab" class="btn btn-default">Alterar senha</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- fim pane -->
+
+
+                    <!-- pane edit conta info -->
+                    <div class="tab-pane" id="inf-conta-edit">
+                        <div class="conta-painel conta-painel-edit-infos">
+                            <form>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Nome</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" value="Renato" /></div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Sobrenome</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" value="Guazelli" /></div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">E-mail</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" value="r.guazelli@bol.com.br" /></div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Sexo	</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" value="masculino" /></div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">CPF/CNPJ	</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" value="288.101.234-54" /></div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Data de nascimento	</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" value="30/02/1972" /></div>
+                                </div>
+                                <button href="#inf-conta" data-toggle="tab" class="btn btn-default">Cancelar</button>
+                                <button class="btn btn-primary">Salvar</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <!-- fim pane -->
+
+
+                    <!-- pane edit conta info senha -->
+                    <div class="tab-pane" id="inf-conta-edit-pass">
+                        <div class="conta-painel conta-painel-edit-infos">
+                            <form>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Nova senha</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" value="nova senha" /></div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-3">Repita a senha</label>
+                                    <div class="col-sm-9 col-md-6"><input type="text" class="form-control" value="Repita a senha" /></div>
+                                </div>
+                                <button href="#inf-conta" data-toggle="tab" class="btn btn-default">Cancelar</button>
+                                <button href="#inf-conta-edit-info-pass-msg" data-toggle="tab" class="btn btn-primary">Salvar</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <!-- fim pane -->
+
+
+                    <!-- pane edit conta info senha mensagem-->
+                    <div class="tab-pane" id="inf-conta-edit-info-pass-msg">
+                        <div class="conta-painel conta-painel-edit-infos">
+                            Senha redefinida</br></br></br>
+                            <button href="#inf-conta" data-toggle="tab" class="btn btn-default">Voltar</button>
+                        </div>
+
+                    </div>
+
+                    <!-- fim pane -->
+
+
+                    <!-- pane favoritos -->
+                    <div class="tab-pane" id="meus-fav">
+                        <div class="conta-painel">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img src="./images/account-pedidos-thumb.png" alt="Camiseta Rip Curl"/>
+                                </div>
+                                <div class="col-md-9">
+                                    Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
+                                    SKU - PU839384740172938
+                                </div>
+                                <div class="col-md-2 text-right">
+                                    R$ 150,00
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img src="./images/account-pedidos-thumb.png" alt="Camiseta Rip Curl"/>
+                                </div>
+                                <div class="col-md-9">
+                                    Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
+                                    SKU - PU839384740172938
+                                </div>
+                                <div class="col-md-2 text-right">
+                                    R$ 150,00
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img src="./images/account-pedidos-thumb.png" alt="Camiseta Rip Curl"/>
+                                </div>
+                                <div class="col-md-9">
+                                    Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
+                                    SKU - PU839384740172938
+                                </div>
+                                <div class="col-md-2 text-right">
+                                    R$ 150,00
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- fim pane -->
+
+                </div>
+            </div>
+        </div>
+    </section>		
+
+</div>
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <ul class="footer-menu">
+                    <li class="hidden-xs">Recursos</li>
+                    <li><a href="">Ajuda</a></li>
+                    <li><a href="">Como comprar</a></li>
+                    <li><a href="">Status do pedido</a></li>
+                    <li><a href="">Política de entrega</a></li>
+                    <li><a href="">Trocas e devoluções</a></li>
+                    <li><a href="">Minha conta</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <ul class="footer-menu">
+                    <li class="hidden-xs">Institucional</li>
+                    <li><a href="">Contato</a></li>
+                    <li><a href="">Termos de uso</a></li>
+                    <li><a href="">Política de privacidade</a></li>
+                    <li><a href="">Marketplace</a></li>
+                    <li><a href="">Mapa do site</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-xs-12">
+                <ul>
+                    <li class="seg-logos">Segurança e Pagamento</li>
+                    <li class="seg-logos"><img src="./images/footer-seguranca-siteblindado.png" /></li>
+                    <li class="seg-logos"><img src="./images/footer-seguranca-ssl.png" /></li>
+                    <li class="seg-logos"><img src="./images/footer-seguranca-cartoes.png" /></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-xs-12">
+                <ul class="social">
+                    <li>Social</li>
+                    <a href=""><i class="social-icon icon-facebook">&#xe800;</i></a>
+                    <a href=""><i class="social-icon icon-instagram">&#xe803;</i></a>
+                    <a href=""><i class="social-icon icon-youtube">&#xe804;</i></a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="copyright text-center">
+        © 2017 HOORAY | Todos os direitos reservados
+        <div class="madein text-right">
+            por: <img src="./images/logo-barduk.png" alt="hooray"/>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Footer end -->
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade modal-hooray" id="modal-carrinho" tabindex="-1" role="dialog" aria-labelledby="modal-carrinho-compras">
+    <div class="modal-dialog modal-sm" role="document">
+
+        <div class="modal-content modal-carrinho-content">
+            <div class="modal-body">
+                <div class="modal-fechar hidden-xs hidden-sm" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </div>
+                <div class="modal-mobile-fechar hidden-lg hidden-md" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
+
+                <div class="nav">
+                    CARRINHO
+                </div>
+
+                <ul>
+                    <li>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <img src="./images/account-pedidos-thumb.png" alt="" />	        				
+                            </div>
+
+                            <div class="col-xs-7">
+                                <p>
+                                    Camiseta Rip Curl<br />
+                                    cor: Branco<br />
+                                    Tamanho: GG<br />
+                                    Quantidade: 1
+                                    <span>R$150,00</span>
+                                </p>
+                            </div>
+
+                            <div class="col-xs-2 text-right">		        				
+                                <a href="#"><span aria-hidden="true">&times;</span></a>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <img src="./images/account-pedidos-thumb.png" alt=""/>	        				
+                            </div>
+
+                            <div class="col-xs-7">
+                                <p>
+                                    Camiseta Rip Curl<br />
+                                    cor: Branco<br />
+                                    Tamanho: GG<br />
+                                    Quantidade: 1
+                                    <span>R$150,00</span>
+                                </p>
+                            </div>
+
+                            <div class="col-xs-2 text-right">		        				
+                                <a href="#"><span aria-hidden="true">&times;</span></a>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <img src="./images/account-pedidos-thumb.png" alt=""/>	        				
+                            </div>
+
+                            <div class="col-xs-7">
+                                <p>
+                                    Camiseta Rip Curl<br />
+                                    cor: Branco<br />
+                                    Tamanho: GG<br />
+                                    Quantidade: 1
+                                    <span>R$150,00</span>
+                                </p>
+                            </div>
+
+                            <div class="col-xs-2 text-right">		        				
+                                <a href="#"><span aria-hidden="true">&times;</span></a>
+                            </div>
+                        </div>
+
+                    </li>
+                </ul>
+
+                <button type="submit" class="btn btn-primary btn-lg">CHECKOUT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade modal-hooray" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="modal-efetuar-login">
+
+    <div class="modal-dialog modal-sm" role="document">
+
+        <div class="modal-content modal-login-content">
+            <div class="modal-fechar hidden-xs hidden-sm" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-mobile-fechar hidden-lg hidden-md" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </div>
+                <div class="nav">
+                    <ul role="tablist">
+                        <li class="active">
+                            <a href="#tab-login" aria-controls="tab-cadastre" role="tab" data-toggle="tab">FAÇA LOGIN</a>	
+                        </li>
+                        <li>
+                            <a href="#tab-cadastre" aria-controls="tab-cadastre" role="tab" data-toggle="tab">CADASTRE-SE</a>
+                        </li>
+                    </ul>
+
+
+                </div>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="tab-login">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2 col-sm-12">
+                                    <div class="form-group">
+                                        <input type="text" name="" placeholder="E-mail">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="" placeholder="Senha">	
+                                        <a href="#tab-esqueci" aria-controls="tab-cadastre" role="tab" data-toggle="tab">Esqueci a senha</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-lg">ENTRAR</button>
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tab-cadastre">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2 col-sm-12">
+                                    <div class="form-group">
+                                        <input type="text" name="" placeholder="Nome">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="" placeholder="E-mail">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="" placeholder="Senha">	
+                                        <a href="#"></a>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-lg">ENTRAR</button>
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tab-esqueci">
+                        <h4>Esqueci a senha</h4>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2 col-sm-12">
+                                    <div class="form-group">
+                                        <input type="text" name="" placeholder="Seu e-mail">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-lg">Enviar</button>
+                            <p class="text-left"><a href="#tab-login" aria-controls="tab-cadastre" role="tab" data-toggle="tab">Voltar</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="javascripts/bootstrap.min.js"></script>
+<script src="javascripts/rangeslider.js"></script>
+<script src="javascripts/util.js"></script>
+</body>
+</html>
