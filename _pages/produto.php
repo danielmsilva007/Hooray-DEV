@@ -332,10 +332,9 @@ else
                     </div>
                     
                     <div class="produto-social">
-                        COMPARTILHE: 
+                        COMPARTILHE: <br>
                         <a href=""><i class="produto-social-icon icon-facebook">&#xe800;</i></a>
-                        <a href=""><i class="produto-social-icon icon-instagram">&#xe803;</i></a>
-                        <a href=""><i class="produto-social-icon icon-youtube">&#xe804;</i></a>
+                        <a href="https://twitter.com/intent/tweet?text=Gostei+de+um+produto+da+Hooray&hashtags=Hooray"><i class="produto-social-icon icon-instagram">&#xe803;</i></a>
                     </div>
                 </div>
                 </form>

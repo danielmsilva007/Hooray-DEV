@@ -19,7 +19,7 @@ else
     }
 }
 
-$esperaResultado = '<div align="center"><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></div>';
+$esperaResultado = '<div align="center"><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></span></div>';
 
 $parcelamento = getRest(str_replace(['{IDCarrinho}','{valorCarrinho}'], [$dadosLogin['CarrinhoId'], $carrinho['Total']], $endPoint['parcarrinho']));
 
@@ -36,21 +36,18 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
 <section class="checkpoint">
     <div class="row">
         <div class="linha">
-            <div class="col-xs-4">
-                <div class="circulo"></div>
-                Identificação
-            </div>
-            <div class="col-xs-4">
-                <div class="circulo active"></div>
-                Endereço e Pagamento
-            </div>
-            <div class="col-xs-4">
-                <div class="circulo"></div>
-                Confirmação
-            </div>
+            <div class="col-xs-4" id="checkpointid"></div>
+            <div class="col-xs-4" id="checkpointendpgto"></div>
+            <div class="col-xs-4" id="checkpointconf"></div>
         </div>
     </div>
 </section>
+
+<script type="text/javascript">
+    $('#checkpointid').html('<div class="circulo active"></div> Identificação');
+    $('#checkpointendpgto').html('<div class="circulo active"></div> Endereço e Pagamento');
+    $('#checkpointconf').html('<div class="circulo"></div> Confirmação');
+</script>
 
 <script type="text/javascript">
     function GerarHash() 
@@ -183,6 +180,8 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
         var hash;
         var finalizar = false;
         
+        $('#botaoFinalizar').html('<span class="fa fa-circle-o-notch fa-spin fa-fw"></span> Finalizando...');
+        
         if (formaPgto == 'zero')
         {
             hash = GerarHash();
@@ -212,12 +211,18 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                 if (resultadoFinalizarCompra.substr(0,2) == "!!")
                 {
                     $('#retornoCheckout').html('<p>' + resultadoFinalizarCompra.substr(2) + '</p>');
+                    $('#botaoFinalizar').html('Finalizar a compra');
                 }
                 else
                 {
                     $('#retornoFinalizarCompra').html(resultadoFinalizarCompra);
+                    $('#checkpointconf').html('<div class="circulo active"></div> Confirmação');
                 }
             }); 
+        }
+        else
+        {
+            $('#botaoFinalizar').html('Finalizar a compra');
         }
     }
 </script>

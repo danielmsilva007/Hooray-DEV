@@ -130,7 +130,7 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("opc
     {
         if ($parcela['Numero'] == 0 || $parcela['PagamentoMetodoFormaID'] != $phpPost['portidbandeira']) continue;
 
-        echo "<option value=\"" . $parcela['Numero'] . "\">" . $parcela['Numero'] . " x de " . formatar_moeda($parcela['Valor']) . " sem juros</option>";
+        echo "<option value=\"" . $parcela['Numero'] . "\">" . $parcela['Numero'] . "x sem juros de " . formatar_moeda($parcela['Valor']) . "</option>";
     }    
 }
 
@@ -165,7 +165,7 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("tot
     </div>
     <div id="retornoCheckout"></div>
     <div class="ordem-botao-finalizar-bottom">
-        <button type="button" onclick="finalizarCompra();" class="btn btn-lg btn-primary">Finalizar a compra</button>
+        <button type="button" onclick="finalizarCompra();" class="btn btn-lg btn-primary" id="botaoFinalizar">Finalizar a compra</button>
     </div>
 <?php
 }
@@ -331,9 +331,18 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
                         <div class="panel-heading">FORMA DE PAGAMENTO</div>
                         <div class="panel-body">
                             <div class="ordem-pagamento-concluido-forma">
-                                <?= ($phpPost['pgFormaPgto'] == "zero") ? "Cartãp de crédito. " : "Boleto bancário. " ?>
+                                <?= ($phpPost['pgFormaPgto'] == "zero") ? "Cartão de crédito. " : "Boleto bancário. " ?>
                                 <span>Valor total de <?= formatar_moeda($carrinhoCK['Total']) ?></span>
-                                <span><?= (($phpPost['pgFormaPgto'] == "zero")) ? $phpPost['pgParcela'] . " x de " . formatar_moeda($carrinhoCK['Total'] / $phpPost['pgParcela']) : "" ?></span>
+                                <span><?php
+                                if (($phpPost['pgFormaPgto'] == "zero"))
+                                {
+                                    echo $phpPost['pgParcela'] . "x sem juros de " . formatar_moeda($carrinhoCK['Total'] / $phpPost['pgParcela']);
+                                }
+                                else
+                                {
+                                    echo "Valor à vista com desconto de 8%: ";
+                                }
+                                ?></span>
                             </div>
                         </div>
                     </div>
