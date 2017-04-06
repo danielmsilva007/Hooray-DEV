@@ -5,7 +5,7 @@ include_once ("p_settings.php");
 
 $phpPost = filter_input_array(INPUT_POST);
 
-session_start(); // inicia a sessão para validar login
+session_start();
 
 if (!empty($phpPost['logoff']) && $phpPost['logoff'] == md5("logoff")) // se logoff solicitado, finaliza a sessão e recarrega a pagina
 {

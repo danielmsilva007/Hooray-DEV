@@ -78,7 +78,9 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("opc
         }
         array_push($opcoesFornecedor[$opEntrega['FornecedorID']]['Opcoes'], $opEntrega);
     }
-    
+    ?>
+    <p id="resultadoServFrete"></p>
+    <?php
     $i = 0;
     foreach ((array) $opcoesFornecedor as $opPorFornec)
     {
@@ -128,7 +130,7 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("opc
     {
         if ($parcela['Numero'] == 0 || $parcela['PagamentoMetodoFormaID'] != $phpPost['portidbandeira']) continue;
 
-        echo "<option value=\"" . $parcela['PagamentoMetodoFormaID'] . "\">" . $parcela['Numero'] . " x de " . formatar_moeda($parcela['Valor']) . " sem juros</option>";
+        echo "<option value=\"" . $parcela['Numero'] . "\">" . $parcela['Numero'] . " x de " . formatar_moeda($parcela['Valor']) . " sem juros</option>";
     }    
 }
 
@@ -168,44 +170,192 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("tot
 <?php
 }
 
-if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("totalCarrinho"))
+if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("servicoFrete"))
 {
-    
+    if (!empty($phpPost['localidadeTransporteID']))
+    {
+        $endOpcaoEntrega = getRest(str_replace("{IDParceiro}", $phpPost['postidparceiro'], $endPoint['endcadastral']));
+
+        foreach ((array) $endOpcaoEntrega['Enderecos'] as $endereco)
+        {
+            if ($endereco['ID'] == $phpPost['postidendereco'])
+            {
+                $cepServicoEntrega = $endereco['CEP'];
+                break;
+            }
+        }
+        
+        $dadosServEntrega = ["CarrinhoID" => $phpPost['postidcarrinho'],
+                             "CEP" => $cepServicoEntrega
+            ];
+        $opcoesEntrega = sendRest($endPoint['servicoentrega'], $dadosServEntrega, "PUT");
+        
+        $servicos = [];
+        
+        foreach ((array) $phpPost['localidadeTransporteID'] as $opcaoEntrega)
+        {
+            if (!empty($opcaoEntrega))
+            {
+                $indexServico = array_search($opcaoEntrega, array_column($opcoesEntrega, 'LocalidadeTransporteID'));
+                
+                if (isset($indexServico) && is_numeric($indexServico))
+                {
+                    array_push($servicos, $opcoesEntrega[$indexServico]);
+                }
+            }
+        }
+        
+        $atualizacaoServicoEntrega = sendRest($endPoint['atualizarfrete'], $servicos, "PUT");
+        
+        if (empty($atualizacaoServicoEntrega))
+        {
+            echo "!!Erro ao atualizar serviço de entrega.";
+        }
+    }
 }
 
 if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("finalizarCompra"))
 {
+    session_start();
+    $dadosLoginCK = login($endPoint['login'], $_SESSION['bearer']);
     
-    $dadosPedido = ["LoginID" => $dadosLogin['ID'],
-                    "EnderecoID"  => 2100, // TODO ID 
-                    "PagamentoMetodoFormaID"  => 7, //TODO
-                    "ClassificacaoPagto"  => 0, // 0 = cartão, 2 = boleto
-                    "Parcela"  => 1, //TODO numero de parcelas
-                    "CarrinhoID"  => $dadosLogin['CarrinhoId'],
+    if (empty($dadosLoginCK['ID']))
+    {
+        echo "!!Sua sessão expirou. Por favor efetue logon novamente para concluir a sua compra.";
+        die;
+    }
+
+    $enderecosCK = getRest(str_replace("{IDParceiro}", $dadosLoginCK['Parceiro']['ID'], $endPoint['endcadastral']));
+    
+    $carrinhoCK = getRest(str_replace('{IDCarrinho}', $phpPost['postidcarrinho'], $endPoint['obtercarrinho']));
+    
+    for ($i = 1; $i <= $phpPost['opNumOpcoes']; $i++)
+    {
+        if (empty($phpPost['opEntrega' . $i]))
+        {
+            echo "!!Escolha as opções de entrega para as marcas do seu carrinho.";
+            die;
+        }
+    }
+    
+    if (empty($phpPost['pgFormaPgto']))
+    {
+        echo "!!Escolha a forma de pagamento.";
+        die;
+    }
+    
+    if ($phpPost['pgFormaPgto'] == "zero") // cartao de credito
+    {
+        if (empty($phpPost['pgBandeira']) || trim($phpPost['pgBandeira']) == "")
+        {
+            echo "!!Selecione a bandeira do cartão de crédito.";
+            die;
+        }
+        
+        if (empty($phpPost['pgNumCartao']) || trim($phpPost['pgNumCartao']) == "")
+        {
+            echo "!!Informe o número do cartão de crédito.";
+            die;
+        }
+
+        if (empty($phpPost['pgParcela']) || trim($phpPost['pgParcela']) == "")
+        {
+            echo "!!Selecione o número de parcelas.";
+            die;
+        }
+
+        if (empty($phpPost['pgNomeCartao']) || trim($phpPost['pgNomeCartao']) == "")
+        {
+            echo "!!Informe o nome impresso no cartão de crédito.";
+            die;
+        }
+        
+        if (empty($phpPost['pgMedVenc']) || trim($phpPost['pgMedVenc']) == "")
+        {
+            echo "!!Selecione o mes de vencimento do cartão de crédito.";
+            die;
+        }
+
+        if (empty($phpPost['pgAnoVenc']) || trim($phpPost['pgAnoVenc']) == "")
+        {
+            echo "!!Selecione o ano de vencimento do cartão de crédito.";
+            die;
+        }
+        
+        if (empty($phpPost['pgCVC']) || trim($phpPost['pgCVC']) == "")
+        {
+            echo "!!Informe o código de segurança do cartão de crédito.";
+            die;
+        }
+    }
+    
+    $dadosPedido = ["LoginID" => $dadosLoginCK['ID'],
+                    "EnderecoID"  => $phpPost['tipoEndEntrega'],
+                    "PagamentoMetodoFormaID" => ($phpPost['pgFormaPgto'] == "zero") ? $phpPost['pgBandeira'] : "6", // TODO trazer numero da parcela do boleto
+                    "ClassificacaoPagto" => ($phpPost['pgFormaPgto'] == "zero") ? 0 : $phpPost['opNumOpcoes'],
+                    "Parcela" => ($phpPost['pgFormaPgto'] == "zero") ? $phpPost['pgParcela'] : "1",
+                    "CarrinhoID"  => $phpPost['postidcarrinho'],
                     "CupomDesconto"  => null,
                     "DadosCartao"  => [
-                            "Titular" => $phpPost['pgNomeCartao'],
-                            "Numero" => $phpPost['pgCartao'],
-                            "Mes" => "05",
-                            "Ano" => $phpPost['pgAnoVend'],
-                            "CodigoSeguranca"  => $phpPost['pgCodSeg'],
-                            "Hash" => "FTh60Z1p29ef9oO8BM119KL1JijZW3K6nXa4kFAotGXpKUSgBbQhA2z19qJHH0I8XFMKuxr5AgKzHQ+umA0R8tMz0zEElKj4mnLBN3ejmPj0PQk9gpbMkoUt/72oJGLL0YqMnuRW9FGnpSWMLiDAOe+PfMVi32wOiNWTBh21da1ucdPYbyPfrS3ia9JH91L0sblwcK/cboYw3uQBygV+HoGc6vF9yl259GfckRhM6EOHbVDUbf/2pd4vpw4RT5MZrbcihd34HG6g+uwZFwb+TBuphUpzFp4FIdLQjKcR3ILcfgFa79wHXbIV6LN+wP+R91Jok56S38k/BtAAleZYOA=="
+                            "Titular" => ($phpPost['pgFormaPgto'] == "zero") ? $phpPost['pgNomeCartao'] : "",
+                            "Numero" => ($phpPost['pgFormaPgto'] == "zero") ? str_replace(" ", "", $phpPost['pgNumCartao']) : "",
+                            "Mes" => ($phpPost['pgFormaPgto'] == "zero") ? $phpPost['pgMedVenc'] : "", 
+                            "Ano" => ($phpPost['pgFormaPgto'] == "zero") ? $phpPost['pgAnoVenc'] : "",
+                            "CodigoSeguranca" => ($phpPost['pgFormaPgto'] == "zero") ? $phpPost['pgCVC'] : "",
+                            "Hash" => ($phpPost['pgFormaPgto'] == "zero") ? $phpPost['pgHash'] : ""
                     ],
     ];
 
-    //$finalizarPedido = sendRest($endPoint['checkout'], $dadosPedido, "POST");
+    $finalizarPedido = sendRest($endPoint['checkout'], $dadosPedido, "POST");
+    
+    if (!$finalizarPedido['Gravou'])
+    {
+        echo "!!Erro gravar o pedido.";
+    }
+    else
+    {
+        if (isset($_SESSION['carrinho']))
+        {
+            unset($_SESSION['carrinho']);
+        }
+        
+        $indexEndereco = array_search($phpPost['tipoEndEntrega'], array_column($enderecosCK['Enderecos'], 'ID'));
+        
+        $enderecoPedido = $enderecosCK['Enderecos'][$indexEndereco];
 ?>
-
-    <h3 class="text-center"><i class="glyphicon glyphicon-ok"></i> Seu pedido foi concluído com sucesso!</h3>
-    <div class="row">
-        
-        <pre> 
-        <?php
-        print_r($phpPost);
-        ?>
-        </pre>
-        
-    </div>
+        <section class="ordem">
+            <h3 class="text-center"><i class="glyphicon glyphicon-ok"></i> Seu pedido foi concluído com sucesso!</h3>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">FORMA DE PAGAMENTO</div>
+                        <div class="panel-body">
+                            <div class="ordem-pagamento-concluido-forma">
+                                <?= ($phpPost['pgFormaPgto'] == "zero") ? "Cartãp de crédito. " : "Boleto bancário. " ?>
+                                <span>Valor total de <?= formatar_moeda($carrinhoCK['Total']) ?></span>
+                                <span><?= (($phpPost['pgFormaPgto'] == "zero")) ? $phpPost['pgParcela'] . " x de " . formatar_moeda($carrinhoCK['Total'] / $phpPost['pgParcela']) : "" ?></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">PEDIDO № <?= $finalizarPedido['ID'] ?></div>
+                        <div class="panel-body ordem-pagamento-concluido-pedido">
+                            Acabamos de enviar os detalhes do pedido para:
+                            <span><?= $dadosLoginCK['Email'] ?></span>
+                            Endereço de entrega
+                            <span>
+                                <?= $enderecoPedido['Logradouro'] ?>, <?= $enderecoPedido['Numero'] ?> <?= (!empty($enderecoPedido['Complemento'])) ? " - " . $enderecoPedido['Complemento'] : "" ?><br />
+                                <?= $enderecoPedido['CEP'] ?> - <?= $enderecoPedido['Bairro'] ?><br />
+                                <?= $enderecoPedido['Cidade']['Nome'] ?> - <?= $enderecoPedido['Cidade']['Estado']['Sigla'] ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 <?php
+    }
 }
 ?>

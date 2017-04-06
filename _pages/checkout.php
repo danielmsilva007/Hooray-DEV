@@ -4,17 +4,30 @@ if (!defined('HoorayWeb'))
     die;
 }
 
+if (empty($dadosLogin['CarrinhoId']))
+{
+    include_once ("/_pages/404.php");
+    die;
+}
+else
+{
+    $carrinho = getRest(str_replace('{IDCarrinho}', $dadosLogin['CarrinhoId'], $endPoint['obtercarrinho']));
+    
+    if (empty($carrinho['Itens'])){
+        include_once ("/_pages/404.php");
+        die;        
+    }
+}
+
 $esperaResultado = '<div align="center"><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></div>';
 
-// Dados do carrinho
-$carrinho = getRest(str_replace('{IDCarrinho}', $dadosLogin['CarrinhoId'], $endPoint['obtercarrinho']));
 $parcelamento = getRest(str_replace(['{IDCarrinho}','{valorCarrinho}'], [$dadosLogin['CarrinhoId'], $carrinho['Total']], $endPoint['parcarrinho']));
 
 // Procura pela parcela Zero, referente boleto
 $parBoleto = array_search("0", array_column($parcelamento, 'Numero')); // busca pela parcela 0 (boleto)
 
 // Bandeiras de cartão
-$bandeirasCartão = getRest(str_replace("{valorCarrinho}", $dadosLogin['CarrinhoId'], $endPoint['formaspagamento']));
+$bandeirasCartao = getRest(str_replace("{valorCarrinho}", $dadosLogin['CarrinhoId'], $endPoint['formaspagamento']));
 
 // Endereços de entrega
 $enderecos = getRest(str_replace("{IDParceiro}", $dadosLogin['Parceiro']['ID'], $endPoint['endcadastral']));
@@ -138,16 +151,27 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
     
     function opcoesEntrega(opcao)
     {
-        var opcaoEntrega = $('input[name=' + opcao + ']:checked', '#chechoutForm').val();
         var numOpcoes = $('#opNumOpcoes').val();
+        var IDEndEntrega = $('#tipoEndEntrega').val();
+        var opcoesSelecionadas = [];
+        
+        for (i = 1; i <= numOpcoes; i++)
+        {
+            opcoesSelecionadas[i] = $('input[name=opEntrega' + i + ']:checked', '#chechoutForm').val();
+        }
 
         $.post('/_pages/checkoutEditar.php', {postidparceiro:'<?= $dadosLogin['Parceiro']['ID'] ?>',
+                                              localidadeTransporteID:opcoesSelecionadas,
+                                              numeroOpcoes:numOpcoes,
                                               postidcarrinho:'<?= $dadosLogin['CarrinhoId'] ?>',
-                                              portidbandeira:pgBandeira,
-                                              posttipoedicao:'<?= md5("opcoesPagto") ?>'},
-        function(resultadoParcelas)
+                                              postidendereco:IDEndEntrega,
+                                              posttipoedicao:'<?= md5("servicoFrete") ?>'},
+        function(resultadoServicoFrete)
         {
-            $('#pgParcela').html(resultadoParcelas);
+            if (resultadoServicoFrete.substr(0,2) == "!!")
+            {
+                $('#resultadoServFrete').html(resultadoServicoFrete);
+            }
         });
         
         valoresCarrinho();
@@ -159,13 +183,13 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
         var hash;
         var finalizar = false;
         
-        if (formaPgto == '0')
+        if (formaPgto == 'zero')
         {
             hash = GerarHash();
             
             if (hash.substr(0,2) == "!!")
             {
-                $('#retornoCheckout').html(hash.substr(2));
+                $('#retornoCheckout').html('<p>' + hash.substr(2) + '</p>');
             }
             else
             {
@@ -185,7 +209,14 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
             $.post('/_pages/checkoutEditar.php', $("#chechoutForm").serialize(),
             function(resultadoFinalizarCompra)
             {
-                $('#retornoFinalizarCompra').html(resultadoFinalizarCompra);
+                if (resultadoFinalizarCompra.substr(0,2) == "!!")
+                {
+                    $('#retornoCheckout').html('<p>' + resultadoFinalizarCompra.substr(2) + '</p>');
+                }
+                else
+                {
+                    $('#retornoFinalizarCompra').html(resultadoFinalizarCompra);
+                }
             }); 
         }
     }
@@ -239,13 +270,13 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                                 }
                             ?>
                             <div class="form-group">
-                                <label><input type="radio" name="pgFormaPgto" id="pgFormaPgto" value="0" <?= ($boletoHabititado) ? "" : " checked" ?>> Cartão de crédito</label>
+                                <label><input type="radio" name="pgFormaPgto" id="pgFormaPgto" value="zero" <?= ($boletoHabititado) ? "" : " checked" ?>> Cartão de crédito</label>
                             </div>
                             <div class="form-group">
                                 <select class="form-control" name="pgBandeira" id="pgBandeira" onchange="obterParcelasCartao()">
-                                    <option disabled selected>Bandeira do cartão</option>
+                                    <option value="" disabled selected>Bandeira do cartão</option>
                                     <?php
-                                    foreach ((array) $bandeirasCartão as $bandeira)
+                                    foreach ((array) $bandeirasCartao as $bandeira)
                                     {
                                         $descLowerCase = strtolower($bandeira['DescricaoSite']);
                                         if (strpos($descLowerCase, "boleto") !== false) continue;
@@ -256,13 +287,13 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                                 </select>
                             </div>                              
                             <div class="form-group input-icone">
-                                <input type="text" name="pgNumCartao" id="pgNumCartao" class="form-control"  placeholder="Número no cartão" maxlength="16" />
+                                <input type="text" name="pgNumCartao" id="pgNumCartao" class="form-control"  placeholder="Número no cartão" maxlength="19" />
                                 <i class="glyphicon glyphicon-credit-card"></i>
                             </div>
                             <div class="form-group" id="parcelasCartao">
                                 <div class="input-group">
                                     <select class="form-control" name="pgParcela" id="pgParcela">
-                                        <option disabled selected>Número de parcelas</option>
+                                        <option value="" disabled selected>Número de parcelas</option>
                                     </select>
                                     <span class="input-group-addon">
                                         <a data-toggle="tooltip" data-placement="top" title="Por favor selecione a quantidade de parcelas para a sua compra.">
@@ -358,6 +389,8 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                 </div>
             </div>
             <input type="hidden" name="posttipoedicao" id="posttipoedicao" value="<?= md5("finalizarCompra") ?>">
+            <input type="hidden" name="postidusuario" id="postidusuario" value="<?= $dadosLogin['ID'] ?>">
+            <input type="hidden" name="postidcarrinho" id="postidcarrinho" value="<?= $dadosLogin['CarrinhoId'] ?>">
             <input type="hidden" name="pgHash" id="pgHash" value="0">
         </form>
 

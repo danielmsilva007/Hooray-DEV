@@ -64,6 +64,8 @@ $esperaResultado = '<div class="panel-heading">Atualizando seu carrinho...</div>
         var CEPCarrinho = $('#CEPCarrinho').val();
         var CEPCompCarrinho = $('#CEPCompCarrinho').val();
         
+        $('#atualizandoCEP').html('Atualizando...');
+        
         $.post('/_pages/carrinhoEditar.php', {postidcarrinho:'<?= $IDCarrinho ?>',
                                               postcepcarrinho: CEPCarrinho + '-' + CEPCompCarrinho,
                                               posttipoedicao:'<?= md5("calcularCEP") ?>',
@@ -72,7 +74,11 @@ $esperaResultado = '<div class="panel-heading">Atualizando seu carrinho...</div>
         function(dataCarrinho)
         {
             $('#dadosCarrinho').html(dataCarrinho);
-        });                
+        });
+        
+        $('#atualizandoCEP').html('');
+        
+        return false;
     }        
 </script>
 
@@ -118,19 +124,22 @@ if (!empty($IDCarrinho) && $IDCarrinho > 0)
 
     <div class="footer-cart">
         <div class="footer-cart-cep clearfix">
+            <form name="consultarCEP" id="consultarCEP" method="post" action="/carrinho" onsubmit="return atualizarFrete();" >
             <div>
                 <p>Consulte o frete</p>
                 <p>Por favor informe o CEP</p>
             </div>
             <div>
-                <input type="text" name="CEPCarrinho" id="CEPCarrinho" placeholder="00000" maxlength="5" /> - <input type="text" name="CEPCompCarrinho" id="CEPCompCarrinho" placeholder="000" maxlength="3" />
+                <input type="text" name="CEPCarrinho" id="CEPCarrinho" placeholder="00000" maxlength="5" required="required" /> - <input type="text" name="CEPCompCarrinho" id="CEPCompCarrinho" placeholder="000" maxlength="3" required="required" />
             </div>
             <div>
-                <button type="button" onclick="atualizarFrete()" class="btn">Consultar</button>
+                <button type="submit" class="btn">Consultar</button>
+                <i id="atualizandoCEP"></i>
             </div>
             <div>
-                <a href="http://www.buscacep.correios.com.br/sistemas/buscacep/BuscaCepEndereco.cfm" target="_blank">Não sei o meu CEP</a>
+                    <a href="http://www.buscacep.correios.com.br/sistemas/buscacep/BuscaCepEndereco.cfm" target="_blank">Não sei o meu CEP</a>
             </div>
+            </form>
         </div>
 
         <div class="footer-cart-mailling clearfix">
