@@ -27,6 +27,12 @@ if (!defined('HoorayWeb'))
                 <p class="blog-posts-autor">(<?= date_format(date_create($detalheArtigo['Data']), "d.m.Y") ?>) - <em>Por <?= $detalheArtigo['Autor'] ?></em></p>
                 <p><?= $detalheArtigo['Texto'] ?></p>
                 
+                <div>
+                    COMPARTILHE: 
+                    <a href="javascript: void(0);" onclick="window.open('https://twitter.com/intent/tweet?text=Gostei+de+um+post+no+blog+da+Hooray&url=<?= urlencode(URLSite . ltrim($URISite,"/")) ?>&hashtags=hooray','twitter', 'toolbar=0, status=0, width=650, height=450');"><img src="/images/site/hooray_twitter.png" border="0"></a>
+                    <a href="javascript: void(0);" onclick="window.open('https://www.facebook.com/sharer.php?u=<?= urlencode(URLSite . ltrim($URISite,"/")) ?>$t=Gostei+de+um+post+no+blog+da+Hooray','twitter', 'toolbar=0, status=0, width=650, height=450');"><img src="/images/site/hooray_facebook.png" border="0"></a>
+                </div>
+                
                 <div class="blog-posts-navegacao clearfix">
                     <?= ($detalheArtigo['IDArtigoAnterior'] > 0) ? "<div class=\"pull-left\"><a href=\"/blogpost?id=" . $detalheArtigo['IDArtigoAnterior'] . "\"><i class=\"glyphicon glyphicon-triangle-left\"></i> Artigo anterior</a></div>" : "" ?>
                     <?= ($detalheArtigo['IDArtigoPosterior'] > 0) ? "<div class=\"pull-right\"><a href=\"/blogpost?id=" . $detalheArtigo['IDArtigoPosterior'] . "\">Próximo artigo<i class=\"glyphicon glyphicon-triangle-right\"></i></a></div>" : "" ?>

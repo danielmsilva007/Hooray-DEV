@@ -14,7 +14,7 @@ if ($tipoBusca == "busca" && empty($termoBusca))
 {
 ?>    
     <div class="resultado-busca">
-        <h3>Por favor informe um termo para busca.</h3>
+        <h3>Por favor informe um termo para a busca.</h3>
     </div>
 <?php
 }
@@ -72,20 +72,25 @@ else
     {
         foreach ((array) $produtoBuscaCat['Caracteristicas'] as $caracteristica)
         {
-            if (!array_key_exists($caracteristica['TipoID'] . "##" . $caracteristica['Descricao'], $filtros)) 
+            if (!$caracteristica['Filtro']) continue; // só adiciona filtros marcados com TRUE
+            
+            if (!array_key_exists($caracteristica['TipoID'], $filtros)) //cria a chave com o tipo, se nao existir
             {
-                $filtros[$caracteristica['TipoID'] . "##" . $caracteristica['Descricao']] = []; // se nao existir array de oções, cria-o.
+                $filtros[$caracteristica['TipoID']] = ["TipoID" => $caracteristica['TipoID'],
+                                                       "Descricao" => $caracteristica['Descricao'],
+                                                       "Opcoes" => []
+                    ];
             }
             
-            array_push($filtros[$caracteristica['TipoID'] . "##" . $caracteristica['Descricao']], $caracteristica['ValorID'] . "##" . $caracteristica['Valor']); // insere o valor no array de opções e cada caracteristicas
+            if (!array_key_exists($caracteristica['ValorID'], $filtros[$caracteristica['TipoID']]['Opcoes'])) // cria o valor, se nao houver
+            {
+                $opcaoFiltro = ["ValorID" => $caracteristica['ValorID'],
+                "Valor" => $caracteristica['Valor']
+                    ];
+                
+                $filtros[$caracteristica['TipoID']]['Opcoes'][$caracteristica['ValorID']] = $opcaoFiltro;
+            }
         }
-    }
-    
-    $filtrosUnicos = [];
-    
-    for ($i = 0; $i < count($filtros); $i++) // varre o array e retirar os duplicados, colocando o resultado em um novo array
-    {
-        $filtrosUnicos[array_keys($filtros)[$i]] = array_unique($filtros[array_keys($filtros)[$i]]);
     }
 ?>
 
@@ -237,28 +242,25 @@ else
                     <div class="panel-group categoria-filtros" id="categoria-filtros">
                         <form name="filtrosBusca" id="filtrosBusca" method="post" action="/" onsubmit="false">
                         <?php
-                        for ($i = 0; $i < count($filtrosUnicos); $i ++)
+                        $i = 0;
+                        foreach ((array) $filtros as $filtro)
                         {
-                            $tipoFiltro = explode("##", array_keys($filtrosUnicos)[$i]);
-                            
-                            if ($tipoFiltro[1] == "Vitrine" || strpos($tipoFiltro[1], "GENÉRICA") > 0 || strpos($tipoFiltro[1], "GENERICA") > 0 ) continue;
                         ?>
                             <div class="panel">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" href="#categoria-filtros-<?= $i ?>" class="tab-toggle collapsed">
-                                            <?= $tipoFiltro[1] ?>
+                                            <?= $filtro['Descricao'] ?>
                                         </a>
                                     </h4>
                                 </div>
                                 <div id="categoria-filtros-<?= $i ?>" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         <?php
-                                        foreach ((array) $filtrosUnicos[array_keys($filtrosUnicos)[$i]] as $opcao)
+                                        foreach ((array) $filtro['Opcoes'] as $opcao)
                                         {
-                                            $valorFiltro = explode("##", $opcao);
                                         ?>
-                                            <label><input type="checkbox" name="<?= $valorFiltro[0] ?>" value="<?= $valorFiltro[0] ?>" onclick="filtrarBusca(-1);"> <?= $valorFiltro[1] ?></label>
+                                            <label><input type="checkbox" name="<?= $opcao['ValorID'] ?>" value="<?= $opcao['ValorID'] ?>" onclick="filtrarBusca(-1);"> <?= $opcao['Valor'] ?></label>
                                         <?php
                                         }
                                         ?>
@@ -266,6 +268,7 @@ else
                                 </div>
                             </div>
                         <?php
+                            $i ++;
                         }
                         ?>
                             <input type="hidden" name="posttermobusca" value="<?= $postBusca ?>">

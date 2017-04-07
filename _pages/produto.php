@@ -242,7 +242,7 @@ else
                                         $opcoesDescritor5 = [];
                                         foreach ((array) $dadosProduto['Skus'] as $sku)
                                         {
-                                            if (!in_array($sku['Descritor4'], $opcoesDescritor))
+                                            if (!in_array($sku['Descritor5'], $opcoesDescritor5))
                                             {
                                                 array_push($opcoesDescritor5, $sku['Descritor5']);
                                                 echo "<option value=\"" . $sku['Descritor5'] . "\">" . $sku['Descritor5'] . "</option>";
@@ -316,7 +316,7 @@ else
                             $infoGenerica = "";
                             foreach ((array) $dadosProduto['Caracteristicas'] as $caracteristica)
                             {
-                                if ($caracteristica['Descricao'] != "Vitrine" && !strpos($caracteristica['Descricao'], "GENÉRICA"))
+                                if ($caracteristica['Visivel'] == true && $caracteristica['Descricao'] != "Vitrine" && !strpos($caracteristica['Descricao'], "GENÉRICA"))
                                 {
                                     echo "<li>" . $caracteristica['Descricao'] . ": <span>" . $caracteristica['Valor'] . "</span></li>";
                                 }
@@ -331,10 +331,10 @@ else
                         </ul>
                     </div>
                     
-                    <div class="produto-social">
-                        COMPARTILHE: <br>
-                        <a href=""><i class="produto-social-icon icon-facebook">&#xe800;</i></a>
-                        <a href="https://twitter.com/intent/tweet?text=Gostei+de+um+produto+da+Hooray&hashtags=Hooray"><i class="produto-social-icon icon-instagram">&#xe803;</i></a>
+                    <div>
+                        COMPARTILHE: 
+                        <a href="javascript: void(0);" onclick="window.open('https://twitter.com/intent/tweet?text=Gostei+de+um+produto+da+Hooray&url=<?= urlencode(URLSite . ltrim($URISite,"/")) ?>&hashtags=hooray','twitter', 'toolbar=0, status=0, width=650, height=450');"><img src="/images/site/hooray_twitter.png" border="0"></a>
+                        <a href="javascript: void(0);" onclick="window.open('https://www.facebook.com/sharer.php?u=<?= urlencode(URLSite . ltrim($URISite,"/")) ?>$t=Gostei+de+um+produto+da+Hooray','twitter', 'toolbar=0, status=0, width=650, height=450');"><img src="/images/site/hooray_facebook.png" border="0"></a>
                     </div>
                 </div>
                 </form>

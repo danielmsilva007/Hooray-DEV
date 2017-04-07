@@ -221,7 +221,7 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
     
     if (empty($dadosLoginCK['ID']))
     {
-        echo "!!Sua sessão expirou. Por favor efetue logon novamente para concluir a sua compra.";
+        echo "!!Sua sessão expirou. Por favor efetue login novamente para concluir a sua compra.";
         die;
     }
 
@@ -305,48 +305,82 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
                             "Hash" => ($phpPost['pgFormaPgto'] == "zero") ? $phpPost['pgHash'] : ""
                     ],
     ];
-
+    
     $finalizarPedido = sendRest($endPoint['checkout'], $dadosPedido, "POST");
     
     if (!$finalizarPedido['Gravou'])
     {
-        echo "!!Erro gravar o pedido.";
+        echo "!!Erro ao gravar o pedido. Por favor tente novamente.";
+        die;
     }
-    else
+
+    if (isset($_SESSION['carrinho']))
     {
-        if (isset($_SESSION['carrinho']))
-        {
-            unset($_SESSION['carrinho']);
-        }
-        
-        $indexEndereco = array_search($phpPost['tipoEndEntrega'], array_column($enderecosCK['Enderecos'], 'ID'));
-        
-        $enderecoPedido = $enderecosCK['Enderecos'][$indexEndereco];
+        unset($_SESSION['carrinho']);
+    }
+
+    $indexEndereco = array_search($phpPost['tipoEndEntrega'], array_column($enderecosCK['Enderecos'], 'ID'));
+
+    $enderecoPedido = $enderecosCK['Enderecos'][$indexEndereco];
 ?>
-        <section class="ordem">
-            <h3 class="text-center"><i class="glyphicon glyphicon-ok"></i> Seu pedido foi concluído com sucesso!</h3>
-            <div class="row">
-                <div class="col-md-6 col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">FORMA DE PAGAMENTO</div>
-                        <div class="panel-body">
-                            <div class="ordem-pagamento-concluido-forma">
-                                <?= ($phpPost['pgFormaPgto'] == "zero") ? "Cartão de crédito. " : "Boleto bancário. " ?>
-                                <span>Valor total de <?= formatar_moeda($carrinhoCK['Total']) ?></span>
-                                <span><?php
-                                if (($phpPost['pgFormaPgto'] == "zero"))
+    <section class="ordem">
+        <h3 class="text-center">
+            <i class="glyphicon glyphicon-ok"></i> <?= (empty($finalizarPedido['RetornoGateway']) || !empty($finalizarPedido['RetornoGateway']['Erro'])) ? "Erro na conclusão do seu pedido" : "Seu pedido foi concluído com sucesso!" ?> 
+        </h3>
+        <div class="row">
+            <div class="<?=  (empty($finalizarPedido['RetornoGateway']) || !empty($finalizarPedido['RetornoGateway']['Erro'])) ? "col-md-12" : "col-md-6" ?> col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">FORMA DE PAGAMENTO</div>
+                    <div class="panel-body">
+                        <div class="ordem-pagamento-concluido-forma">
+                            <?php
+                            if (empty($finalizarPedido['RetornoGateway']) || !empty($finalizarPedido['RetornoGateway']['Erro']))
+                            {
+                                echo "Problemas com a transação do pagamento.";
+                                
+                                if (!empty($finalizarPedido['RetornoGateway']['Mensagem']))
                                 {
-                                    echo $phpPost['pgParcela'] . "x sem juros de " . formatar_moeda($carrinhoCK['Total'] / $phpPost['pgParcela']);
+                                    echo "<span>Mais detalhes: " . $finalizarPedido['RetornoGateway']['Mensagem'] . "</span>";
                                 }
                                 else
                                 {
-                                    echo "Valor à vista com desconto de 8%: ";
+                                    echo "<span>Mais detalhes: Ocorreu um erro no processamento do pagamento do seu pedido.</span>";
                                 }
-                                ?></span>
-                            </div>
+                                
+                                echo "<div><a href=\"/checkout\" class=\"btn btn-lg btn-primary\">Tentar novamente</a></div>";
+                            }
+                            else
+                            {
+                            ?>
+                                <?= ($phpPost['pgFormaPgto'] == "zero") ? "Cartão de crédito. " : "Boleto bancário. " ?>
+                                <span>Valor total do pedido: <?= formatar_moeda($carrinhoCK['Total']) ?></span>
+                                <?php
+                                if (($phpPost['pgFormaPgto'] == "zero"))
+                                {
+                                    echo "<span>" . $phpPost['pgParcela'] . "x sem juros de " . formatar_moeda($carrinhoCK['Total'] / $phpPost['pgParcela']) . "</span>";
+                                }
+                                else
+                                {
+                                    $parcelas = getRest(str_replace(['{IDCarrinho}','{valorCarrinho}'], [$phpPost['postidcarrinho'], $carrinhoCK['Total']], $endPoint['parcarrinho']));
+                                    $indexBoleto = array_search("0", array_column($parcelas, 'Numero')); // busca pela parcela 0 (boleto)
+                                    $valorBoleto = $parcelas[$indexBoleto]['Valor'];
+
+                                    echo "<span>Pagamento à vista com desconto de " . floor(100 - ($valorBoleto / $carrinhoCK['Total'] * 100)) . "%: " . formatar_moeda($valorBoleto) . "</span>";
+
+                                    echo "<div><a href=\"" . $finalizarPedido['RetornoGateway']['Redirect'] . "\" target=\"_blank\" class=\"btn btn-lg btn-primary\">Baixar o boleto</a></div>";
+                                }
+                                ?> 
+                            <?php
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
+            </div>
+            <?php
+            if (!empty($finalizarPedido['RetornoGateway']) && empty($finalizarPedido['RetornoGateway']['Erro']))
+            {
+            ?>            
                 <div class="col-md-6 col-sm-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">PEDIDO № <?= $finalizarPedido['ID'] ?></div>
@@ -362,9 +396,12 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            <?php
+            }
+            ?>
+        </div>
+    </section>
 <?php
-    }
+
 }
 ?>

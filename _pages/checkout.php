@@ -152,6 +152,8 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
         var IDEndEntrega = $('#tipoEndEntrega').val();
         var opcoesSelecionadas = [];
         
+        $('#resultadoServFrete').html('');
+        
         for (i = 1; i <= numOpcoes; i++)
         {
             opcoesSelecionadas[i] = $('input[name=opEntrega' + i + ']:checked', '#chechoutForm').val();
