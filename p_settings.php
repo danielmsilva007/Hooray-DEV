@@ -60,7 +60,9 @@ $endPoint = ['token'           => URLWebAPI . "Token",
             'parcarrinho'      => URLWebAPI . "v1/pagamento/{IDCarrinho}/{valorCarrinho}/obterparcelamentocarrinho/",
             'addwishlist'      => URLWebAPI . "v1/produto/adicionarwishlist/",
             'delwishlist'      => URLWebAPI . "v1/produto/removerwishlist/",
-            'obterwishlist'    => URLWebAPI . "v1/produto/{IDLogin}/obterwishlistporlogin/"
+            'obterwishlist'    => URLWebAPI . "v1/produto/{IDLogin}/obterwishlistporlogin/",
+            'meuspedidos'      => URLWebAPI . "v1/pedido/{IDParceiro}/meuspedidosheader/",
+            'meuspedidosdet'   => URLWebAPI . "v1/pedido/{IDPedido}/meuspedidosdetail/"
     ];
 
 define ('MoedaDecimal', ',');

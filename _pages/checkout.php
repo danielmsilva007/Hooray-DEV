@@ -77,6 +77,8 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
 <script type="text/javascript">
     function valoresCarrinho()
     {
+        var tipoPagto = $('input[name=pgFormaPgto]:checked', '#chechoutForm').val();
+        
         $('#retornoResumoCarrinho').html('<?= $esperaResultado ?>');
         $('#retornoTotalCarrinho').html('<?= $esperaResultado ?>');
         
@@ -85,6 +87,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
         $.post('/_pages/checkoutEditar.php', {postidparceiro:'<?= $dadosLogin['Parceiro']['ID'] ?>',
                                               postidendereco:IDEndEntrega,
                                               postidcarrinho:'<?= $dadosLogin['CarrinhoId'] ?>',
+                                              posttipopagto:tipoPagto,
                                               posttipoedicao:'<?= md5("resumoCarrinho") ?>'},
         function(resultadoResumoCarrinho)
         {
@@ -94,6 +97,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
         $.post('/_pages/checkoutEditar.php', {postidparceiro:'<?= $dadosLogin['Parceiro']['ID'] ?>',
                                               postidendereco:IDEndEntrega,
                                               postidcarrinho:'<?= $dadosLogin['CarrinhoId'] ?>',
+                                              posttipopagto:tipoPagto,
                                               posttipoedicao:'<?= md5("totalCarrinho") ?>'},
         function(resultadoTotalCarrinho)
         {
@@ -169,7 +173,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
         {
             if (resultadoServicoFrete.substr(0,2) == "!!")
             {
-                $('#resultadoServFrete').html(resultadoServicoFrete);
+                $('#resultadoServFrete').html(resultadoServicoFrete.substr(2));
             }
         });
         
@@ -267,7 +271,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                                     $boletoHabititado = true;
                             ?>
                                     <div class="form-group">
-                                        <label><input type="radio" name="pgFormaPgto" id="pgFormaPgto" value="2" checked> Boleto Bancário</label>
+                                        <label><input type="radio" name="pgFormaPgto" id="pgFormaPgto" value="2" onchange="valoresCarrinho();" checked> Boleto Bancário</label>
                                     </div>
                             <?php
                                 }
@@ -277,7 +281,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                                 }
                             ?>
                             <div class="form-group">
-                                <label><input type="radio" name="pgFormaPgto" id="pgFormaPgto" value="zero" <?= ($boletoHabititado) ? "" : " checked" ?>> Cartão de crédito</label>
+                                <label><input type="radio" name="pgFormaPgto" id="pgFormaPgto" value="zero" onchange="valoresCarrinho();" <?= ($boletoHabititado) ? "" : " checked" ?>> Cartão de crédito</label>
                             </div>
                             <div class="form-group">
                                 <select class="form-control" name="pgBandeira" id="pgBandeira" onchange="obterParcelasCartao()">

@@ -654,169 +654,141 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                 <!-- pane meus pedidos -->
                 <div class="tab-pane" id="meus-ped">
 
-                    <div class="conta-painel">
-
-                        <div class="row">
-                            <div class="col-md-2">
-                                Pedido nº 45298775
+                    <?php
+                    $meusPedidos = getRest(str_replace("{IDParceiro}", $dadosLogin['Parceiro']['ID'], $endPoint['meuspedidos']));
+                    
+                    foreach ((array) $meusPedidos as $pedido)
+                    {
+                    ?>
+                        <div class="conta-painel">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    Pedido<br> <?= $pedido['Numero'] ?>
+                                </div>
+                                <div class="col-md-2">
+                                    Data<br>
+                                    <?= date_format(date_create($pedido['DataVenda']), "d/m/Y") ?>
+                                </div>
+                                <div class="col-md-2">
+                                    Qtde. itens<br>
+                                    1
+                                </div>
+                                <div class="col-md-2">
+                                    Total pedido<br>
+                                    <?= formatar_moeda($pedido['ValorTotal']) ?>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <a href="#meus-ped-hide-<?= $pedido['Numero'] ?>" class="conta-painel-toggle" data-toggle="collapse">Itens</a>
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                Data do pedido:
-                                10/01/2017
-                            </div>
-                            <div class="col-md-2">
-                                Qtde. de itens:
-                                1
-
-                            </div>
-                            <div class="col-md-2">
-                                Total do pedido:
-                                R$ 370,00
-                            </div>
-                            <div class="col-md-4 text-right">
-                                <a href="#meus-ped-hide" class="conta-painel-toggle" data-toggle="collapse">Ocultar</a>
-                            </div>
-                        </div>
-                        <div class="well">
-                            <div id="meus-ped-hide" class="collapse in">
-                                <div class="conta-painel-entrega">Entrega 1 de 2 - Entregue por <span>Hooray</span></div>
-                                <div class="conta-checkpoint">
+                            <div class="well">
+                                <div id="meus-ped-hide-<?= $pedido['Numero'] ?>" class="collapse">
+                                    <div class="conta-painel-entrega">Entrega 1 de 2 - Entregue por <span>Hooray</span></div>
+                                    <div class="conta-checkpoint">
+                                        <div class="row">
+                                            <div class="linha">
+                                                <div class="col-xs-1"></div>
+                                                <div class="col-xs-2 first visited">
+                                                    <div class="circulo"></div>
+                                                    <span>Pedido</span>
+                                                    Recebido
+                                                </div>
+                                                <div class="col-xs-2 active">
+                                                    <div class="circulo"></div>
+                                                    <span>Pagamento</span>
+                                                    Cancelado
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <div class="circulo"></div>
+                                                    <span>Separação</span>
+                                                    Andamento
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <div class="circulo"></div>
+                                                    <span>Transporte</span>
+                                                </div>
+                                                <div class="col-xs-2 last">
+                                                    <div class="circulo"></div>
+                                                    <span>Entrega</span>
+                                                </div>
+                                                <div class="col-xs-1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
-                                        <div class="linha">
-                                            <div class="col-xs-1"></div>
-                                            <div class="col-xs-2 first visited">
-                                                <div class="circulo"></div>
-                                                <span>Pedido</span>
-                                                Recebido
+                                        <div class="col-md-1">
+                                            <img src="./images/account-pedidos-thumb.png" alt="Camiseta Rip Curl"/>
+                                        </div>
+                                        <div class="col-md-7">
+                                            Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
+                                            SKU - PU839384740172938
+                                        </div>
+                                        <div class="col-md-2">
+                                            Quantidade: 1
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            R$ 150,00
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2 col-md-offset-8">
+                                            Total
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            R$ 150,00
+                                        </div>
+                                    </div>
+
+                                    <div class="conta-painel-entrega">Entrega 2 de 2 - Entregue por <span>Water Sports</span></div>
+                                    <div class="conta-checkpoint">
+                                        <div class="row">
+                                            <div class="linha">
+                                                <div class="col-xs-1"></div>
+                                                <div class="col-xs-2 first visited">
+                                                    <div class="circulo"></div>
+                                                    <span>Pedido</span>
+                                                    Recebido
+                                                </div>
+                                                <div class="col-xs-2 active">
+                                                    <div class="circulo"></div>
+                                                    <span>Pagamento</span>
+                                                    Cancelado
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <div class="circulo"></div>
+                                                    <span>Separação</span>
+                                                    Andamento
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <div class="circulo"></div>
+                                                    <span>Transporte</span>
+                                                </div>
+                                                <div class="col-xs-2 last">
+                                                    <div class="circulo"></div>
+                                                    <span>Entrega</span>
+                                                </div>
+                                                <div class="col-xs-1"></div>
                                             </div>
-                                            <div class="col-xs-2 active">
-                                                <div class="circulo"></div>
-                                                <span>Pagamento</span>
-                                                Cancelado
-                                            </div>
-                                            <div class="col-xs-2">
-                                                <div class="circulo"></div>
-                                                <span>Separação</span>
-                                                Andamento
-                                            </div>
-                                            <div class="col-xs-2">
-                                                <div class="circulo"></div>
-                                                <span>Transporte</span>
-                                            </div>
-                                            <div class="col-xs-2 last">
-                                                <div class="circulo"></div>
-                                                <span>Entrega</span>
-                                            </div>
-                                            <div class="col-xs-1"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
+                                            SKU - PU839384740172938
+                                        </div>
+                                        <div class="col-md-2">
+                                            Quantidade: 1
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            R$ 150,00
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img src="./images/account-pedidos-thumb.png" alt="Camiseta Rip Curl"/>
-                                    </div>
-                                    <div class="col-md-7">
-                                        Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
-                                        SKU - PU839384740172938
-                                    </div>
-                                    <div class="col-md-2">
-                                        Quantidade: 1
-                                    </div>
-                                    <div class="col-md-2 text-right">
-                                        R$ 150,00
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2 col-md-offset-8">
-                                        Total
-                                    </div>
-                                    <div class="col-md-2 text-right">
-                                        R$ 150,00
-                                    </div>
-                                </div>
-
-                                <div class="conta-painel-entrega">Entrega 2 de 2 - Entregue por <span>Water Sports</span></div>
-                                <div class="conta-checkpoint">
-                                    <div class="row">
-                                        <div class="linha">
-                                            <div class="col-xs-1"></div>
-                                            <div class="col-xs-2 first visited">
-                                                <div class="circulo"></div>
-                                                <span>Pedido</span>
-                                                Recebido
-                                            </div>
-                                            <div class="col-xs-2 active">
-                                                <div class="circulo"></div>
-                                                <span>Pagamento</span>
-                                                Cancelado
-                                            </div>
-                                            <div class="col-xs-2">
-                                                <div class="circulo"></div>
-                                                <span>Separação</span>
-                                                Andamento
-                                            </div>
-                                            <div class="col-xs-2">
-                                                <div class="circulo"></div>
-                                                <span>Transporte</span>
-                                            </div>
-                                            <div class="col-xs-2 last">
-                                                <div class="circulo"></div>
-                                                <span>Entrega</span>
-                                            </div>
-                                            <div class="col-xs-1"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img src="./images/account-pedidos-thumb.png" alt="Camiseta Rip Curl"/>
-                                    </div>
-                                    <div class="col-md-7">
-                                        Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
-                                        SKU - PU839384740172938
-                                    </div>
-                                    <div class="col-md-2">
-                                        Quantidade: 1
-                                    </div>
-                                    <div class="col-md-2 text-right">
-                                        R$ 150,00
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2 col-md-offset-8">
-                                        Total
-                                    </div>
-                                    <div class="col-md-2 text-right">
-                                        R$ 220,00
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label>Endereço de Entrega:</label>
-                                        <p>	Renato guazelli<br />
-                                            Avenida Rouxinol 771<br />
-                                            22 bloco B<br />
-                                            Moema | 04093-002<br />
-                                            Sao Paulo - SP<br />
-                                            (11) 3018-3816</p>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Forma de Pagamento</label>
-                                        <p>
-                                            <a href="#modal-boleto" data-toggle="modal"><img src="./images/icon-boleto.png" alt="Boleto" class="img-responsive"/></a>
-                                        </p>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Total do pedido:</label>
-                                    </div>
-                                    <div class="col-md-3 text-right">
-                                        R$ 370,00
-                                    </div>
-
-                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php
+                    }
+                    ?>
                 </div>
                 <!-- fim pane -->
 
@@ -849,7 +821,6 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                             <button type="button" class="btn btn-primary" onclick="trocarSenha()">Alterar</button>
                         </form>
                     </div>
-
                 </div>
                 <!-- fim pane -->
 

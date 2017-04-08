@@ -137,11 +137,28 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("opc
 if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("resumoCarrinho"))
 {
     $carrinho = getRest(str_replace("{IDCarrinho}", $phpPost['postidcarrinho'], $endPoint['obtercarrinho']));
+    
+    $parcelamentoSubTotal = getRest(str_replace(['{IDCarrinho}','{valorCarrinho}'], [$phpPost['postidcarrinho'], $carrinho['SubTotal']], $endPoint['parcarrinho']));
+
+    $indexBoleto = array_search("0", array_column($parcelamentoSubTotal, 'Numero'));
+    
+    $parcelaBoleto = $parcelamentoSubTotal[$indexBoleto];
 ?>
     <div class="row">
         <div class="col-sm-6">Subtotal: </div>
         <div class="col-sm-6 text-right"><?= formatar_moeda($carrinho['SubTotal']) ?></div>
     </div>
+    <?php
+    if (!empty($phpPost['posttipopagto']) && $phpPost['posttipopagto'] == "2")
+    {
+    ?>
+        <div class="row">
+            <div class="col-sm-6">Desconto boleto: </div>
+            <div class="col-sm-6 text-right">- <?= formatar_moeda($carrinho['SubTotal'] - $parcelaBoleto['Valor']) ?></div>
+        </div>
+    <?php
+}
+    ?>
     <div class="row">
         <div class="col-sm-6">Entrega: </div>
         <div class="col-sm-6 text-right"><?= (!empty($carrinho['Frete'] && is_numeric($carrinho['Frete']))) ? formatar_moeda($carrinho['Frete']) : formatar_moeda(0) ?></div>
@@ -152,6 +169,21 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("res
 if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("totalCarrinho"))
 {
     $carrinho = getRest(str_replace("{IDCarrinho}", $phpPost['postidcarrinho'], $endPoint['obtercarrinho']));
+    
+    if (!empty($phpPost['posttipopagto']) && $phpPost['posttipopagto'] == "2") // se boleto, exibe total com desconto
+    {
+        $parcelamentoSubTotal = getRest(str_replace(['{IDCarrinho}','{valorCarrinho}'], [$phpPost['postidcarrinho'], $carrinho['SubTotal']], $endPoint['parcarrinho']));
+
+        $indexBoleto = array_search("0", array_column($parcelamentoSubTotal, 'Numero'));
+
+        $parcelaBoleto = $parcelamentoSubTotal[$indexBoleto];
+        
+        $valorTotalCarrinho = $parcelaBoleto['Valor'] + $carrinho['Frete'];
+    }
+    else 
+    {
+        $valorTotalCarrinho = $carrinho['Total'];
+    }
 ?>
     <div class="row">
         <div class="col-xs-4">
@@ -159,7 +191,7 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("tot
         </div>
         <div class="col-xs-8">
             <div class="ordem-pagamento-revisao-total-valor">
-                <?= formatar_moeda($carrinho['Total']) ?>&nbsp;&nbsp;<br /><br />
+                <?= formatar_moeda($valorTotalCarrinho) ?>&nbsp;&nbsp;<br /><br />
             </div>
         </div>
     </div>
@@ -190,7 +222,7 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("ser
             ];
         $opcoesEntrega = sendRest($endPoint['servicoentrega'], $dadosServEntrega, "PUT");
         
-        $servicos = [];
+        $servicosFrete = [];
         
         foreach ((array) $phpPost['localidadeTransporteID'] as $opcaoEntrega)
         {
@@ -200,12 +232,20 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("ser
                 
                 if (isset($indexServico) && is_numeric($indexServico))
                 {
-                    array_push($servicos, $opcoesEntrega[$indexServico]);
+                    array_push($servicosFrete, $opcoesEntrega[$indexServico]);
                 }
             }
         }
+
+        $atualizacaoServicoEntrega = sendRest($endPoint['atualizarfrete'], $servicosFrete, "PUT");
         
-        $atualizacaoServicoEntrega = sendRest($endPoint['atualizarfrete'], $servicos, "PUT");
+        //print("!!");
+        //$atualizacaoServicoEntrega = sendRest('http://localhost:34191/v1/carrinho/atualizarservicofrete/', $servicosFrete, "PUT");
+        //print $endPoint['atualizarfrete'];
+        //print json_encode($servicosFrete);
+        //print_r ($atualizacaoServicoEntrega);
+        //print_r($servicosFrete);
+        //die;
         
         if (empty($atualizacaoServicoEntrega))
         {
@@ -292,7 +332,7 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
     $dadosPedido = ["LoginID" => $dadosLoginCK['ID'],
                     "EnderecoID"  => $phpPost['tipoEndEntrega'],
                     "PagamentoMetodoFormaID" => ($phpPost['pgFormaPgto'] == "zero") ? $phpPost['pgBandeira'] : "6", // TODO trazer numero da parcela do boleto
-                    "ClassificacaoPagto" => ($phpPost['pgFormaPgto'] == "zero") ? 0 : $phpPost['opNumOpcoes'],
+                    "ClassificacaoPagto" => 0, // para mkt place, sempre 0 ($phpPost['pgFormaPgto'] == "zero") ? 0 : $phpPost['opNumOpcoes'],
                     "Parcela" => ($phpPost['pgFormaPgto'] == "zero") ? $phpPost['pgParcela'] : "1",
                     "CarrinhoID"  => $phpPost['postidcarrinho'],
                     "CupomDesconto"  => null,
@@ -325,7 +365,7 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
 ?>
     <section class="ordem">
         <h3 class="text-center">
-            <i class="glyphicon glyphicon-ok"></i> <?= (empty($finalizarPedido['RetornoGateway']) || !empty($finalizarPedido['RetornoGateway']['Erro'])) ? "Erro na conclusão do seu pedido" : "Seu pedido foi concluído com sucesso!" ?> 
+            <i class="glyphicon glyphicon-ok"></i> <?= (empty($finalizarPedido['RetornoGateway']) || !empty($finalizarPedido['RetornoGateway']['Erro'])) ? "Erro na conclusão do seu pedido." : "Seu pedido foi concluído com sucesso!<br>" ?> 
         </h3>
         <div class="row">
             <div class="<?=  (empty($finalizarPedido['RetornoGateway']) || !empty($finalizarPedido['RetornoGateway']['Erro'])) ? "col-md-12" : "col-md-6" ?> col-sm-12">
@@ -353,19 +393,20 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
                             {
                             ?>
                                 <?= ($phpPost['pgFormaPgto'] == "zero") ? "Cartão de crédito. " : "Boleto bancário. " ?>
-                                <span>Valor total do pedido: <?= formatar_moeda($carrinhoCK['Total']) ?></span>
                                 <?php
                                 if (($phpPost['pgFormaPgto'] == "zero"))
                                 {
+                                    echo "<span>Valor total do pedido: " . formatar_moeda($carrinhoCK['Total']) . "</span>";
                                     echo "<span>" . $phpPost['pgParcela'] . "x sem juros de " . formatar_moeda($carrinhoCK['Total'] / $phpPost['pgParcela']) . "</span>";
                                 }
                                 else
                                 {
-                                    $parcelas = getRest(str_replace(['{IDCarrinho}','{valorCarrinho}'], [$phpPost['postidcarrinho'], $carrinhoCK['Total']], $endPoint['parcarrinho']));
+                                    $parcelas = getRest(str_replace(['{IDCarrinho}','{valorCarrinho}'], [$phpPost['postidcarrinho'], $carrinhoCK['SubTotal']], $endPoint['parcarrinho']));
                                     $indexBoleto = array_search("0", array_column($parcelas, 'Numero')); // busca pela parcela 0 (boleto)
-                                    $valorBoleto = $parcelas[$indexBoleto]['Valor'];
+                                    
+                                    $valorBoleto = $parcelas[$indexBoleto]['Valor'] + $carrinhoCK['Frete'];
 
-                                    echo "<span>Pagamento à vista com desconto de " . floor(100 - ($valorBoleto / $carrinhoCK['Total'] * 100)) . "%: " . formatar_moeda($valorBoleto) . "</span>";
+                                    echo "<span>Valor total do pedido: " . formatar_moeda($valorBoleto) . "</span>";
 
                                     echo "<div><a href=\"" . $finalizarPedido['RetornoGateway']['Redirect'] . "\" target=\"_blank\" class=\"btn btn-lg btn-primary\">Baixar o boleto</a></div>";
                                 }

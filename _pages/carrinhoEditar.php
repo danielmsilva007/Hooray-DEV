@@ -210,14 +210,13 @@ if (!empty($phpPost['postcarrinho']) && $phpPost['postcarrinho'] == md5("editCar
                         <img src="<?= $itemFornecedor['ProdutoImagemMobile'] ?>" title="<?= $itemFornecedor['ProdutoDescricao'] ?>">
                         <span class="small-text">
                             <?= $itemFornecedor['ProdutoDescricao'] ?><br>
-                            <span class="small-text-grey">Marca:</span> <?= $itemFornecedor['Marca'] ?><br>
-                            <span class="small-text-grey">Valor unitário:</span> <?= formatar_moeda($itemFornecedor['ValorUnit']) ?><br>
-                            <span class="small-text-grey">Vendido e entregue por:</span> <?= $itemFornecedor['Fornecedor'] ?>
+                            <span class="small-text-grey">Vendido e entregue por:</span> <?= $itemFornecedor['Fornecedor'] ?><br>
+                            <span class="small-text-grey">ID SKU:</span> <?= $itemFornecedor['SkuID'] ?><br>
+                            <span class="small-text-grey">Valor unitário:</span> <?= formatar_moeda($itemFornecedor['ValorUnit']) ?>
                         </span>
                         <br>
                         <a href="javascript:retirarCarrinho('<?= $itemFornecedor['Id'] ?>');" class="glyphicon glyphicon-trash"><span class="text-btn"> Excluir</span></a>
                     </div>
-
                     <div class="cart-box-col-center-mob">
                         <div class="cart-box-col-center">
                             <form class="form-inline" name="qdtProd" id="qdtProd" method="post" onsubmit="false">
@@ -259,4 +258,22 @@ if (!empty($phpPost['postcarrinho']) && $phpPost['postcarrinho'] == md5("editCar
 <?php        
     }
 }
+
+if (!empty($phpPost['postcarrinho']) && $phpPost['postcarrinho'] == md5("countCarrinho"))
+{
+    if (!empty($phpPost['postidcarrinho']))
+    {
+        $carrinho = getRest(str_replace("{IDCarrinho}", $phpPost['postidcarrinho'], $endPoint['obtercarrinho']));
+        
+        if (!empty($carrinho['Itens']))
+        {
+            echo count($carrinho['Itens']);
+        }
+        else 
+        {
+            echo " ";
+        }
+    }
+}
+
 ?>

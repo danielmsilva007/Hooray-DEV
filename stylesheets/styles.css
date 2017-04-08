@@ -9173,6 +9173,9 @@ footer ul .seg-logos{
   width: 70%;
   margin: 0 auto;
 }
+.vitrine-sobre p {
+  text-align: justify;
+}
 
 .categoria-foto-principal > div {
   height: 18em;
@@ -9452,7 +9455,7 @@ footer ul .seg-logos{
     letter-spacing: .05em;
 }
 .conta .conta-painel-toggle.collapsed:after {
-  content: "Mostrar";
+  content: "Itens";
   font-family: 'PT Sans Narrow', sans-serif;
     letter-spacing: .05em;
     font-weight: normal;
@@ -9584,6 +9587,12 @@ footer ul .seg-logos{
 }
 .blog-posts .blog-posts-autor em {
   color: #b3b3b3;
+}
+
+.blog-posts .blog-posts-medias img {
+  display: inline;
+  max-width: 100%;
+  height: auto;
 }
 
 .blog-posts-navegacao {
@@ -9898,6 +9907,12 @@ footer ul .seg-logos{
   bottom: 0;
   left: 0;
 }
+
+.cart .cart-box-col-left img{
+  height: 85px;
+  width: auto;
+}
+
 .cart-box-col-center-mob{
   float: left;
   width: 40%;

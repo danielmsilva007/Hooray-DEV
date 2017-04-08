@@ -45,6 +45,19 @@ else
     $dadosLogin = ['ID' => -1];
 }
 
+if (!empty($dadosLogin['CarrinhoId']))
+{
+    $numCarrinho = $dadosLogin['CarrinhoId'];
+}
+elseif (!empty($_SESSION['carrinho']))
+{
+    $numCarrinho = $_SESSION['carrinho'];
+} 
+else
+{
+    $numCarrinho = '';
+}
+
 $URISite = filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING);
 
 $uriTratada = explode("?", $URISite);
@@ -149,7 +162,14 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                         $('#resultDelCarrinho' + IDProduto).html(dataCarrinho);
                         document.getElementById('itemCarinhoModal' + IDProduto).style.display = 'none';
                     }
-                });                
+                });
+                
+                $.post('/_pages/carrinhoEditar.php', {postidcarrinho:'<?= $numCarrinho ?>',
+                                                      postcarrinho:'<?= md5("countCarrinho") ?>'},
+                function(countItens)
+                {
+                    $('#qtdeCarrinho').html('&nbsp;#' + countItens);
+                });
             }
         </script>
     </head>
@@ -690,14 +710,10 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                         <div class="modal-mobile-fechar hidden-lg hidden-md" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
 
                         <?php
-                        if (!empty($dadosLogin['CarrinhoId']))
+                        if (!empty($numCarrinho))
                         {
-                            $carrinho = getRest(str_replace("{IDCarrinho}", $dadosLogin['CarrinhoId'], $endPoint['obtercarrinho']));
+                            $carrinho = getRest(str_replace("{IDCarrinho}", $numCarrinho, $endPoint['obtercarrinho']));
                         }
-                        elseif (!empty($_SESSION['carrinho']))
-                        {
-                            $carrinho = getRest(str_replace("{IDCarrinho}", $_SESSION['carrinho'], $endPoint['obtercarrinho']));
-                        } 
                         
                         if (!empty($carrinho) && !empty($carrinho['Itens']))
                         {
@@ -752,6 +768,16 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
             </div>
         </div>       
         
+        <?php
+        if (!empty($carrinho) && !empty($carrinho['Itens']))
+        {
+        ?>
+            <script type="text/javascript">
+                $('#qtdeCarrinho').html('&nbsp;#<?= count($carrinho['Itens']) ?>');
+            </script>            
+        <?php    
+        }
+        ?>
         <!-- js -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="javascripts/bootstrap.min.js"></script>
