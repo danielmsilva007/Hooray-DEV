@@ -27,9 +27,13 @@ $artigosDestaque = getRest(str_replace(['{IDBlog}','{count}'], [$dadosBlog['ID']
                     {
                     ?>
                         <div class="col-md-12">
-                            <img src="<?= $artigosDestaque['Artigos']['0']['Imagem'] ?>" title="<?= $artigosDestaque['Artigos']['0']['Titulo'] ?>"/>
+                            <a href="/blogpost?id=<?= $artigosDestaque['Artigos']['0']['ID'] ?>">
+                                <img src="<?= $artigosDestaque['Artigos']['0']['Imagem'] ?>" title="<?= $artigosDestaque['Artigos']['0']['Titulo'] ?>"/>
+                            </a>
                             <span>(<?= date_format(date_create($artigosDestaque['Artigos']['0']['Data']), "d.m.Y") ?>)</span>
-                            <a href="/blogpost?id=<?= $artigosDestaque['Artigos']['0']['ID'] ?>"><?= $artigosDestaque['Artigos']['0']['Titulo'] ?></a>
+                            <a href="/blogpost?id=<?= $artigosDestaque['Artigos']['0']['ID'] ?>">
+                                <?= $artigosDestaque['Artigos']['0']['Titulo'] ?>
+                            </a>
                         </div>
                     <?php
                     }
@@ -37,23 +41,28 @@ $artigosDestaque = getRest(str_replace(['{IDBlog}','{count}'], [$dadosBlog['ID']
                 </div>
                 <div class="row">
                     <?php
-                    $contArt = 1;
+                    $contArt = 0;
+                    
                     foreach ((array) $artigosDestaque['Artigos'] as $artigo) 
                     {
+                        $contArt ++;
                         if ($contArt == 1) continue; // pula o primeiro artigo do blog, ja exibido acima.
-                       
-                        if (in_array($contArt, [3])) // novo row na terceira linha
+                        
+                        if (in_array($contArt, [4])) // novo row na terceira linha
                         {
                             echo "</div><div class=\"row\">";
                         }
                     ?>
                         <div class="col-md-6">
-                            <img src="<?= $artigo['Imagem'] ?>" title="<?= $artigo['Titulo'] ?>"/>
+                            <a href="/blogpost?id=<?= $artigo['ID'] ?>">
+                                <img src="<?= $artigo['Imagem'] ?>" title="<?= $artigo['Titulo'] ?>"/>
+                            </a>
                             <span>(<?= date_format(date_create($artigo['Data']), "d.m.Y") ?>)</span>
-                            <a href="/blogpost?id=<?= $artigo['ID'] ?>"><?= $artigo['Titulo'] ?></a>
+                            <a href="/blogpost?id=<?= $artigo['ID'] ?>">
+                                <?= $artigo['Titulo'] ?>
+                            </a>
                         </div>
                     <?php
-                        $contArt ++;
                     }
                     ?>
                 </div>

@@ -659,35 +659,35 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                     
                     foreach ((array) $meusPedidos as $pedido)
                     {
+                        $itensPedido = getRest(str_replace("{IDPedido}", $pedido['ID'], $endPoint['meuspedidosdet']));
                     ?>
                         <div class="conta-painel">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-2 text-right">
                                     Pedido<br> <?= $pedido['Numero'] ?>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 text-right">
                                     Data<br>
                                     <?= date_format(date_create($pedido['DataVenda']), "d/m/Y") ?>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3 text-right">
                                     Qtde. itens<br>
-                                    1
+                                    <?= count($itensPedido[0]['PedidoItens']) ?>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3 text-right">
                                     Total pedido<br>
                                     <?= formatar_moeda($pedido['ValorTotal']) ?>
                                 </div>
-                                <div class="col-md-4 text-right">
+                                <div class="col-md-2 text-right">
                                     <a href="#meus-ped-hide-<?= $pedido['Numero'] ?>" class="conta-painel-toggle" data-toggle="collapse">Itens</a>
                                 </div>
                             </div>
                             <div class="well">
                                 <div id="meus-ped-hide-<?= $pedido['Numero'] ?>" class="collapse">
-                                    <div class="conta-painel-entrega">Entrega 1 de 2 - Entregue por <span>Hooray</span></div>
                                     <div class="conta-checkpoint">
                                         <div class="row">
                                             <div class="linha">
-                                                <div class="col-xs-1"></div>
+                                                <div class="col-xs-2">Hooray</div>
                                                 <div class="col-xs-2 first visited">
                                                     <div class="circulo"></div>
                                                     <span>Pedido</span>
@@ -711,15 +711,11 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                                     <div class="circulo"></div>
                                                     <span>Entrega</span>
                                                 </div>
-                                                <div class="col-xs-1"></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-1">
-                                            <img src="./images/account-pedidos-thumb.png" alt="Camiseta Rip Curl"/>
-                                        </div>
-                                        <div class="col-md-7">
+                                        <div class="col-md-8">
                                             Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
                                             SKU - PU839384740172938
                                         </div>
@@ -730,15 +726,6 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                             R$ 150,00
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-2 col-md-offset-8">
-                                            Total
-                                        </div>
-                                        <div class="col-md-2 text-right">
-                                            R$ 150,00
-                                        </div>
-                                    </div>
-
                                     <div class="conta-painel-entrega">Entrega 2 de 2 - Entregue por <span>Water Sports</span></div>
                                     <div class="conta-checkpoint">
                                         <div class="row">
