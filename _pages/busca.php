@@ -20,7 +20,7 @@ if ($tipoBusca == "busca" && empty($termoBusca))
 }
 else
 {
-    $esperaResultado = '<div style="height: 400px; text-align:center; padding: 100px 0; "><i class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></i></div>';
+    $esperaResultado = '<ul class="list-inline" id="itensGrid"><li><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></span></li></ul>';
     
     switch ($tipoBusca)
     {
@@ -230,10 +230,10 @@ else
         </section>
 
         <section class="vitrine-produtos cf">
-            <div class="container">    
+            <div class="container fixvitrine">    
 
                 <!-- facets -->
-                <div class="categoria-menu-esquerdo" id="filtro-conteudo">
+                <div class="categoria-menu-esquerdo fixfiltro" id="filtro-conteudo">
                     <div class="categoria-menu-esquerdo-filtro">
                         <h4>Filtros</h4>
                         <span id="countResult"><?= (!empty($resultadoBuscaCat)) ? count($resultadoBuscaCat) : "0" ?> itens</span>

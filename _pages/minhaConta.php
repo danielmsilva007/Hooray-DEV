@@ -663,113 +663,96 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                     ?>
                         <div class="conta-painel">
                             <div class="row">
-                                <div class="col-md-2 text-right">
-                                    Pedido<br> <?= $pedido['Numero'] ?>
+                                <div class="col-md-3">
+                                    Pedido: <?= $pedido['Numero'] ?>
                                 </div>
-                                <div class="col-md-2 text-right">
-                                    Data<br>
-                                    <?= date_format(date_create($pedido['DataVenda']), "d/m/Y") ?>
+                                <div class="col-md-3">
+                                    Data: <?= date_format(date_create($pedido['DataVenda']), "d/m/Y") ?>
                                 </div>
-                                <div class="col-md-3 text-right">
-                                    Qtde. itens<br>
-                                    <?= count($itensPedido[0]['PedidoItens']) ?>
+                                <div class="col-md-3">
+                                    Valor total: <?= formatar_moeda($pedido['ValorTotal']) ?>
                                 </div>
                                 <div class="col-md-3 text-right">
-                                    Total pedido<br>
-                                    <?= formatar_moeda($pedido['ValorTotal']) ?>
-                                </div>
-                                <div class="col-md-2 text-right">
-                                    <a href="#meus-ped-hide-<?= $pedido['Numero'] ?>" class="conta-painel-toggle" data-toggle="collapse">Itens</a>
+                                    <a href="#meus-ped-hide-<?= $pedido['Numero'] ?>" class="conta-painel-toggle" data-toggle="collapse">
+                                        <?= count($itensPedido[0]['PedidoItens']) ?> <?= (count($itensPedido[0]['PedidoItens']) > 1) ? "Itens" : "Item" ?>
+                                    </a>
                                 </div>
                             </div>
                             <div class="well">
                                 <div id="meus-ped-hide-<?= $pedido['Numero'] ?>" class="collapse">
-                                    <div class="conta-checkpoint">
+                                    <?php
+                                    $itens = [];
+                                    foreach ((array) $itensPedido[0]['PedidoItens'] as $itemPedido)
+                                    {
+                                        if (!array_key_exists($itemPedido['Fornecedor'], $itens))
+                                        {
+                                            $itens[$itemPedido['Fornecedor']] = ["Fornecedor" => $itemPedido['Fornecedor'],
+                                                                                 "Status" => $itemPedido['StatusMarketPlace'],
+                                                                                 "Itens" => []
+                                                ];
+                                        }                                        
+                                        
+                                        array_push($itens[$itemPedido['Fornecedor']]['Itens'], $itemPedido);
+                                    }
+                                    
+                                    foreach ((array) $itens as $item)
+                                    {
+                                    ?>
                                         <div class="row">
-                                            <div class="linha">
-                                                <div class="col-xs-2">Hooray</div>
-                                                <div class="col-xs-2 first visited">
-                                                    <div class="circulo"></div>
-                                                    <span>Pedido</span>
-                                                    Recebido
+                                            <div class="col-md-3">
+                                                <div class="conta-painel-entrega">
+                                                    Entregue por<br>
+                                                    <span><?= $item['Fornecedor'] ?></span>
                                                 </div>
-                                                <div class="col-xs-2 active">
-                                                    <div class="circulo"></div>
-                                                    <span>Pagamento</span>
-                                                    Cancelado
-                                                </div>
-                                                <div class="col-xs-2">
-                                                    <div class="circulo"></div>
-                                                    <span>Separação</span>
-                                                    Andamento
-                                                </div>
-                                                <div class="col-xs-2">
-                                                    <div class="circulo"></div>
-                                                    <span>Transporte</span>
-                                                </div>
-                                                <div class="col-xs-2 last">
-                                                    <div class="circulo"></div>
-                                                    <span>Entrega</span>
+                                            </div>
+                                            <div class="col-md-9 text-right">
+                                                <div class="conta-checkpoint">
+                                                        <div class="linha">
+                                                            <div class="col-xs-1"></div>
+                                                            <div class="col-xs-1"></div>
+                                                            <div class="col-xs-2 first<?= ($item['Status'] == 1) ? " active" : "" ?><?= ($item['Status'] > 1) ? " visited" : "" ?>">
+                                                                <div class="circulo"></div>
+                                                                <span>Pedido</span>
+                                                            </div>
+                                                            <div class="col-xs-2<?= ($item['Status'] == 2) ? " active" : "" ?><?= ($item['Status'] > 2) ? " visited" : "" ?>">
+                                                                <div class="circulo"></div>
+                                                                <span>Pagamento</span>
+                                                            </div>
+                                                            <div class="col-xs-2<?= ($item['Status'] == 3) ? " active" : "" ?><?= ($item['Status'] > 3) ? " visited" : "" ?>">
+                                                                <div class="circulo"></div>
+                                                                <span>Separação</span>
+                                                            </div>
+                                                            <div class="col-xs-2<?= ($item['Status'] == 4) ? " active" : "" ?><?= ($item['Status'] > 4) ? " visited" : "" ?>">
+                                                                <div class="circulo"></div>
+                                                                <span>Transporte</span>
+                                                            </div>
+                                                            <div class="col-xs-2 last<?= ($item['Status'] == 5) ? " active" : "" ?><?= ($item['Status'] > 5) ? " visited" : "" ?>">
+                                                                <div class="circulo"></div>
+                                                                <span>Entrega</span>
+                                                            </div>
+                                                        </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
-                                            SKU - PU839384740172938
-                                        </div>
-                                        <div class="col-md-2">
-                                            Quantidade: 1
-                                        </div>
-                                        <div class="col-md-2 text-right">
-                                            R$ 150,00
-                                        </div>
-                                    </div>
-                                    <div class="conta-painel-entrega">Entrega 2 de 2 - Entregue por <span>Water Sports</span></div>
-                                    <div class="conta-checkpoint">
-                                        <div class="row">
-                                            <div class="linha">
-                                                <div class="col-xs-1"></div>
-                                                <div class="col-xs-2 first visited">
-                                                    <div class="circulo"></div>
-                                                    <span>Pedido</span>
-                                                    Recebido
+                                    <?php
+                                        foreach ((array) $item['Itens'] as $produto)
+                                        {
+                                        ?>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <?= $produto['NomeProduto'] ?>
                                                 </div>
-                                                <div class="col-xs-2 active">
-                                                    <div class="circulo"></div>
-                                                    <span>Pagamento</span>
-                                                    Cancelado
+                                                <div class="col-md-2">
+                                                    Quantidade: <?= $produto['Quantidade'] ?>
                                                 </div>
-                                                <div class="col-xs-2">
-                                                    <div class="circulo"></div>
-                                                    <span>Separação</span>
-                                                    Andamento
+                                                <div class="col-md-2 text-right">
+                                                    <?= formatar_moeda($produto['ValorTotal']) ?>
                                                 </div>
-                                                <div class="col-xs-2">
-                                                    <div class="circulo"></div>
-                                                    <span>Transporte</span>
-                                                </div>
-                                                <div class="col-xs-2 last">
-                                                    <div class="circulo"></div>
-                                                    <span>Entrega</span>
-                                                </div>
-                                                <div class="col-xs-1"></div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            Camiseta Rip Curl - cor Branco - Tamanho: GG<br />
-                                            SKU - PU839384740172938
-                                        </div>
-                                        <div class="col-md-2">
-                                            Quantidade: 1
-                                        </div>
-                                        <div class="col-md-2 text-right">
-                                            R$ 150,00
-                                        </div>
-                                    </div>
+                                        <?php
+                                        }
+                                    }
+                                    ?>
                                 </div>
                             </div>
                         </div>

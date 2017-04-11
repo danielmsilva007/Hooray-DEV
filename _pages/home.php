@@ -186,7 +186,6 @@ if (!defined('HoorayWeb'))
                                     <span><?= $maisvendidos['Produto']['Descricao'] ?></span>
                                     <span><?= $maisvendidos['Produto']['Marca']['Descricao'] ?></span>
                                     <span><?= (!empty($maisvendidos['Produto']['PrecoDePor'])) ? "<s>" . formatar_moeda($maisvendidos['Produto']['PrecoDePor']['PrecoDe']) . "</s> | " : "" ?><?= formatar_moeda($maisvendidos['Produto']['PrecoVigente']) ?></span>
-                                    <span></span>
                                 </a>
                                 <style type="text/css">
                                     .row div.p-thumb .<?= $label ?>::before{
