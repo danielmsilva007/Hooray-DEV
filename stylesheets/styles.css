@@ -8801,21 +8801,28 @@ footer ul .seg-logos{
   display: inline-block;
   justify-content: center;
   list-style: none;
-
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
+
 .marcas-full li {
     float: left;
     padding: 0 2em;
     width: 25%;
+    min-width: 150px;
+    min-height: 100px;
 }
 
-
 .brands-logos-wrap{
+  text-align: center;
   max-width: 1080px;
   margin: 0 auto;
 }
-
+/*
+.brands-logos-wrap > ul > li {
+  min-width: 150px;
+  min-height: 100px;
+}
+*/
 .mapa-alfabeto .line-div{
   width: 100%;
   border-bottom: 1px solid #ccc;
@@ -10152,7 +10159,6 @@ margin: 0 10px;
 
 
 /* edit fernanda@syligo.com */
-
 .fixvitrine {
     display: flex;
 }
@@ -10162,6 +10168,8 @@ margin: 0 10px;
     display: flex;
     flex-direction: column;
     flex-grow: 0;      
+    height: auto !important;
+    display: none;
 }
 
 .categoria-menu-esquerdo .categoria-menu-esquerdo-filtro {

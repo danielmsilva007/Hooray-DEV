@@ -87,6 +87,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
         <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
         <link href="/stylesheets/rangeslider.css" rel="stylesheet" type="text/css" />
+        <link href="./javascripts/nouislider.css" rel="stylesheet" type="text/css" />
         <link href="/stylesheets/styles.css" rel="stylesheet" type="text/css" />
         <script src="/javascripts/jquery-3.1.1.js"></script>
         <script src="/javascripts/jquery.maskedinput.js"></script>
@@ -780,10 +781,53 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
         ?>
         <!-- js -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="javascripts/bootstrap.min.js"></script>
-	<script src="javascripts/nouislider.js"></script>
-	<script src="javascripts/util.js"></script>
-	<script src="javascripts/jquery.zoom.js"></script>
+        <script src="/javascripts/bootstrap.min.js"></script>
+	<script src="/javascripts/nouislider.js"></script>
+	<script src="/javascripts/util.js"></script>
+	<script src="/javascripts/jquery.zoom.js"></script>
 	<script type="text/javascript">$("#enlarge").zoom();</script>
+        
+        <?php
+        if (!empty($tipoBusca))
+        {
+            if (!empty($precos))
+            {
+                $minPreco = floor(min($precos));
+                $maxPreco = ceil(max($precos));
+            }
+            else
+            {
+                $minPreco = 0;
+                $maxPreco = 0;
+                        
+            }
+        ?>
+        
+            <script type="text/javascript">
+                var snapSlider = document.getElementById('slider-handles');
+
+                noUiSlider.create(snapSlider, {
+                    start: ['<?= $minPreco ?>', '<?= $maxPreco ?>'],
+                    connect: true,
+                    range: {
+                        'min': [<?= $minPreco ?>],
+                        'max': [<?= $maxPreco ?>]
+                    }
+                });
+
+                var snapValues = [
+                    document.getElementById('slider-snap-value-lower'),
+                    document.getElementById('slider-snap-value-upper')
+                ];
+
+                snapSlider.noUiSlider.on('update', function (values, handle) {
+                snapValues[handle].innerHTML = Math.round(values[handle]);
+                });
+            </script>
+        
+        <?php
+        }
+        ?>
+        
     </body>
 </html>

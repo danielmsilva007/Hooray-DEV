@@ -22,7 +22,7 @@ $listaMarcas = getRest($endPoint['marcas']);
 </section>
 
 <section class="marcas-full cf">
-    <h4>Marcas</h4>
+    <h4>&nbsp;&nbsp;Marcas</h4>
     <div class="brands-logos-wrap">
         <ul>
             <?php

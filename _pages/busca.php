@@ -67,6 +67,7 @@ else
     $resultadoBuscaCat = sendRest($endPoint['buscaestendida'], $dadosBuscaCat, "POST");
     
     $filtros = [];
+    $precos = [];
     
     foreach ((array) $resultadoBuscaCat as $produtoBuscaCat)
     {
@@ -74,24 +75,29 @@ else
         {
             if (!$caracteristica['Filtro']) continue; // só adiciona filtros marcados com TRUE
             
-            if (!array_key_exists($caracteristica['TipoID'], $filtros)) //cria a chave com o tipo, se nao existir
+            if (!array_key_exists($caracteristica['Posicao'], $filtros)) //cria a chave com o tipo, se nao existir
             {
-                $filtros[$caracteristica['TipoID']] = ["TipoID" => $caracteristica['TipoID'],
+                $filtros[$caracteristica['Posicao']] = ["TipoID" => $caracteristica['TipoID'],
                                                        "Descricao" => $caracteristica['Descricao'],
                                                        "Opcoes" => []
                     ];
             }
             
-            if (!array_key_exists($caracteristica['ValorID'], $filtros[$caracteristica['TipoID']]['Opcoes'])) // cria o valor, se nao houver
+            if (!array_key_exists($caracteristica['ValorID'], $filtros[$caracteristica['Posicao']]['Opcoes'])) // cria o valor, se nao houver
             {
                 $opcaoFiltro = ["ValorID" => $caracteristica['ValorID'],
                 "Valor" => $caracteristica['Valor']
                     ];
                 
-                $filtros[$caracteristica['TipoID']]['Opcoes'][$caracteristica['ValorID']] = $opcaoFiltro;
+                $filtros[$caracteristica['Posicao']]['Opcoes'][$caracteristica['ValorID']] = $opcaoFiltro;
             }
         }
+        array_push($precos, $produtoBuscaCat['PrecoVigente']);
     }
+    
+    print "<pre>";
+    print_r($filtros);
+    print "</pre>";
 ?>
 
 <?php
@@ -117,7 +123,6 @@ else
 <?php
     }
 ?>
-
     <section class="site-breadcrumb">
         <div class="container">
             <div class="row">
@@ -193,6 +198,13 @@ else
             
             
         }
+        
+        function valorSlider()
+        {
+            var valores = snapSlider.noUiSlider.get();
+        
+            alert('inicial: ' + valores[0] + ' - Final: ' + valores[1]);
+        }
     </script>
 
     <section class="categoria-submenu hidden-xs">
@@ -230,7 +242,7 @@ else
         </section>
 
         <section class="vitrine-produtos cf">
-            <div class="container fixvitrine">    
+            <div class="container fixvitrine">
 
                 <!-- facets -->
                 <div class="categoria-menu-esquerdo fixfiltro" id="filtro-conteudo">
@@ -241,6 +253,35 @@ else
                     </div>
                     <div class="panel-group categoria-filtros" id="categoria-filtros">
                         <form name="filtrosBusca" id="filtrosBusca" method="post" action="/" onsubmit="false">
+                           
+                        <?php
+                        if (!empty($precos))
+                        {
+                        ?>
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" href="#categoria-filtros-tamanho" class="tab-toggle collapsed">
+                                            Faixa de preço
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="categoria-filtros-tamanho" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="handles-wrap">
+                                            <div id="slider-handles"></div>
+                                            <div id="slider-snap-value-lower"></div>
+                                            <div id="slider-snap-value-until">até</div>
+                                            <div id="slider-snap-value-upper"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        <?php
+                        }
+                        ?>
+                            
                         <?php
                         $i = 0;
                         foreach ((array) $filtros as $filtro)
@@ -332,29 +373,3 @@ else
         </div>
     </form>	
 </section>
-
-<script type="text/javascript">
-
-    var snapSlider = document.getElementById('slider-handles');
-
-    noUiSlider.create(snapSlider, {
-        start: ['511', '711'],
-        connect: true,
-        range: {
-            'min': [511],
-            '600': [600],
-            '601': [601],
-            '602': [602],
-            'max': [711]
-        }
-    });
-
-    var snapValues = [
-        document.getElementById('slider-snap-value-lower'),
-        document.getElementById('slider-snap-value-upper')
-    ];
-
-    snapSlider.noUiSlider.on('update', function (values, handle) {
-    snapValues[handle].innerHTML = Math.round(values[handle]);
-    });
-</script>

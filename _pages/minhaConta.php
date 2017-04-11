@@ -670,7 +670,7 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                     Data: <?= date_format(date_create($pedido['DataVenda']), "d/m/Y") ?>
                                 </div>
                                 <div class="col-md-3">
-                                    Valor total: <?= formatar_moeda($pedido['ValorTotal']) ?>
+                                    Valor pedido: <?= formatar_moeda($pedido['ValorTotal']) ?>
                                 </div>
                                 <div class="col-md-3 text-right">
                                     <a href="#meus-ped-hide-<?= $pedido['Numero'] ?>" class="conta-painel-toggle" data-toggle="collapse">
@@ -695,45 +695,40 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                         array_push($itens[$itemPedido['Fornecedor']]['Itens'], $itemPedido);
                                     }
                                     
+                                    $i = 1;
                                     foreach ((array) $itens as $item)
                                     {
+                                        if ($i != 1) echo "<div class=\"line-bet\"></div>";
                                     ?>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="conta-painel-entrega">
-                                                    Entregue por<br>
-                                                    <span><?= $item['Fornecedor'] ?></span>
+                                        <div class="conta-painel-entrega">Entrega <?= $i ?> de <?= count($itens) ?> - Entregue por <span><?= $item['Fornecedor'] ?></span></div>
+                                        <div class="conta-checkpoint">
+                                            <div class="row">
+                                                <div class="linha">
+                                                    <div class="col-xs-1"></div>
+                                                    <div class="col-xs-2 first<?= ($item['Status'] == 1) ? " active" : "" ?><?= ($item['Status'] > 1) ? " visited" : "" ?>">
+                                                        <div class="circulo"></div>
+                                                        <span>Pedido</span>
+                                                    </div>
+                                                    <div class="col-xs-2<?= ($item['Status'] == 2) ? " active" : "" ?><?= ($item['Status'] > 2) ? " visited" : "" ?>">
+                                                        <div class="circulo"></div>
+                                                        <span>Pagamento</span>
+                                                    </div>
+                                                    <div class="col-xs-2<?= ($item['Status'] == 3) ? " active" : "" ?><?= ($item['Status'] > 3) ? " visited" : "" ?>">
+                                                        <div class="circulo"></div>
+                                                        <span>Separação</span>
+                                                    </div>
+                                                    <div class="col-xs-2<?= ($item['Status'] == 4) ? " active" : "" ?><?= ($item['Status'] > 4) ? " visited" : "" ?>">
+                                                        <div class="circulo"></div>
+                                                        <span>Transporte</span>
+                                                    </div>
+                                                    <div class="col-xs-2 last<?= ($item['Status'] == 5) ? " active" : "" ?><?= ($item['Status'] > 5) ? " visited" : "" ?>">
+                                                        <div class="circulo"></div>
+                                                        <span>Entrega</span>
+                                                    </div>
+                                                    <div class="col-xs-1"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-9 text-right">
-                                                <div class="conta-checkpoint">
-                                                        <div class="linha">
-                                                            <div class="col-xs-1"></div>
-                                                            <div class="col-xs-1"></div>
-                                                            <div class="col-xs-2 first<?= ($item['Status'] == 1) ? " active" : "" ?><?= ($item['Status'] > 1) ? " visited" : "" ?>">
-                                                                <div class="circulo"></div>
-                                                                <span>Pedido</span>
-                                                            </div>
-                                                            <div class="col-xs-2<?= ($item['Status'] == 2) ? " active" : "" ?><?= ($item['Status'] > 2) ? " visited" : "" ?>">
-                                                                <div class="circulo"></div>
-                                                                <span>Pagamento</span>
-                                                            </div>
-                                                            <div class="col-xs-2<?= ($item['Status'] == 3) ? " active" : "" ?><?= ($item['Status'] > 3) ? " visited" : "" ?>">
-                                                                <div class="circulo"></div>
-                                                                <span>Separação</span>
-                                                            </div>
-                                                            <div class="col-xs-2<?= ($item['Status'] == 4) ? " active" : "" ?><?= ($item['Status'] > 4) ? " visited" : "" ?>">
-                                                                <div class="circulo"></div>
-                                                                <span>Transporte</span>
-                                                            </div>
-                                                            <div class="col-xs-2 last<?= ($item['Status'] == 5) ? " active" : "" ?><?= ($item['Status'] > 5) ? " visited" : "" ?>">
-                                                                <div class="circulo"></div>
-                                                                <span>Entrega</span>
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </div>                                        
                                     <?php
                                         foreach ((array) $item['Itens'] as $produto)
                                         {
@@ -751,6 +746,7 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                             </div>
                                         <?php
                                         }
+                                        $i++;
                                     }
                                     ?>
                                 </div>
@@ -809,14 +805,16 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                             ?>
                                 <div class="row" id="retornoWishlist<?= $i ?>">
                                     <div class="col-md-2">
-                                        <img src="<?= $produtoWL['ImagemMobile'] ?>" title="<?= $produtoWL['Descricao'] ?>"/>
+                                        <a href="/produto?id=<?= $produtoWL['ID'] ?>">
+                                            <img src="<?= $produtoWL['ImagemMobile'] ?>" title="<?= $produtoWL['Descricao'] ?>"/>
+                                        </a>
                                     </div>
                                     <div class="col-md-8">
                                         <a href="/produto?id=<?= $produtoWL['ID'] ?>">
                                             <?= $produtoWL['Descricao'] ?><br>
                                             <?= $produtoWL['Marca']['Descricao'] ?><br>
                                         </a>
-                                        <a href="javascript:delWishList('<?= $produtoWL['ID'] ?>', 'retornoWishlist<?= $i ?>')" class="glyphicon glyphicon-trash"><span class="text-btn"> Excluir</span></a>
+                                        <a href="javascript:delWishList('<?= $produtoWL['ID'] ?>', 'retornoWishlist<?= $i ?>')" class="glyphicon glyphicon-trash" title="Remover o produto da sua Wishlist"><span class="text-btn"> Excluir</span></a>
                                     </div>
                                     <div class="col-md-2 text-right">
                                         <?= (!empty($produtoWL['PrecoDePor'])) ? "<s>" . formatar_moeda($produtoWL['PrecoDePor']['PrecoDe']) . "</s><br>" : "" ?>

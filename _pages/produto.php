@@ -410,10 +410,14 @@ if (!empty($prodRelacionados))
                         <div class="col-md-3 p-thumb">
                             <div class="<?= $label ?>">
                                 <a href="/produto?id=<?= $maisvendidos['Produto']['ID'] ?>">
-                                <img src="<?= $maisvendidos['Produto']['Imagem'] ?>" />
-                                <span><?= $maisvendidos['Produto']['Descricao'] ?></span>
-                                <span><?= $maisvendidos['Produto']['Marca']['Descricao'] ?></span>
-                                <span><?= (!empty($maisvendidos['Produto']['PrecoDePor'])) ? "<s>" . formatar_moeda($maisvendidos['Produto']['PrecoDePor']['PrecoDe']) . "</s> | " : "" ?><?= formatar_moeda($maisvendidos['Produto']['PrecoVigente']) ?></span>
+                                    <img src="<?= $maisvendidos['Produto']['Imagem'] ?>" />
+                                </a>
+                                <a href="/produto?id=<?= $maisvendidos['Produto']['ID'] ?>" title="<?= (strlen($maisvendidos['Produto']['Descricao']) > 35) ? $maisvendidos['Produto']['Descricao'] : "" ?>">
+                                    <span><?= (strlen($maisvendidos['Produto']['Descricao']) > 35) ? substr($maisvendidos['Produto']['Descricao'],0,32) . "..." : $maisvendidos['Produto']['Descricao'] ?></span>
+                                </a>
+                                <a href="/produto?id=<?= $maisvendidos['Produto']['ID'] ?>">
+                                    <span><?= $maisvendidos['Produto']['Marca']['Descricao'] ?></span>
+                                    <span><?= (!empty($maisvendidos['Produto']['PrecoDePor'])) ? "<s>" . formatar_moeda($maisvendidos['Produto']['PrecoDePor']['PrecoDe']) . "</s> | " : "" ?><?= formatar_moeda($maisvendidos['Produto']['PrecoVigente']) ?></span>
                                 </a>
                                 <style type="text/css">
                                     .row div.p-thumb .<?= $label ?>::before{
@@ -426,7 +430,7 @@ if (!empty($prodRelacionados))
                                     }
                                 </style>                            
                             </div>
-                        </div>
+                        </div>                        
                     <?php
                         $contMV++;
                     }
