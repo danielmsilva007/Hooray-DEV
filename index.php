@@ -169,7 +169,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                                       postcarrinho:'<?= md5("countCarrinho") ?>'},
                 function(countItens)
                 {
-                    $('#qtdeCarrinho').html('&nbsp;#' + countItens);
+                    $('#qtdeCarrinho').html('&nbsp;' + countItens);
                 });
             }
         </script>
@@ -202,7 +202,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                             <form class="header-busca" name="busca1" method="get" action="/busca">
                                 <div class="form-group">
                                     <span class="glyphicon glyphicon-search" onclick="document.busca1.submit();" style="cursor: pointer;"></span>
-                                    <input class="form-control" type="text" name="termobusca" placeholder="Equipamentos & Vestuário" required="required" />
+                                    <input class="form-control" type="text" name="termobusca" placeholder="o que você procura ?" required="required" />
                                 </div>
                             </form>
                         </div>
@@ -367,7 +367,10 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 $dadosBlog = getRest($endPoint['blog']);
                 
                 $phpGet = filter_input_array(INPUT_GET);
-                $IDArtigoBlog = $phpGet[array_keys($phpGet)[0]];
+                if (!empty($phpGet))
+                {
+                    $IDArtigoBlog = $phpGet[array_keys($phpGet)[0]];
+                }
                 
                 if (empty($IDArtigoBlog) || !is_numeric($IDArtigoBlog))
                 {
@@ -392,7 +395,10 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 $dadosBlog = getRest($endPoint['blog']);
                 
                 $phpGet = filter_input_array(INPUT_GET);
-                $IDCategoria = $phpGet[array_keys($phpGet)[0]];
+                if (!empty($phpGet))
+                {
+                    $IDCategoria = $phpGet[array_keys($phpGet)[0]];
+                }
                 
                 if (empty($IDCategoria) || !is_numeric($IDCategoria))
                 {
@@ -414,8 +420,10 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 $tipoBusca = "busca";
                 
                 $phpGet = filter_input_array(INPUT_GET);
-                $termoBusca = $phpGet[array_keys($phpGet)[0]];
-                
+                if (!empty($phpGet))
+                {
+                    $termoBusca = $phpGet[array_keys($phpGet)[0]];
+                }
                 include_once ("/_pages/busca.php");
                 break;
 
@@ -423,7 +431,10 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 $tipoBusca = "secao";
                 
                 $phpGet = filter_input_array(INPUT_GET);
-                $IDSecao = $phpGet[array_keys($phpGet)[0]];                
+                if (!empty($phpGet))
+                {
+                    $IDSecao = $phpGet[array_keys($phpGet)[0]];                
+                }
                 
                 if (!isset($IDSecao) || !is_numeric($IDSecao))
                 {
@@ -439,8 +450,11 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 $tipoBusca = "categoria";
                 
                 $phpGet = filter_input_array(INPUT_GET);
-                $IDCategoria = $phpGet[array_keys($phpGet)[0]];
-
+                if (!empty($phpGet))
+                {
+                    $IDCategoria = $phpGet[array_keys($phpGet)[0]];
+                }
+                
                 if (!isset($IDCategoria) || !is_numeric($IDCategoria))
                 {
                     include_once ("/_pages/404.php");
@@ -464,8 +478,11 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 $tipoBusca = "marca";
                 
                 $phpGet = filter_input_array(INPUT_GET);
-                $IDMarca = $phpGet[array_keys($phpGet)[0]];
-
+                if (!empty($phpGet))
+                {
+                    $IDMarca = $phpGet[array_keys($phpGet)[0]];
+                }
+                
                 if (!isset($IDMarca) || !is_numeric($IDMarca))
                 {
                     include_once ("/_pages/404.php");
@@ -487,8 +504,11 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 
             case "produto" :
                 $phpGet = filter_input_array(INPUT_GET);
-                $IDProduto = $phpGet[array_keys($phpGet)[0]];
-
+                if (!empty($phpGet))
+                {
+                    $IDProduto = $phpGet[array_keys($phpGet)[0]];
+                }
+                
                 if (empty($IDProduto) || !is_numeric($IDProduto))
                 {
                     include_once ("/_pages/404.php");
@@ -543,6 +563,10 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 }
                 break;
             
+            case "marketplace" :
+                include_once ("_pages/marketplace.php");
+               break;
+                
             default:
                 include_once ("/_pages/404.php");
                 break;
@@ -573,10 +597,30 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                     <li><a href="/minhaconta"><?= $item['Descricao'] ?></a></li>
                                 <?php
                                 }
-                                else
+                                elseif ($item['ID'] == "48")
                                 {
                                 ?>
-                                    <li><a href="<?= ($item['Ferramentas'] == 1) ? $item['Html'] : "/" . str_replace(" ", "", $rodape['Descricao']) . "?secao=" . $item['ID'] . "#" . $item['ID'] ?>"<?= ($item['Ferramentas'] == 1) ? " target=\"_blank\"" : "" ?>><?= $item['Descricao'] ?></a></li>
+                                    <li><a href="/marketplace"><?= $item['Descricao'] ?></a></li>
+                                <?php
+                                }
+                                else
+                                {
+                                    if ($item['Html'] == "#")
+                                    {
+                                        $abreLink = '';
+                                        $fechaLink = '';
+                                    }
+                                    else
+                                    {
+                                        $abreLink  = '<a href="';
+                                        $abreLink .= ($item['Ferramentas'] == 1) ? $item['Html'] : "/" . str_replace(" ", "", $rodape['Descricao']) . "?secao=" . $item['ID'] . "#" . $item['ID'];
+                                        $abreLink .= '"';
+                                        $abreLink .= ($item['Ferramentas'] == 1) ? " target=\"_blank\"" : "";
+                                        $abreLink .= '>';
+                                        $fechaLink = '</a>';
+                                    }
+                                ?>
+                                    <li><?= $abreLink ?><?= $item['Descricao'] ?><?= $fechaLink ?></li>
                                 <?php
                                 }
                             }
@@ -774,7 +818,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
         {
         ?>
             <script type="text/javascript">
-                $('#qtdeCarrinho').html('&nbsp;#<?= count($carrinho['Itens']) ?>');
+                $('#qtdeCarrinho').html('&nbsp;<?= count($carrinho['Itens']) ?>');
             </script>            
         <?php    
         }
@@ -790,19 +834,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
         <?php
         if (!empty($tipoBusca))
         {
-            if (!empty($precos))
-            {
-                $minPreco = floor(min($precos));
-                $maxPreco = ceil(max($precos));
-            }
-            else
-            {
-                $minPreco = 0;
-                $maxPreco = 0;
-                        
-            }
         ?>
-        
             <script type="text/javascript">
                 var snapSlider = document.getElementById('slider-handles');
 
@@ -821,13 +853,41 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 ];
 
                 snapSlider.noUiSlider.on('update', function (values, handle) {
-                snapValues[handle].innerHTML = Math.round(values[handle]);
+                    snapValues[handle].innerHTML = Math.round(values[handle]);
                 });
+                
+                snapSlider.noUiSlider.on('change', function (values, handle) {
+                    $('#postvalormin').val(values[0]);
+                    $('#postvalormax').val(values[1]);
+                    filtrarBusca(-1);
+                });                
             </script>
-        
         <?php
         }
         ?>
         
+        <?php
+        if (in_array($paginas[1], ['recursos', 'sobreahooray']))
+        {
+        ?>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('a[href^="#"]').on('click', function (e) {
+                        e.preventDefault();
+
+                        var target = $('.ancora');
+                        var $target = $(target);
+
+                        $('html, body').stop().animate({
+                            'scrollTop': $target.offset().top
+                        }, 900, 'swing', function () {
+                            window.location.hash = "";
+                        });
+                    });
+                });
+            </script>
+        <?php  
+        }
+        ?>    
     </body>
 </html>

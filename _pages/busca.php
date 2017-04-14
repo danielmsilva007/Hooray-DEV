@@ -75,29 +75,34 @@ else
         {
             if (!$caracteristica['Filtro']) continue; // só adiciona filtros marcados com TRUE
             
-            if (!array_key_exists($caracteristica['Posicao'], $filtros)) //cria a chave com o tipo, se nao existir
+            if (empty($caracteristica['Posicao']))
             {
-                $filtros[$caracteristica['Posicao']] = ["TipoID" => $caracteristica['TipoID'],
+                $caracteristica['Posicao'] = 999999999; // não definida posição
+            }
+            
+            if (!array_key_exists($caracteristica['TipoID'], $filtros)) //cria a chave com o tipo, se nao existir
+            {
+                $filtros[$caracteristica['TipoID']] = ["TipoID" => $caracteristica['TipoID'],
                                                        "Descricao" => $caracteristica['Descricao'],
+                                                       "Posicao" => $caracteristica['Posicao'],
                                                        "Opcoes" => []
                     ];
             }
             
-            if (!array_key_exists($caracteristica['ValorID'], $filtros[$caracteristica['Posicao']]['Opcoes'])) // cria o valor, se nao houver
+            if (!array_key_exists($caracteristica['ValorID'], $filtros[$caracteristica['TipoID']]['Opcoes'])) // cria o valor, se nao houver
             {
                 $opcaoFiltro = ["ValorID" => $caracteristica['ValorID'],
-                "Valor" => $caracteristica['Valor']
+                                "Valor" => $caracteristica['Valor']
                     ];
                 
-                $filtros[$caracteristica['Posicao']]['Opcoes'][$caracteristica['ValorID']] = $opcaoFiltro;
+                $filtros[$caracteristica['TipoID']]['Opcoes'][$caracteristica['ValorID']] = $opcaoFiltro;
             }
         }
         array_push($precos, $produtoBuscaCat['PrecoVigente']);
     }
     
-    print "<pre>";
-    print_r($filtros);
-    print "</pre>";
+    $minPreco = floor(min($precos));
+    $maxPreco = ceil(max($precos));
 ?>
 
 <?php
@@ -202,7 +207,6 @@ else
         function valorSlider()
         {
             var valores = snapSlider.noUiSlider.get();
-        
             alert('inicial: ' + valores[0] + ' - Final: ' + valores[1]);
         }
     </script>
@@ -253,7 +257,6 @@ else
                     </div>
                     <div class="panel-group categoria-filtros" id="categoria-filtros">
                         <form name="filtrosBusca" id="filtrosBusca" method="post" action="/" onsubmit="false">
-                           
                         <?php
                         if (!empty($precos))
                         {
@@ -283,6 +286,26 @@ else
                         ?>
                             
                         <?php
+                        
+                        function odernacaoOpcoes($a, $b)
+                        {
+                            return strcmp($a['Valor'], $b['Valor']);
+                        }
+                        
+                        function odernacaoFiltro($a, $b)
+                        {
+                            if ($a['Posicao'] == $b['Posicao']) 
+                            {
+                                return 0;
+                            }
+                            return ($a['Posicao'] < $b['Posicao']) ? -1 : 1;                            
+                        }
+                        
+                        if (!empty($filtros))
+                        {
+                            usort($filtros, "odernacaoFiltro"); // ordenas as caracteristicas por ordem alfabetica                        
+                        }
+                        
                         $i = 0;
                         foreach ((array) $filtros as $filtro)
                         {
@@ -298,6 +321,11 @@ else
                                 <div id="categoria-filtros-<?= $i ?>" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         <?php
+                                        if (!empty($filtro['Opcoes']))
+                                        {
+                                            usort($filtro['Opcoes'], "odernacaoOpcoes"); // ordenas as opções
+                                        }
+                                        
                                         foreach ((array) $filtro['Opcoes'] as $opcao)
                                         {
                                         ?>
@@ -312,10 +340,12 @@ else
                             $i ++;
                         }
                         ?>
-                            <input type="hidden" name="posttermobusca" value="<?= $postBusca ?>">
-                            <input type="hidden" name="posttipofiltro" value="<?= md5("buscaProduto") ?>">
-                            <input type="hidden" name="posttipobusca" value="<?= $tipoBusca ?>">
-                            <input type="hidden" name="postordenacao" value="-1">
+                            <input type="hidden" name="posttermobusca" id="posttermobusca" value="<?= $postBusca ?>">
+                            <input type="hidden" name="posttipofiltro" id="posttipofiltro" value="<?= md5("buscaProduto") ?>">
+                            <input type="hidden" name="posttipobusca" id="posttipobusca" value="<?= $tipoBusca ?>">
+                            <input type="hidden" name="postordenacao" id="postordenacao" value="-1">
+                            <input type="hidden" name="postvalormin" id="postvalormin" value="<?= $minPreco ?>">
+                            <input type="hidden" name="postvalormax" id="postvalormax" value="<?= $maxPreco ?>">
                         </form>
                     </div>
                 </div>
@@ -369,7 +399,7 @@ else
             <div class="input-group-btn">
                 <button type="submit" class="btn"><i class="glyphicon glyphicon-search"></i> </button>
             </div>
-            <input class="form-control" type="text" name="termobusca" placeholder="Equipamentos & Vestuário" required="required" />
+            <input class="form-control" type="text" name="termobusca" placeholder="o que você procura ?" required="required" />
         </div>
     </form>	
 </section>

@@ -3,6 +3,9 @@ if (!defined('HoorayWeb'))
 {
     die;
 }
+
+$textoBlog = str_ireplace('<IFRAME', '<div class="video-container"><IFRAME', $detalheArtigo['Texto']);
+$textoBlog = str_ireplace('</IFRAME>', '</IFRAME></div>', $textoBlog);
 ?>
 
 <div class="blog-wrap clearfix">
@@ -25,7 +28,7 @@ if (!defined('HoorayWeb'))
                 </ol>
                 <p><img src="<?= $detalheArtigo['Imagem'] ?>" title="<?= $detalheArtigo['Titulo'] ?>"/></p>
                 <p class="blog-posts-autor">(<?= date_format(date_create($detalheArtigo['Data']), "d.m.Y") ?>) - <em>Por <?= $detalheArtigo['Autor'] ?></em></p>
-                <p><?= $detalheArtigo['Texto'] ?></p>
+                <p><?= $textoBlog ?></p>
                 
                 <p class="blog-posts-medias">
                     <a href="javascript: void(0);" onclick="window.open('https://twitter.com/intent/tweet?text=Gostei+de+um+post+no+blog+da+Hooray&url=<?= urlencode(URLSite . ltrim($URISite,"/")) ?>&hashtags=hooraybrasil','twitter', 'toolbar=0, status=0, width=650, height=450');"><img src="/images/site/hooray_twitter.png" border="0"></a>

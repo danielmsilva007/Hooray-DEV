@@ -9259,7 +9259,7 @@ footer ul .seg-logos{
 .categoria-filtros .panel-body {
   text-align: left;
     border-bottom: 1px solid #ececec;
-    min-height: 120px;
+    /*min-height: 120px;*/
 }
 .categoria-filtros .panel-body label {
   cursor: pointer;
@@ -9301,6 +9301,11 @@ footer ul .seg-logos{
 .produto .produto-descricao h5 {
   color: #f66;
   font-size: 120%;
+}
+
+.produto .produto-descricao h6 {
+  color: #f66;
+  font-size: 100%;
 }
 
 .produto .produto-descricao span {
@@ -10175,7 +10180,22 @@ margin: 0 10px;
 .categoria-menu-esquerdo .categoria-menu-esquerdo-filtro {
     width: 240px;
 }
-
-
-
 /* edit fernanda@syligo.com */
+
+/* daniel.silva@apiconsulting.com.br */
+.video-container {
+position: relative;
+padding-bottom: 56.25%;
+padding-top: 30px; height: 0; overflow: hidden;
+}
+ 
+.video-container iframe,
+.video-container object,
+.video-container embed {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
+/* daniel.silva@apiconsulting.com.br */

@@ -4,7 +4,10 @@ if (!defined('HoorayWeb'))
     die;
 }
 $phpGet = filter_input_array(INPUT_GET);
-$tipoContato = $phpGet[array_keys($phpGet)[0]];
+if (!empty($phpGet))
+{
+    $tipoContato = $phpGet[array_keys($phpGet)[0]];
+}
 
 $dadosCadastrais = getRest(str_replace("{IDParceiro}","1031", $endPoint['dadoscadastrais']));
 $assuntosContato = getRest($endPoint['assuntoscontato']);

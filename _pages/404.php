@@ -21,7 +21,7 @@ if (!defined('HoorayWeb'))
             <div class="input-group-btn">
                 <button type="submit" class="btn"><i class="glyphicon glyphicon-search"></i> </button>
             </div>
-            <input class="form-control" type="text" name="termobusca" placeholder="O que você procura?" />
+            <input class="form-control" type="text" name="termobusca" placeholder="o que você procura ?" />
         </div>
     </form>	
 </section>

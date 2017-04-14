@@ -4,8 +4,10 @@ if (!defined('HoorayWeb'))
     die;
 }
 $phpGet = filter_input_array(INPUT_GET);
-
-$termoBusca = $phpGet[array_keys($phpGet)[0]];
+if (!empty($phpGet))
+{
+    $termoBusca = $phpGet[array_keys($phpGet)[0]];
+}
 
 $dadosBlog = getRest($endPoint['blog']);
 

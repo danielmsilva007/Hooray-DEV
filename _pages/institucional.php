@@ -8,7 +8,11 @@ $paginaInstitucional = getRest($endPoint['rodape']);
 
 $phpGet = filter_input_array(INPUT_GET);
 
-$secaoPagina = $phpGet[array_keys($phpGet)[0]];
+if (!empty($phpGet))
+{
+    $secaoPagina = $phpGet[array_keys($phpGet)[0]];
+}
+
 ?>
 
 <section class="header-inst clearfix">
@@ -29,14 +33,14 @@ $secaoPagina = $phpGet[array_keys($phpGet)[0]];
             {
                 foreach ((array) $institucional['Itens'] as $item)
                 {
-                    if (in_array($item['ID'],['40','41','42','47'])) // TODO colocar flag no Expert para indicar se a sessão será exibida.
+                    if (in_array($item['ID'],['41','42','47','48'])) // TODO colocar flag no Expert para indicar se a sessão será exibida.
                     {
         ?>       
                         <div class="institucional-square">
                             <div class="institucional-square-content">
                                 <div class="institucional-square-table">
                                     <div class="institucional-table-cell">
-                                        <a data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-<?= $item['ID'] ?>">
+                                        <a class="ancora" data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-<?= $item['ID'] ?>">
                                             <?= $item['Descricao'] ?>
                                         </a>
                                     </div>
@@ -66,7 +70,7 @@ $secaoPagina = $phpGet[array_keys($phpGet)[0]];
             {
                 foreach ((array) $institucional['Itens'] as $item)
                 {
-                    if (in_array($item['ID'],['40','41','42','47'])) // TODO colocar flag no Expert para indicar se a sessão será exibida.
+                    if (in_array($item['ID'],['41','42','47','48'])) // TODO colocar flag no Expert para indicar se a sessão será exibida.
                     {
         ?>
                     <a name="<?= $item['ID'] ?>"></a>

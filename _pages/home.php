@@ -248,9 +248,9 @@ if (!defined('HoorayWeb'))
     </div>
 </section>
 
-<section class="customize clearfix">
+<!--<section class="customize clearfix">
     <div><a href="">Customize sua prancha</a></div>
-</section>
+</section>-->
 
 <section class="descubra">
     <h3>Descubra Mais</h3>
@@ -259,7 +259,7 @@ if (!defined('HoorayWeb'))
             <div class="input-group-btn">
                 <button type="submit" class="btn"><i class="glyphicon glyphicon-search"></i> </button>
             </div>
-            <input class="form-control" type="text" name="termobusca" placeholder="Equipamentos & Vestuário" required="required" />
+            <input class="form-control" type="text" name="termobusca" placeholder="o que você procura ?" required="required" />
         </div>
     </form>	
 </section>

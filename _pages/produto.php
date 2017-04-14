@@ -260,64 +260,104 @@ else
                         <?php
                         }
                         ?>   
+                    <?php
+                    $indexEmEstoque = array_search("0", array_column($dadosProduto['Skus'], 'Disponibilidade'));
+                    $indexSobEncomenda = array_search("1", array_column($dadosProduto['Skus'], 'Disponibilidade'));
+                    $indexIndisponivel = array_search("2", array_column($dadosProduto['Skus'], 'Disponibilidade'));                    
                     
+                    if ($indexEmEstoque !== false)
+                    {
+                        echo "<h6>Em estoque</h6>";
+                    }
+                    elseif ($indexEmEstoque !== false)
+                    {
+                        echo "<h6>Sob encomenda</h6>";
+                    }
+                    ?>
+
                     <h5 id="resultCarrinho"></h5>
                     
                     <div class="row">
-                        <button type="button" onclick="atualizarCarrinho()">Adicionar ao carrinho</button>
-                    </div>
-
-                    <?php
-                    $parcelamento = getRest(str_replace(['{IDProduto}', '{valorProduto}'], [$dadosProduto['ID'], $dadosProduto['PrecoVigente']], $endPoint['parcelamento']));
-                    ?>
-                        
-                    <div class="produto-descricao-parcela">
-                        <div class="row">
-                            <?php
-                            if (!empty($parcelamento[0]) && $parcelamento[0]['Numero'] === 0)
-                            {
-                                $parcBoleto = $parcelamento[0];
-                            ?>    
-                                <div class="col-md-12">
-                                    <ul>
-                                        <li><span>À vista no boleto, desconto de <?= floor(100 - ($parcBoleto['Valor'] / $dadosProduto['PrecoVigente'] * 100)) ?>%:</span> <?= formatar_moeda($parcBoleto['Valor']) ?></li>
-                                    </ul>
-                                </div>
-                                <br>
-                            <?php
-                            }
-                            ?>
-                            <div class="col-md-12">
-                                <span>Pagamento no cartão de crédito:</span>
-                            </div>
-                             <div class="col-md-6">
-                                <ul>                                
+                        <?php
+                        if ($indexEmEstoque === false && $indexSobEncomenda === false) // nao retornou em estoque nem sobencomenda
+                        {
+                        ?>
+                            <h4>Indisponível</h4>
+                        <?php
+                        }
+                        else
+                        {
+                        ?>
+                            <button type="button" onclick="atualizarCarrinho()">Adicionar ao carrinho</button>
+                        <?php
+                            $parcelamento = getRest(str_replace(['{IDProduto}', '{valorProduto}'], [$dadosProduto['ID'], $dadosProduto['PrecoVigente']], $endPoint['parcelamento']));
+                        ?>
+                            <div class="produto-descricao-parcela">
+                                <div class="row">
                                     <?php
-                                    $contParc = 1;
-                                    foreach ((array) $parcelamento as $parcela)
+                                    if (!empty($parcelamento[0]) && $parcelamento[0]['Numero'] === 0)
                                     {
-                                        if ($parcela['Numero'] === 0) continue; //pula parcela do boleto, ja exibida acima
-                                        
-                                        if ($contParc == ceil((count($parcelamento)) / 2) && count($parcelamento) > 2) //divide em duas colunas
-                                        {
-                                            echo "</ul></div><div class=\"col-md-6\"><ul>";
-                                        }
-                                        
-                                        echo "<li><span>" . $parcela['Numero'] . "x sem juros de</span> " . formatar_moeda($parcela['Valor']) . "</li>";
-                                    
-                                        $contParc++;
+                                        $parcBoleto = $parcelamento[0];
+                                    ?>    
+                                        <div class="col-md-12">
+                                            <ul>
+                                                <li><span>À vista no boleto, desconto de <?= floor(100 - ($parcBoleto['Valor'] / $dadosProduto['PrecoVigente'] * 100)) ?>%:</span> <?= formatar_moeda($parcBoleto['Valor']) ?></li>
+                                            </ul>
+                                        </div>
+                                        <br>
+                                    <?php
                                     }
                                     ?>
-                                </ul>
+                                    <div class="col-md-12">
+                                        <span>Pagamento no cartão de crédito:</span>
+                                    </div>
+                                     <div class="col-md-6">
+                                        <ul>                                
+                                            <?php
+                                            $contParc = 1;
+                                            foreach ((array) $parcelamento as $parcela)
+                                            {
+                                                if ($parcela['Numero'] === 0) continue; //pula parcela do boleto, ja exibida acima
+
+                                                if ($contParc == ceil((count($parcelamento)) / 2) && count($parcelamento) > 2) //divide em duas colunas
+                                                {
+                                                    echo "</ul></div><div class=\"col-md-6\"><ul>";
+                                                }
+
+                                                echo "<li><span>" . $parcela['Numero'] . "x sem juros de</span> " . formatar_moeda($parcela['Valor']) . "</li>";
+
+                                                $contParc++;
+                                            }
+                                            ?>
+                                        </ul>
+                                    </div>
+
+                                </div>
                             </div>
-                        
-                        </div>
+                        <?php
+                        }
+                        ?>
                     </div>
+
                     <div class="produto-descricao-dimensoes"></div>
                     
                     <div class="produto-descricao-atributo">
                         <ul>
                             <?php
+                            function ordenacaoCaracteristica($a, $b)
+                            {
+                                if ($a['Posicao'] == $b['Posicao']) 
+                                {
+                                    return 0;
+                                }
+                                return ($a['Posicao'] < $b['Posicao']) ? -1 : 1;
+                            }
+                            
+                            if (!empty($dadosProduto['Caracteristicas']))
+                            {
+                                usort($dadosProduto['Caracteristicas'], "ordenacaoCaracteristica"); // ordenas as caracteristicas por ordem alfabetica
+                            }
+                            
                             $infoGenerica = "";
                             foreach ((array) $dadosProduto['Caracteristicas'] as $caracteristica)
                             {

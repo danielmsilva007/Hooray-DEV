@@ -97,6 +97,11 @@ $tipoEndereco = [0 => "Principal",
                  1 => "Entrega",
     ];
 
+$tipoDisponibilidade = [0 => "Em estoque",
+                        1 => "Sob encomenda",
+                        2 => "Indisponível"
+    ];
+
 function login (string $url, string $bearer)
 {
     $ch = curl_init($url);

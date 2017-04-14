@@ -3,9 +3,12 @@ if (!defined('HoorayWeb'))
 {
     die;
 }
-$phpGet = filter_input_array(INPUT_GET);
 
-$buscaPagina = $phpGet[array_keys($phpGet)[0]];
+$phpGet = filter_input_array(INPUT_GET);
+if (!empty($phpGet))
+{
+    $buscaPagina = $phpGet[array_keys($phpGet)[0]];
+}
 
 if (!empty($buscaPagina))
 {

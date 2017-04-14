@@ -218,7 +218,6 @@
 
         </div>
         <!--fim header -->
-        
         <section class="header-inst clearfix">
 
             <div class="header-int-wrap">
@@ -246,7 +245,7 @@
                     <div class="recursos-square-content">
                         <div class="recursos-square-table">
                             <div class="recursos-table-cell">
-                                <a data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-como-comprar">
+                                <a class="ancora" data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-como-comprar">
                                     Como comprar
                                 </a>
                             </div>
@@ -254,12 +253,14 @@
                     </div>
 
                 </div>
+                
+                
                 <div class="recursos-square">
 
                     <div class="institucional-square-content">
                         <div class="institucional-square-table">
                             <div class="institucional-table-cell">
-                                <a data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-troca-dev">
+                                <a class="ancora" data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-troca-dev">
                                     Trocas e devoluções
                                 </a>
                             </div>
@@ -272,7 +273,7 @@
                     <div class="institucional-square-content">
                         <div class="institucional-square-table">
                             <div class="institucional-table-cell">
-                                <a data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-politica-entrega">
+                                <a class="ancora" data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-politica-entrega">
                                     Política de entrega
                                 </a>
                             </div>
@@ -285,8 +286,21 @@
                     <div class="institucional-square-content">
                         <div class="institucional-square-table">
                             <div class="institucional-table-cell">
-                                <a data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-status">
+                                <a class="ancora" data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-status">
                                     Status do pedido
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="recursos-square">
+
+                    <div class="institucional-square-content">
+                        <div class="institucional-square-table">
+                            <div class="institucional-table-cell">
+                                <a class="ancora" data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-cadastro">
+                                    Cadastro
                                 </a>
                             </div>
                         </div>
@@ -310,7 +324,7 @@
                                 Como comprar</a>
                         </h4>
                     </div>
-                    <div id="recursos-accordion-como-comprar" class="panel-collapse collapse in">
+                    <div id="recursos-accordion-como-comprar" class="panel-collapse collapse">
                         <div class="panel-body">
                             <p>1. Escolha o produto</p>
                             <p>a. Todos os produtos oferecidos pela Hooray possuem descrição detalhada para ajudá-lo na sua escolha.<br />
@@ -435,10 +449,38 @@
                     </div>
                 </div>
 
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a name="recursos-accordion-cadastro" data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-cadastro" class="cursor-toggle">
+                                Cadastro</a>
+                        </h4>
+                    </div>
+                    <div id="recursos-accordion-cadastro" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>1. Para comprar e vender na Hooray, você precisa criar uma conta fazendo um cadastro pessoal e intransferível.</p>
+                            <p>
+
+                                a. A confirmação do cadastro é imprescindível e deve ser feita o quanto antes.<br />
+                                b. Não pode, de jeito nenhum, passar informações pessoais (e-mail, telefone,dados bancários, redes sociais, etc...) ou impróprias no perfil. <br />
+                                c. O pagamento de vendas e reembolsos dependem das informações inseridas no cadastro. <br />
+                                d. O CPF deve ser o mesmo CPF do titular da conta bancária para recebimento de vendas. <br />
+                                e. Por segurança o CPF cadastrado não pode ser alterado. <br />
+                                f. Não é possível realizar o cadastro em nome de pessoa jurídica (razão social, CPNJ, etc...)<br />
+                                g. O e-mail só pode ser alterado pelo usuário dentro do menu configurações. é importante que esse e-mail esteja ativo, pois é através dele que você receberá todas as notificações do site.<br />
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
 
         </section>
+
+
+
 
         <div class="make-space-bet clearfix"></div>
 
@@ -510,6 +552,7 @@
 
 
 
+
         <!-- Modal -->
         <div class="modal fade modal-hooray" id="modal-carrinho" tabindex="-1" role="dialog" aria-labelledby="modal-carrinho-compras">
             <div class="modal-dialog modal-sm" role="document">
@@ -519,7 +562,7 @@
                         <div class="modal-fechar hidden-xs hidden-sm" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </div>
-                        <div class="modal-mobile-fechar hidden-lg hidden-md" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
+                        <div class="modal-fechar hidden-lg hidden-md" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
 
                         <div class="nav">
                             CARRINHO
@@ -610,7 +653,7 @@
                         <span aria-hidden="true">&times;</span>
                     </div>
                     <div class="modal-body">
-                        <div class="modal-mobile-fechar hidden-lg hidden-md" data-dismiss="modal" aria-label="Close">
+                        <div class="modal-fechar hidden-lg hidden-md" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </div>
                         <div class="nav">
@@ -630,7 +673,7 @@
                             <div role="tabpanel" class="tab-pane active" id="tab-login">
                                 <form>
                                     <div class="row">
-                                        <div class="col-md-8 col-md-offset-2 col-sm-12">
+                                        <div class="modal-col-custom">
                                             <div class="form-group">
                                                 <input type="text" name="" placeholder="E-mail">
                                             </div>
@@ -647,7 +690,7 @@
                             <div role="tabpanel" class="tab-pane" id="tab-cadastre">
                                 <form>
                                     <div class="row">
-                                        <div class="col-md-8 col-md-offset-2 col-sm-12">
+                                        <div class="modal-col-custom">
                                             <div class="form-group">
                                                 <input type="text" name="" placeholder="Nome">
                                             </div>
@@ -669,7 +712,7 @@
                                 <h4>Esqueci a senha</h4>
                                 <form>
                                     <div class="row">
-                                        <div class="col-md-8 col-md-offset-2 col-sm-12">
+                                        <div class="modal-col-custom">
                                             <div class="form-group">
                                                 <input type="text" name="" placeholder="Seu e-mail">
                                             </div>
@@ -689,5 +732,21 @@
         <script src="javascripts/bootstrap.min.js"></script>
         <script src="javascripts/rangeslider.js"></script>
         <script src="javascripts/util.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('a[href^="#"]').on('click', function (e) {
+                    e.preventDefault();
+
+                    var target = $('.ancora');
+                    var $target = $(target);
+
+                    $('html, body').stop().animate({
+                        'scrollTop': $target.offset().top
+                    }, 900, 'swing', function () {
+                        window.location.hash = "";
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

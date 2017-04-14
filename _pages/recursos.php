@@ -8,7 +8,11 @@ $paginaAjuda = getRest($endPoint['rodape']);
 
 $phpGet = filter_input_array(INPUT_GET);
 
-$secaoPagina = $phpGet[array_keys($phpGet)[0]];
+if (!empty($phpGet))
+{
+    $secaoPagina = $phpGet[array_keys($phpGet)[0]];
+}
+
 ?>
 
 <section class="header-inst clearfix">
@@ -36,7 +40,7 @@ $secaoPagina = $phpGet[array_keys($phpGet)[0]];
                             <div class="recursos-square-content">
                                 <div class="recursos-square-table">
                                     <div class="recursos-table-cell">
-                                        <a data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-<?= $item['ID'] ?>">
+                                        <a class="ancora" data-toggle="collapse" data-parent="#recursos-accordion" href="#recursos-accordion-<?= $item['ID'] ?>">
                                             <?= $item['Descricao'] ?>
                                         </a>
                                     </div>

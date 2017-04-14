@@ -235,7 +235,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
 
 <section class="ordem">
     <div id="retornoFinalizarCompra">
-        <form name="chechoutForm" id="chechoutForm" method="post" action="/checkout" onsubmit="false">
+        <form name="chechoutForm" id="chechoutForm" method="post" action="/checkout" autocomplete="off" onsubmit="false">
             <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default">
@@ -298,7 +298,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                                 </select>
                             </div>                              
                             <div class="form-group input-icone">
-                                <input type="text" name="pgNumCartao" id="pgNumCartao" class="form-control"  placeholder="Número no cartão" maxlength="19" />
+                                <input type="text" name="pgNumCartao" id="pgNumCartao" class="form-control" placeholder="Número no cartão" maxlength="19" autocomplete="off" />
                                 <i class="glyphicon glyphicon-credit-card"></i>
                             </div>
                             <div class="form-group" id="parcelasCartao">
@@ -314,7 +314,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" name="pgNomeCartao" id="pgNomeCartao" placeholder="Nome impresso no cartão">
+                                <input type="text" class="form-control" name="pgNomeCartao" id="pgNomeCartao" placeholder="Nome impresso no cartão" autocomplete="off" />
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-6">
@@ -346,7 +346,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                             </div>	
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input name="pgCVC" id="pgCVC" type="password" class="form-control" placeholder="Código de segurança" maxlength="3" />
+                                    <input name="pgCVC" id="pgCVC" type="password" class="form-control" placeholder="Código de segurança" maxlength="3" autocomplete="off" />
                                     <span class="input-group-addon">
                                         <a data-toggle="tooltip" data-placement="top" title="Por favor informe o código de segurança do cartão.">
                                             <i class="glyphicon glyphicon-info-sign"></i>

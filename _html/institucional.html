@@ -248,7 +248,7 @@
 		  		<div class="institucional-square-content">
 		  			<div class="institucional-square-table">
 			  			<div class="institucional-table-cell">
-			  				<a data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-mkt">
+			  				<a class="ancora" data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-mkt">
 			  				  	Marketplace
 			  				</a>
 			  			</div>
@@ -261,7 +261,7 @@
 		  		<div class="institucional-square-content">
 		  			<div class="institucional-square-table">
 			  			<div class="institucional-table-cell">
-			  				<a data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-politica">
+			  				<a class="ancora" data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-politica">
 			  					Política
 					       	</a>
 				       	</div>
@@ -274,7 +274,7 @@
 		  		<div class="institucional-square-content">
 		  			<div class="institucional-square-table">
 			  			<div class="institucional-table-cell">
-			  				<a data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-termos">
+			  				<a class="ancora" data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-termos">
 				  				Termos de uso
 				  			</a>
 			  			</div>
@@ -287,7 +287,7 @@
 		  		<div class="institucional-square-content">
 		  			<div class="institucional-square-table">
 			  			<div class="institucional-table-cell">
-				        	<a data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-contato">
+				        	<a class="ancora" data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-contato">
 			    		        Contato
 					        </a>
 				        </div>
@@ -312,7 +312,7 @@
 		        Seja um parceiro Marketplace</a>
 		      </h4>
 		    </div>
-		    <div id="institucional-accordion-mkt" class="panel-collapse collapse in">
+		    <div id="institucional-accordion-mkt" class="panel-collapse collapse">
 		      <div class="panel-body">
 				<p>COMO FUNCIONA</p>
 
@@ -611,6 +611,8 @@
 
 
 
+
+
 	<!-- Modal -->
 	<div class="modal fade modal-hooray" id="modal-carrinho" tabindex="-1" role="dialog" aria-labelledby="modal-carrinho-compras">
 		<div class="modal-dialog modal-sm" role="document">
@@ -620,7 +622,7 @@
 			  		<div class="modal-fechar hidden-xs hidden-sm" data-dismiss="modal" aria-label="Close">
 			  			<span aria-hidden="true">&times;</span>
 			  		</div>
-			    	<div class="modal-mobile-fechar hidden-lg hidden-md" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
+			    	<div class="modal-fechar hidden-lg hidden-md" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
 
 			        <div class="nav">
 				        CARRINHO
@@ -711,7 +713,7 @@
 		    		<span aria-hidden="true">&times;</span>
 		    	</div>
 			  	<div class="modal-body">
-				    <div class="modal-mobile-fechar hidden-lg hidden-md" data-dismiss="modal" aria-label="Close">
+				    <div class="modal-fechar hidden-lg hidden-md" data-dismiss="modal" aria-label="Close">
 				    	<span aria-hidden="true">&times;</span>
 				    </div>
 			  		<div class="nav">
@@ -731,7 +733,7 @@
    						<div role="tabpanel" class="tab-pane active" id="tab-login">
 					        <form>
 					        	<div class="row">
-					        		<div class="col-md-8 col-md-offset-2 col-sm-12">
+					        		<div class="modal-col-custom">
 							        	<div class="form-group">
 							        		<input type="text" name="" placeholder="E-mail">
 							        	</div>
@@ -748,7 +750,7 @@
 					    <div role="tabpanel" class="tab-pane" id="tab-cadastre">
 					        <form>
 					        	<div class="row">
-					        		<div class="col-md-8 col-md-offset-2 col-sm-12">
+					        		<div class="modal-col-custom">
 							        	<div class="form-group">
 							        		<input type="text" name="" placeholder="Nome">
 							        	</div>
@@ -770,7 +772,7 @@
 					    	<h4>Esqueci a senha</h4>
 					        <form>
 					        	<div class="row">
-					        		<div class="col-md-8 col-md-offset-2 col-sm-12">
+					        		<div class="modal-col-custom">
 							        	<div class="form-group">
 							        		<input type="text" name="" placeholder="Seu e-mail">
 							        	</div>
@@ -790,5 +792,21 @@
     <script src="javascripts/bootstrap.min.js"></script>
 	<script src="javascripts/rangeslider.js"></script>
 	<script src="javascripts/util.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('a[href^="#"]').on('click',function (e) {
+			    e.preventDefault();
+
+			    var target = $('.ancora');
+			    var $target = $(target);
+
+			    $('html, body').stop().animate({
+			        'scrollTop': $target.offset().top
+			    }, 900, 'swing', function () {
+			        window.location.hash = "";
+			    });
+			});
+		});
+	</script>
   </body>
 </html>
