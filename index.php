@@ -101,6 +101,11 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
+        <link rel="shortcut icon" href="favicon.ico">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
+        
         <script type="text/javascript">
             function obterBearer()
             {

@@ -187,6 +187,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
         var finalizar = false;
         
         $('#botaoFinalizar').html('<span class="fa fa-circle-o-notch fa-spin fa-fw"></span> Finalizando...');
+        $('#botaoFinalizar').prop("disabled", true);
         
         if (formaPgto == 'zero')
         {
@@ -218,6 +219,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                 {
                     $('#retornoCheckout').html('<p>' + resultadoFinalizarCompra.substr(2) + '</p>');
                     $('#botaoFinalizar').html('Finalizar a compra');
+                    $('#botaoFinalizar').prop("disabled", false);
                 }
                 else
                 {
@@ -229,6 +231,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
         else
         {
             $('#botaoFinalizar').html('Finalizar a compra');
+            $('#botaoFinalizar').prop("disabled", false);
         }
     }
 </script>

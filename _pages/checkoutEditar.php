@@ -348,9 +348,17 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
     
     $finalizarPedido = sendRest($endPoint['checkout'], $dadosPedido, "POST");
     
-    if (!$finalizarPedido['Gravou'])
+    if (empty($finalizarPedido['Gravou']))
     {
-        echo "!!Erro ao gravar o pedido. Por favor tente novamente.";
+        echo "!!";
+        if (!is_array($finalizarPedido) && !empty($finalizarPedido))
+        {
+            echo "<br>" . str_replace(chr(13), "<br>", $finalizarPedido);
+        }
+        else
+        {
+            echo "Erro ao gravar o pedido.";
+        }
         die;
     }
 
