@@ -101,8 +101,8 @@ else
         array_push($precos, $produtoBuscaCat['PrecoVigente']);
     }
     
-    $minPreco = floor(min($precos));
-    $maxPreco = ceil(max($precos));
+    $minPreco = (!empty($precos) && is_array($precos)) ? floor(min($precos)) : 0;
+    $maxPreco = (!empty($precos) && is_array($precos)) ? ceil(max($precos)) : 0;
 ?>
 
 <?php
@@ -163,7 +163,7 @@ else
                     item = ' itens';
                 }
                 
-                $('#countResult').html($(resultadoBusca).children().length + item);                
+                $('#countResult').html($(resultadoBusca).children().length + item);
             });
         }
     

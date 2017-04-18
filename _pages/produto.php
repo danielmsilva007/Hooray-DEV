@@ -50,14 +50,9 @@ else
             {
                 $('#resultCarrinho').html('Produto adicionado ao seu carrinho.');
                 $('#carrinhoCompra').html(dataCarrinho);
+                
+                $('#qtdeCarrinho').html('&nbsp;' + $('#carrinhoCompra ul li').length);
             }
-        });
-        
-        $.post('/_pages/carrinhoEditar.php', {postidcarrinho:'<?= $IDCarrinho ?>',
-                                              postcarrinho:'<?= md5("countCarrinho") ?>'},
-        function(countItens)
-        {
-            $('#qtdeCarrinho').html('&nbsp;#' + countItens);
         });
     }
     
@@ -405,6 +400,11 @@ if (empty($prodRelacionados))
 {
     $prodRelacionados = getRest($endPoint['maisvedidos']);
     $tituloRelacionados = "Destaques";
+    $listaProdutos = $prodRelacionados[0]['Itens'];
+}
+else
+{
+    $listaProdutos = $prodRelacionados;
 }
 
 if (!empty($prodRelacionados))

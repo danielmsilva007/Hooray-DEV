@@ -351,13 +351,14 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
     if (empty($finalizarPedido['Gravou']))
     {
         echo "!!";
+        
         if (!is_array($finalizarPedido) && !empty($finalizarPedido))
         {
             echo "<br>" . str_replace(chr(13), "<br>", $finalizarPedido);
         }
         else
         {
-            echo "Erro ao gravar o pedido.";
+            echo "Erro ao gravar o pedido. <br>Por favor tente novamente.";
         }
         die;
     }

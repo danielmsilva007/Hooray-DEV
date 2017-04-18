@@ -156,7 +156,18 @@ if (!empty($phpPost['postcarrinho']) && $phpPost['postcarrinho'] == md5("editCar
 
     if ($phpPost['posttipocarrinho'] == md5("modal"))
     {
-        echo "Atualizando o carrinho...";
+        $carrinhoCount = getRest(str_replace("{IDCarrinho}", $phpPost['postidcarrinho'], $endPoint['obtercarrinho']));
+        
+        if (!empty($carrinhoCount['Itens']))
+        {
+            echo count($carrinhoCount['Itens']);
+        }
+        else 
+        {
+            echo "0";
+        }
+
+        //echo "Atualizando o carrinho...";
     }
     elseif ($phpPost['posttipocarrinho'] == md5("pagina"))
     {
@@ -263,15 +274,15 @@ if (!empty($phpPost['postcarrinho']) && $phpPost['postcarrinho'] == md5("countCa
 {
     if (!empty($phpPost['postidcarrinho']))
     {
-        $carrinho = getRest(str_replace("{IDCarrinho}", $phpPost['postidcarrinho'], $endPoint['obtercarrinho']));
+        $carrinhoCount = getRest(str_replace("{IDCarrinho}", $phpPost['postidcarrinho'], $endPoint['obtercarrinho']));
         
-        if (!empty($carrinho['Itens']))
+        if (!empty($carrinhoCount['Itens']))
         {
-            echo count($carrinho['Itens']);
+            echo count($carrinhoCount['Itens']);
         }
         else 
         {
-            echo " ";
+            echo "0";
         }
     }
 }

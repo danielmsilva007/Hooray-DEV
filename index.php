@@ -154,6 +154,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 $('#resultDelCarrinho' + IDProduto).html('Retirando do carrinho...');
                 
                 $.post('/_pages/carrinhoEditar.php', {postidproduto:IDProduto,
+                                                      postidcarrinho:'<?= $numCarrinho ?>',
                                                       postcarrinho:'<?= md5("editCarrinho") ?>',
                                                       posttipoedicao:'<?= md5("remover") ?>',
                                                       posttipocarrinho:'<?= md5("modal") ?>'},
@@ -165,16 +166,10 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                     }
                     else
                     {
-                        $('#resultDelCarrinho' + IDProduto).html(dataCarrinho);
+                        $('#resultDelCarrinho' + IDProduto).html('Atualizando o carrinho...');
+                        $('#qtdeCarrinho').html('&nbsp;' + dataCarrinho);
                         document.getElementById('itemCarinhoModal' + IDProduto).style.display = 'none';
                     }
-                });
-                
-                $.post('/_pages/carrinhoEditar.php', {postidcarrinho:'<?= $numCarrinho ?>',
-                                                      postcarrinho:'<?= md5("countCarrinho") ?>'},
-                function(countItens)
-                {
-                    $('#qtdeCarrinho').html('&nbsp;' + countItens);
                 });
             }
         </script>
