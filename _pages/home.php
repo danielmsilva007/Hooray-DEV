@@ -72,6 +72,17 @@ if (!defined('HoorayWeb'))
     <ul>
         <?php
         $marcasDestaque = getRest($endPoint['marcasdestaque']);
+        
+        function odernacaoMarcas($a, $b)
+        {
+            return strcmp($a['Descricao'], $b['Descricao']);
+        }
+        
+        if (!empty($marcasDestaque))
+        {
+            usort($marcasDestaque, "odernacaoMarcas"); // ordenas as marcas
+        }
+        
         foreach ((array) $marcasDestaque as $marca)
         {
         ?>

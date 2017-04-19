@@ -664,7 +664,7 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                         <div class="conta-painel">
                             <div class="row">
                                 <div class="col-md-3">
-                                    Pedido: <?= $pedido['Numero'] ?>
+                                    Pedido: <?= $pedido['ID'] ?>
                                 </div>
                                 <div class="col-md-3">
                                     Data: <?= date_format(date_create($pedido['DataVenda']), "d/m/Y") ?>
@@ -673,13 +673,13 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                     Valor pedido: <?= formatar_moeda($pedido['ValorTotal']) ?>
                                 </div>
                                 <div class="col-md-3 text-right">
-                                    <a href="#meus-ped-hide-<?= $pedido['Numero'] ?>" class="conta-painel-toggle" data-toggle="collapse">
+                                    <a href="#meus-ped-hide-<?= $pedido['ID'] ?>" class="conta-painel-toggle" data-toggle="collapse">
                                         <?= count($itensPedido[0]['PedidoItens']) ?> <?= (count($itensPedido[0]['PedidoItens']) > 1) ? "Itens" : "Item" ?>
                                     </a>
                                 </div>
                             </div>
                             <div class="well">
-                                <div id="meus-ped-hide-<?= $pedido['Numero'] ?>" class="collapse">
+                                <div id="meus-ped-hide-<?= $pedido['ID'] ?>" class="collapse">
                                     <?php
                                     $itens = [];
                                     foreach ((array) $itensPedido[0]['PedidoItens'] as $itemPedido)
@@ -688,6 +688,7 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                         {
                                             $itens[$itemPedido['Fornecedor']] = ["Fornecedor" => $itemPedido['Fornecedor'],
                                                                                  "Status" => $itemPedido['StatusMarketPlace'],
+                                                                                 "DescricaoStatus" => $itensPedido[0]['Status'],
                                                                                  "Itens" => []
                                                 ];
                                         }                                        
@@ -704,7 +705,6 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                         <div class="conta-checkpoint">
                                             <div class="row">
                                                 <div class="linha">
-                                                    <div class="col-xs-1"></div>
                                                     <div class="col-xs-2 first<?= ($item['Status'] == 1) ? " active" : "" ?><?= ($item['Status'] > 1) ? " visited" : "" ?>">
                                                         <div class="circulo"></div>
                                                         <span>Pedido</span>
@@ -725,7 +725,9 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                                         <div class="circulo"></div>
                                                         <span>Entrega</span>
                                                     </div>
-                                                    <div class="col-xs-1"></div>
+                                                    <div class="col-md-2">
+                                                        <?= htmlentities(ucwords(strtolower($item['DescricaoStatus']))) ?>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>                                        

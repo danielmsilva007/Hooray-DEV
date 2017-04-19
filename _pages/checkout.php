@@ -361,7 +361,6 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                                 <label><input type="checkbox" name="pgSalvarCartao" value="1"> Salvar cartão para a próxima compra!</label>
                             </div>
                             <i>Para efetuar o pagamento, não há necessidade de salvar seu cartão. Esta função apenas facilita suas próximas compras com toda segurança.</i>                            
-                            
                         </div>
                     </div>
                 </div>

@@ -223,7 +223,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                     else
                                     {
                                     ?>    
-                                        <a href="#modal-login" data-toggle="modal"><span class="glyphicon glyphicon-user"></span><span class="hidden-xs hidden-sm"> Login</span></a>
+                                        <a href="#modal-login" data-toggle="modal" id="link-login"><span class="glyphicon glyphicon-user"></span><span class="hidden-xs hidden-sm"> Login</span></a>
                                     <?php
                                     }       
                                     ?>
@@ -242,16 +242,18 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                         </div>	
                     </div>
                 </div>
-
-                <div id="slidemenu" class="hidden-lg hidden-md hidden-sm">
-
-                    <!-- menu responsivo -->
+                
+                <div class="hidden-lg hidden-md hidden-sm">
                     <form class="header-busca" name="buscaresponsiva" method="get" action="/busca">
                         <div class="form-group">
-                            <span class="glyphicon glyphicon-search" onclick="document.buscaresponsiva.submit();"></span>
-                            <input class="form-control" type="text" name="termobusca" placeholder="Equipamentos & Vestuário" required="required" />
+                            <!-- <span class="glyphicon glyphicon-search" onclick="document.buscaresponsiva.submit();"></span> -->
+                            <input class="form-control" type="text" name="termobusca" placeholder="o que você procura ?" required="required" />
                         </div>
                     </form>
+                </div>
+                
+                <div id="slidemenu" class="hidden-lg hidden-md hidden-sm">
+                    <!-- menu responsivo -->
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="/">Home</a></li>
                         <?php
@@ -603,6 +605,12 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                     <li><a href="/marketplace"><?= $item['Descricao'] ?></a></li>
                                 <?php
                                 }
+                                elseif ($item['ID'] == "41")
+                                {
+                                ?>
+                                    <li><a href="/contato"><?= $item['Descricao'] ?></a></li>
+                                <?php
+                                }                                
                                 else
                                 {
                                     if ($item['Html'] == "#")
@@ -698,6 +706,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                 </form>
                                 <form name="autForm" id="autForm" method="post" action="<?= $URISite ?>">
                                     <input type="hidden" name="loginResult" id="loginResult" value="<?= md5("login") ?>">
+                                    <input type="hidden" name="addwhislist" id="addwhislist" value="0">
                                 </form>
                             
                             </div>

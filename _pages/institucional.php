@@ -40,7 +40,20 @@ if (!empty($phpGet))
                             <div class="institucional-square-content">
                                 <div class="institucional-square-table">
                                     <div class="institucional-table-cell">
-                                        <a class="ancora" data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-<?= $item['ID'] ?>">
+                                        <?php
+                                        if ($item['ID'] == 41) 
+                                        {
+                                        ?>
+                                            <a class="ancora" href="/contato">
+                                        <?php
+                                        }
+                                        else
+                                        {
+                                        ?>
+                                            <a class="ancora" data-toggle="collapse" data-parent="#institucional-accordion" href="#institucional-accordion-<?= $item['ID'] ?>">
+                                        <?php
+                                        }
+                                        ?>
                                             <?= $item['Descricao'] ?>
                                         </a>
                                     </div>
@@ -70,7 +83,7 @@ if (!empty($phpGet))
             {
                 foreach ((array) $institucional['Itens'] as $item)
                 {
-                    if (in_array($item['ID'],['41','42','47','48'])) // TODO colocar flag no Expert para indicar se a sessão será exibida.
+                    if (in_array($item['ID'],['42','47','48'])) // TODO colocar flag no Expert para indicar se a sessão será exibida.
                     {
         ?>
                     <a name="<?= $item['ID'] ?>"></a>

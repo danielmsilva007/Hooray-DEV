@@ -26,7 +26,11 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
     {
         if (in_array(array_keys($phpPost)[$i], ['posttermobusca', 'posttipofiltro', 'postordenacao', 'posttipobusca', 'postvalormin', 'postvalormax'])) continue; // variaveis de controle que nao entram no filtro.
         
-        $caracteristicasFiltro[$i] = ["ValorID" => $phpPost[array_keys($phpPost)[$i]]];
+        $opcoesFiltro = explode('##', $phpPost[array_keys($phpPost)[$i]]);
+        
+        $caracteristicasFiltro[$i] = ["TipoID" => $opcoesFiltro[0],
+                                      "ValorID" => $opcoesFiltro[1]
+            ];
     }
     
     if (!empty($caracteristicasFiltro))
@@ -42,7 +46,7 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
         
         $dadosBusca['FaixaPreco'] = $faixaPreco;
     }
-    
+
     $resultadoBusca = sendRest($endPoint['busca'], $dadosBusca, "POST");
     
     echo "<ul class=\"list-inline\">";

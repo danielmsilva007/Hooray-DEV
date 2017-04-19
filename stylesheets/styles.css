@@ -5036,7 +5036,7 @@ tbody.collapse.in {
   float: right;
   }
   .header-busca{
-    display: none;
+    /*display: none;*/
   }
 }
 
@@ -9497,6 +9497,14 @@ footer ul .seg-logos{
   height: 0px;
   margin: 1em 0;
   width: 100%;
+}
+.conta .conta-checkpoint .linha .col-md-2 {
+  position: relative;
+  /*height: 10px;*/
+  background-color: #ebebeb;
+  top: -2px;
+  color: #f66;
+  vertical-align: top;
 }
 .conta .conta-checkpoint .linha .col-xs-2 {
   color: #b3b3b3;

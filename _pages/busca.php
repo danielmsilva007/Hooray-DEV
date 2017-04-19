@@ -20,7 +20,8 @@ if ($tipoBusca == "busca" && empty($termoBusca))
 }
 else
 {
-    $esperaResultado = '<ul class="list-inline" id="itensGrid"><li><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></span></li></ul>';
+    //$esperaResultado = '<ul class="list-inline" id="itensGrid"><li><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></span></li></ul>';
+    $esperaResultado = '<table width="800" height="400"><tr><td align="center" valign=middle"><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></span></td></tr></table>';
     
     switch ($tipoBusca)
     {
@@ -83,6 +84,7 @@ else
             if (!array_key_exists($caracteristica['TipoID'], $filtros)) //cria a chave com o tipo, se nao existir
             {
                 $filtros[$caracteristica['TipoID']] = ["TipoID" => $caracteristica['TipoID'],
+                                                       "ValorID" => $caracteristica['ValorID'],
                                                        "Descricao" => $caracteristica['Descricao'],
                                                        "Posicao" => $caracteristica['Posicao'],
                                                        "Opcoes" => []
@@ -202,12 +204,6 @@ else
             });
             
             
-        }
-        
-        function valorSlider()
-        {
-            var valores = snapSlider.noUiSlider.get();
-            alert('inicial: ' + valores[0] + ' - Final: ' + valores[1]);
         }
     </script>
 
@@ -329,7 +325,7 @@ else
                                         foreach ((array) $filtro['Opcoes'] as $opcao)
                                         {
                                         ?>
-                                            <label><input type="checkbox" name="<?= $opcao['ValorID'] ?>" value="<?= $opcao['ValorID'] ?>" onclick="filtrarBusca(-1);"> <?= $opcao['Valor'] ?></label>
+                                            <label><input type="checkbox" name="<?= $filtro['TipoID'] . $opcao['ValorID'] ?>" value="<?= $filtro['TipoID'] . '##' . $opcao['ValorID'] ?>" onclick="filtrarBusca(-1);"> <?= $opcao['Valor'] ?></label>
                                         <?php
                                         }
                                         ?>

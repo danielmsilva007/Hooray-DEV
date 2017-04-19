@@ -164,7 +164,7 @@ if (!empty($phpPost['postcarrinho']) && $phpPost['postcarrinho'] == md5("editCar
         }
         else 
         {
-            echo "0";
+            echo " ";
         }
 
         //echo "Atualizando o carrinho...";

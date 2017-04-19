@@ -28,6 +28,16 @@ $listaMarcas = getRest($endPoint['marcas']);
             <?php
             $listaAlfabetica = [];
             
+            function odernacaoMarcas($a, $b)
+            {
+                return strcmp($a['Descricao'], $b['Descricao']);
+            }            
+            
+            if (!empty($listaMarcas))
+            {
+                usort($listaMarcas, "odernacaoMarcas"); // ordenas as marcas
+            }
+            
             foreach ((array) $listaMarcas as $marca)
             {
                 $inicioCat =  strtoupper(substr($marca['Descricao'], 0, 1)); // maiscula da primeira letra do nome da categoria
