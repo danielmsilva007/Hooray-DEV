@@ -223,7 +223,6 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("ser
         $opcoesEntrega = sendRest($endPoint['servicoentrega'], $dadosServEntrega, "PUT");
         
         $servicosFrete = [];
-        
         foreach ((array) $phpPost['localidadeTransporteID'] as $opcaoEntrega)
         {
             if (!empty($opcaoEntrega))
@@ -236,16 +235,8 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("ser
                 }
             }
         }
-
+   
         $atualizacaoServicoEntrega = sendRest($endPoint['atualizarfrete'], $servicosFrete, "PUT");
-        
-        //print("!!");
-        //$atualizacaoServicoEntrega = sendRest('http://localhost:34191/v1/carrinho/atualizarservicofrete/', $servicosFrete, "PUT");
-        //print $endPoint['atualizarfrete'];
-        //print json_encode($servicosFrete);
-        //print_r ($atualizacaoServicoEntrega);
-        //print_r($servicosFrete);
-        //die;
         
         if (empty($atualizacaoServicoEntrega))
         {

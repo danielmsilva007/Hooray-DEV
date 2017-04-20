@@ -173,7 +173,7 @@ if (!defined('HoorayWeb'))
                         if ($maisvendidos['Produto']['PercentualDesconto'] > 0)
                         {
                             $label = "p-label-off" . $contMV;
-                            $content = round($maisvendidos['Produto']['PercentualDesconto']) . "% OFF";
+                            $content = floor($maisvendidos['Produto']['PercentualDesconto']) . "% OFF";
                             $color = "#ff6666";
                         }
                         elseif ($maisvendidos['Produto']['Lancamento'] == TRUE)
@@ -259,9 +259,11 @@ if (!defined('HoorayWeb'))
     </div>
 </section>
 
-<!--<section class="customize clearfix">
+<!--
+<section class="customize clearfix">
     <div><a href="">Customize sua prancha</a></div>
-</section>-->
+</section>
+-->
 
 <section class="descubra">
     <h3>Descubra Mais</h3>

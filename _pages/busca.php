@@ -20,8 +20,8 @@ if ($tipoBusca == "busca" && empty($termoBusca))
 }
 else
 {
-    //$esperaResultado = '<ul class="list-inline" id="itensGrid"><li><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></span></li></ul>';
-    $esperaResultado = '<table width="800" height="400"><tr><td align="center" valign=middle"><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></span></td></tr></table>';
+    $esperaResultado = '<ul class="list-inline" id="itensGrid"><li><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></span></li></ul>';
+    //$esperaResultado = '<table width="800" height="400"><tr><td align="center" valign=middle"><span class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></span></td></tr></table>';
     
     switch ($tipoBusca)
     {

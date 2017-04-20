@@ -175,9 +175,12 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
             {
                 $('#resultadoServFrete').html(resultadoServicoFrete.substr(2));
             }
+            else
+            {
+                valoresCarrinho();
+                obterParcelasCartao();
+            }
         });
-        
-        valoresCarrinho();
     }
     
     function finalizarCompra()
@@ -287,7 +290,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                                 <label><input type="radio" name="pgFormaPgto" id="pgFormaPgto" value="zero" onchange="valoresCarrinho();" <?= ($boletoHabititado) ? "" : " checked" ?>> Cartão de crédito</label>
                             </div>
                             <div class="form-group">
-                                <select class="form-control" name="pgBandeira" id="pgBandeira" onchange="obterParcelasCartao()">
+                                <select class="form-control" name="pgBandeira" id="pgBandeira" onchange="obterParcelasCartao();">
                                     <option value="" disabled selected>Bandeira do cartão</option>
                                     <?php
                                     foreach ((array) $bandeirasCartao as $bandeira)

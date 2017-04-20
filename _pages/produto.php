@@ -426,10 +426,12 @@ if (empty($prodRelacionados))
     $prodRelacionados = getRest($endPoint['maisvedidos']);
     $tituloRelacionados = "Destaques";
     $listaProdutos = $prodRelacionados[0]['Itens'];
+    $tipoProdutos = "maisvendidos";
 }
 else
 {
     $listaProdutos = $prodRelacionados;
+    $tipoProdutos = "relacionados";
 }
 
 if (!empty($prodRelacionados))
@@ -445,20 +447,22 @@ if (!empty($prodRelacionados))
                 <div class="row">
                     <?php
                     $contMV = 0;
-                    foreach ((array) $prodRelacionados[0]['Itens'] as $maisvendidos)
+                    foreach ((array) $listaProdutos as $relacionado)
                     {
-                        if (($contMV > 0) && ($contMV <> count($prodRelacionados[0]['Itens'])) && (($contMV % 4) == 0))
+                        $produto = ($tipoProdutos == "relacionados") ? $relacionado : $relacionado['Produto'];
+                        
+                        if (($contMV > 0) && ($contMV <> count($listaProdutos)) && (($contMV % 4) == 0))
                         {
                             echo "</div></div><div class=\"item\"><div class=\"row\">";
                         }
                         
-                        if ($maisvendidos['Produto']['PercentualDesconto'] > 0)
+                        if ($produto['PercentualDesconto'] > 0)
                         {
                             $label = "p-label-off" . $contMV;
-                            $content = round($maisvendidos['Produto']['PercentualDesconto']) . "% OFF";
+                            $content = floor($relacionado['PercentualDesconto']) . "% OFF";
                             $color = "#ff6666";
                         }
-                        elseif ($maisvendidos['Produto']['Lancamento'] == TRUE)
+                        elseif ($produto['Lancamento'] == TRUE)
                         {
                             $label = "p-label-new" . $contMV;
                             $content = "NEW";
@@ -474,15 +478,15 @@ if (!empty($prodRelacionados))
                     ?>
                         <div class="col-md-3 p-thumb">
                             <div class="<?= $label ?>">
-                                <a href="/produto?id=<?= $maisvendidos['Produto']['ID'] ?>">
-                                    <img src="<?= $maisvendidos['Produto']['Imagem'] ?>" />
+                                <a href="/produto?id=<?= $produto['ID'] ?>">
+                                    <img src="<?= $produto['Imagem'] ?>" />
                                 </a>
-                                <a href="/produto?id=<?= $maisvendidos['Produto']['ID'] ?>" title="<?= (strlen($maisvendidos['Produto']['Descricao']) > 35) ? $maisvendidos['Produto']['Descricao'] : "" ?>">
-                                    <span><?= (strlen($maisvendidos['Produto']['Descricao']) > 35) ? substr($maisvendidos['Produto']['Descricao'],0,32) . "..." : $maisvendidos['Produto']['Descricao'] ?></span>
+                                <a href="/produto?id=<?= $produto['ID'] ?>" title="<?= (strlen($produto['Descricao']) > 35) ? $produto['Descricao'] : "" ?>">
+                                    <span><?= (strlen($produto['Descricao']) > 35) ? substr($produto['Descricao'], 0, 32) . "..." : $produto['Descricao'] ?></span>
                                 </a>
-                                <a href="/produto?id=<?= $maisvendidos['Produto']['ID'] ?>">
-                                    <span><?= $maisvendidos['Produto']['Marca']['Descricao'] ?></span>
-                                    <span><?= (!empty($maisvendidos['Produto']['PrecoDePor'])) ? "<s>" . formatar_moeda($maisvendidos['Produto']['PrecoDePor']['PrecoDe']) . "</s> | " : "" ?><?= formatar_moeda($maisvendidos['Produto']['PrecoVigente']) ?></span>
+                                <a href="/produto?id=<?= $produto['ID'] ?>">
+                                    <span><?= $produto['Marca']['Descricao'] ?></span>
+                                    <span><?= (!empty($produto['PrecoDePor']['PrecoDe'])) ? "<s>" . formatar_moeda($produto['PrecoDePor']['PrecoDe']) . "</s> | " : "" ?><?= formatar_moeda($produto['PrecoVigente']) ?></span>
                                 </a>
                                 <style type="text/css">
                                     .row div.p-thumb .<?= $label ?>::before{

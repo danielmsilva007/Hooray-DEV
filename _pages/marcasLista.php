@@ -97,8 +97,10 @@ $listaMarcas = getRest($endPoint['marcas']);
 
 <div class="make-space-bet"></div>
 
+<!--
 <section class="customize clearfix">
     <div><a href="">Customize sua prancha</a></div>
 </section>
+-->
 
 <div class="make-space-bet"></div>
