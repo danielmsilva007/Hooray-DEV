@@ -70,7 +70,7 @@ if (!defined('HoorayWeb'))
                                 <div class="form-group"><input type="text" class="form-control" name="loginEmailCK" id="loginEmailCK" placeholder="E-mail" required="required" /></div>
                                 <div class="form-group"><input type="password" class="form-control" name="loginSenhaCK" id="loginSenhaCK" placeholder="Senha" required="required" /></div>
                                 <div class="text-center" id="resultBearerCK"></div>
-                                <div class="text-center form-group"><button type="submit" class="btn btn-lg btn-primary">ENTRAR E FINALIZAR A COMPRA</button></div>
+                                <div class="text-center form-group"><button type="submit" class="btn btn-lg btn-primary">ENTRAR E COMPRAR</button></div>
                             </form>
                         </div>
                     </div>

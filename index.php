@@ -593,24 +593,24 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                             //1 = popup: Link para site externo                            
                             foreach ((array) $rodape['Itens'] as $item)
                             {
-                                if ($item['ID'] == "58")
+                                if ($item['ID'] == "58") //minha conta
                                 {
                                 ?>    
                                     <li><a href="/minhaconta"><?= $item['Descricao'] ?></a></li>
                                 <?php
                                 }
-                                elseif ($item['ID'] == "48")
-                                {
-                                ?>
-                                    <li><a href="/marketplace"><?= $item['Descricao'] ?></a></li>
-                                <?php
-                                }
-                                elseif ($item['ID'] == "41")
+                                elseif ($item['ID'] == "41") // contato
                                 {
                                 ?>
                                     <li><a href="/contato"><?= $item['Descricao'] ?></a></li>
                                 <?php
                                 }                                
+                                elseif ($item['ID'] == "48") // marketplace
+                                {
+                                ?>
+                                    <li><a href="/marketplace"><?= $item['Descricao'] ?></a></li>
+                                <?php
+                                }
                                 else
                                 {
                                     if ($item['Html'] == "#")
@@ -841,7 +841,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
 	<script type="text/javascript">$("#enlarge").zoom();</script>
         
         <?php
-        if (!empty($tipoBusca))
+        if (!empty($tipoBusca)) // script para filtro de preço nas pagina de busca
         {
         ?>
             <script type="text/javascript">
@@ -876,7 +876,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
         ?>
         
         <?php
-        if (in_array($paginas[1], ['recursos', 'sobreahooray']))
+        if (in_array($paginas[1], ['recursos', 'sobreahooray'])) // ancoragem das paginas de ajuda
         {
         ?>
             <script type="text/javascript">

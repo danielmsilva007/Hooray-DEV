@@ -46,26 +46,36 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
         
         $dadosBusca['FaixaPreco'] = $faixaPreco;
     }
-
-    $resultadoBusca = sendRest($endPoint['busca'], $dadosBusca, "POST");
     
-    echo "<ul class=\"list-inline\" id=\"itensGrid\">";
+    $resultadoBusca = sendRest($endPoint['busca'], $dadosBusca, "POST");
+
     if (!empty($resultadoBusca['ProdutoBuscaItens']) && count($resultadoBusca['ProdutoBuscaItens']) > 0)
     {
+        echo "<ul class=\"list-inline\" id=\"itensGrid\">";
+        
+        $contFiltro = 0;
         foreach ((array) $resultadoBusca['ProdutoBuscaItens'] as $produtoBusca)
         {
+            if ($produtoBusca['PrecoDe'] > 0)
+            {
+                $label = " p-label-off" . $contFiltro;
+                $content = floor($produtoBusca['PercentualDesconto']) . "% OFF";
+                $color = "#ff6666";
+            }
+            else
+            {
+                $label = "";
+                $content = "";
+                $color = "";
+            }
         ?>    
             <li>
                 <a href="/produto?id=<?= $produtoBusca['ID'] ?>">
-                    <div class="list-wrapper">
+                    <div class="list-wrapper<?= $label ?>">
                         <img class="img-responsive" src="<?= $produtoBusca['Imagem'] ?>" />
                         <div class="vitrine-produtos-titulo"><?= $produtoBusca['Descricao'] ?></div>
                         <div class="vitrine-produtos-marca"><?= $produtoBusca['Marca'] ?></div>
                         <?php
-                        //$indexEmEstoque = array_search("0", array_column($produtoBusca['Skus'], 'Disponibilidade'));
-                        //$indexSobEncomenda = array_search("1", array_column($produtoBusca['Skus'], 'Disponibilidade'));
-                        //$indexIndisponivel = array_search("2", array_column($produtoBusca['Skus'], 'Disponibilidade'));
-                        //if ($indexEmEstoque === false && $indexSobEncomenda === false) // nao retornou em estoque nem sobencomenda
                         if ($produtoBusca['Disponibilidade'] == 2)
                         {
                         ?>
@@ -78,30 +88,42 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
                             <div class="vitrine-produtos-preco"><?= (!empty($produtoBusca['PrecoDe'])) ? "<s>" . formatar_moeda($produtoBusca['PrecoDe']). "</s> | " : "" ?><b><?= formatar_moeda($produtoBusca['PrecoVigente']) ?></b></div>
                         <?php
                         }
-                        //if (!empty($produtoBusca['Caracteristicas']))
-                        //{
-                        //    $indexVitrine = array_search("Vitrine", array_column($produtoBusca['Caracteristicas'], 'Descricao'));
-                        //}
-                        //$vitrine = (!empty($indexVitrine) && is_numeric($indexVitrine)) ? $produtoBusca['Caracteristicas'][$indexVitrine]['Valor'] : "&nbsp;";
                         $vitrine = "&nbsp;";
                         ?>
                         <div class="vitrine-produtos-tamanho"><?= $vitrine ?></div>
+                        <?php
+                        if (!empty($label))
+                        {
+                        ?>
+                            <style type="text/css">
+                                    .list-inline div.<?= trim($label) ?>::before{
+                                        content: "<?= $content ?>" !important;
+                                        position: absolute;
+                                        top: 0;
+                                        left: 5px;
+                                        color: <?= $color ?>;
+                                        font-weight: lighter;
+                                        font-family: 'PT Sans Narrow', sans-serif;
+                                    }
+                            </style>                            
+                        <?php
+                        }
+                        ?>
                     </div>
                 </a>
             </li>
     <?php    
+            $contFiltro ++;
         }
+        echo "</ul>";
     }
     else
     {
     ?>
-        <li>
-            <div class="list-wrapper">
-                <img class="img-responsive" src="/images/site/buscasemresultados.png" />
-            </div>
-        </li>
+        <div class="list-wrapper">
+            <img class="img-responsive" src="/images/site/buscasemresultados.png" />
+        </div>
     <?php
     }
-    echo "</ul>";
 }
 ?>

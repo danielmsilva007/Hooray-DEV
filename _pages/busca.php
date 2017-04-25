@@ -165,7 +165,9 @@ else
                     item = ' itens';
                 }
                 
-                $('#countResult').html($(resultadoBusca).children().length + item);
+                //$('#countResult').html($(resultadoBusca).children().length + item);
+                $('#countResult').html($('#gridBusca ul li').length + item);
+                snapSlider.noUiSlider.set([<?= $minPreco ?>,<?= $maxPreco ?>]);
             });
         }
     
@@ -200,7 +202,8 @@ else
                     item = ' itens';
                 }
                 
-                $('#countResult').html($(resultadoBusca).children().length + item);
+                //$('#countResult').html($(resultadoBusca).children().length + item);
+                $('#countResult').html($('#gridBusca ul li').length + item);
             });
             
             
@@ -347,7 +350,7 @@ else
                 </div>
                 <!-- end facets -->            
 
-                <div id="gridBusca">
+                <div id="gridBusca" class="busca-centro">
                     <ul class="list-inline" id="itensGrid">
                     </ul>
                 </div>
@@ -358,15 +361,7 @@ else
     ?>
     
     <script type="text/javascript">
-        $('#gridBusca').html('<?= $esperaResultado ?>');
-        
-        $.post('/_pages/filtro.php', {posttipobusca:'<?= $tipoBusca ?>',
-                                      posttermobusca:'<?= $postBusca ?>',
-                                      posttipofiltro:'<?= md5("buscaProduto") ?>'},
-        function(resultadoBusca)
-        {
-            $('#gridBusca').html(resultadoBusca);
-        });
+        filtrarBusca(-1);
     </script>
     
     <?php

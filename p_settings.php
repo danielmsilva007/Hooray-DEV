@@ -146,7 +146,6 @@ function sendRest(string $url, array $dados, string $metodo)
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $metodo);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dados));
-    //curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($dados));
 
     $response = curl_exec($ch);
     

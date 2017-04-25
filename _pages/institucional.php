@@ -47,6 +47,12 @@ if (!empty($phpGet))
                                             <a class="ancora" href="/contato">
                                         <?php
                                         }
+                                        elseif ($item['ID'] == 48) 
+                                        {
+                                        ?>
+                                            <a class="ancora" href="/marketplace">
+                                        <?php
+                                        }
                                         else
                                         {
                                         ?>
@@ -83,7 +89,7 @@ if (!empty($phpGet))
             {
                 foreach ((array) $institucional['Itens'] as $item)
                 {
-                    if (in_array($item['ID'],['42','47','48'])) // TODO colocar flag no Expert para indicar se a sessão será exibida.
+                    if (in_array($item['ID'],['42','47'])) // TODO colocar flag no Expert para indicar se a sessão será exibida.
                     {
         ?>
                     <a name="<?= $item['ID'] ?>"></a>

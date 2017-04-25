@@ -289,7 +289,7 @@ if (!empty($phpPost['addwhislist']))
                         {
                             echo "<h6>Em estoque</h6>";
                         }
-                        elseif ($indexEmEstoque !== false)
+                        elseif ($indexSobEncomenda !== false)
                         {
                             echo "<h6>Sob encomenda</h6>";
                         }
