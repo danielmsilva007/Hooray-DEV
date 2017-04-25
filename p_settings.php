@@ -4,9 +4,10 @@ if (!defined('HoorayWeb'))
     die;
 }
 
-define ('URLSite', 'http://localhost:8000/');
+//define ('URLSite', 'http://localhost:8000/');
 //define ('URLSite', 'http://dev.hooray.com.br/');
-define ('URLWebAPI', 'http://qasloja.hooray.com.br/');
+define ('URLSite', 'https://www.hooray.com.br/');
+define ('URLWebAPI', 'https://prdloja.hooray.com.br/');
 
 $endPoint = ['token'           => URLWebAPI . "Token",
             'login'            => URLWebAPI . "v1/login/",
@@ -112,6 +113,7 @@ function login (string $url, string $bearer)
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
     
     $result = curl_exec($ch);
     
@@ -129,6 +131,7 @@ function getRest(string $url)
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 
     $response = curl_exec($ch);
     $retornoArray = json_decode($response, TRUE);
@@ -146,6 +149,7 @@ function sendRest(string $url, array $dados, string $metodo)
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $metodo);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dados));
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 
     $response = curl_exec($ch);
     

@@ -456,13 +456,13 @@ if (!empty($prodRelacionados))
                             echo "</div></div><div class=\"item\"><div class=\"row\">";
                         }
                         
-                        if ($produto['PercentualDesconto'] > 0)
+                        if (!empty($produto['PercentualDesconto']) && $produto['PercentualDesconto'] > 0)
                         {
                             $label = "p-label-off" . $contMV;
                             $content = floor($relacionado['PercentualDesconto']) . "% OFF";
                             $color = "#ff6666";
                         }
-                        elseif ($produto['Lancamento'] == TRUE)
+                        elseif (!empty($produto['Lancamento']))
                         {
                             $label = "p-label-new" . $contMV;
                             $content = "NEW";

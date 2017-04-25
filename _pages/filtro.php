@@ -56,11 +56,17 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
         $contFiltro = 0;
         foreach ((array) $resultadoBusca['ProdutoBuscaItens'] as $produtoBusca)
         {
-            if ($produtoBusca['PrecoDe'] > 0)
+            if (!empty($produtoBusca['PrecoDe']) && $produtoBusca['PrecoDe'] > 0)
             {
                 $label = " p-label-off" . $contFiltro;
                 $content = floor($produtoBusca['PercentualDesconto']) . "% OFF";
                 $color = "#ff6666";
+            }
+            elseif (!empty($produtoBusca['Lancamento']))
+            {
+                $label = " p-label-new" . $contMV;
+                $content = "NEW";
+                $color = "#66b3ff";                
             }
             else
             {
@@ -88,7 +94,7 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
                             <div class="vitrine-produtos-preco"><?= (!empty($produtoBusca['PrecoDe'])) ? "<s>" . formatar_moeda($produtoBusca['PrecoDe']). "</s> | " : "" ?><b><?= formatar_moeda($produtoBusca['PrecoVigente']) ?></b></div>
                         <?php
                         }
-                        $vitrine = "&nbsp;";
+                        $vitrine = (!empty($produtoBusca['SubCategoriaDescricao'])) ? $produtoBusca['SubCategoriaDescricao']  : "&nbsp;";
                         ?>
                         <div class="vitrine-produtos-tamanho"><?= $vitrine ?></div>
                         <?php

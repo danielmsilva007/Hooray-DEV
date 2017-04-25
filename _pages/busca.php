@@ -151,6 +151,8 @@ else
             $('#gridBusca').html('<?= $esperaResultado ?>');
     
             document.getElementById('filtrosBusca').reset();
+            $('#postvalormin').val(<?= $minPreco ?>);
+            $('#postvalormax').val(<?= $maxPreco ?>);
     
             $.post('/_pages/filtro.php', {posttipobusca:'<?= $tipoBusca ?>',
                                           posttermobusca:'<?= $postBusca ?>',
@@ -328,7 +330,7 @@ else
                                         foreach ((array) $filtro['Opcoes'] as $opcao)
                                         {
                                         ?>
-                                            <label><input type="checkbox" name="<?= $filtro['TipoID'] . $opcao['ValorID'] ?>" value="<?= $filtro['TipoID'] . '##' . $opcao['ValorID'] ?>" onclick="filtrarBusca(-1);"> <?= $opcao['Valor'] ?></label>
+                                            <label><input type="checkbox" name="<?= $filtro['TipoID'] . "_" . $opcao['ValorID'] ?>" value="<?= $filtro['TipoID'] . '##' . $opcao['ValorID'] ?>" onclick="filtrarBusca(-1);"> <?= $opcao['Valor'] ?></label>
                                         <?php
                                         }
                                         ?>

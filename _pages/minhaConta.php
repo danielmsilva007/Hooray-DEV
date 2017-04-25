@@ -664,7 +664,7 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                         <div class="conta-painel">
                             <div class="row">
                                 <div class="col-md-3">
-                                    Pedido: <?= $pedido['ID'] ?>
+                                    Pedido: <?= $pedido['Numero'] ?>
                                 </div>
                                 <div class="col-md-3">
                                     Data: <?= date_format(date_create($pedido['DataVenda']), "d/m/Y") ?>

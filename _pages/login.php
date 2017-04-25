@@ -15,6 +15,7 @@ if (!empty($phpPost['postlogin']))
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 
     $response = curl_exec($ch);
 

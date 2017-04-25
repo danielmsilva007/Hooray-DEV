@@ -170,13 +170,13 @@ if (!defined('HoorayWeb'))
                             echo "</div></div><div class=\"item\"><div class=\"row\">";
                         }
                         
-                        if ($maisvendidos['Produto']['PercentualDesconto'] > 0)
+                        if (!empty($maisvendidos['Produto']['PercentualDesconto']) && $maisvendidos['Produto']['PercentualDesconto'] > 0)
                         {
                             $label = "p-label-off" . $contMV;
                             $content = floor($maisvendidos['Produto']['PercentualDesconto']) . "% OFF";
                             $color = "#ff6666";
                         }
-                        elseif ($maisvendidos['Produto']['Lancamento'] == TRUE)
+                        elseif (!empty($maisvendidos['Produto']['Lancamento']))
                         {
                             $label = "p-label-new" . $contMV;
                             $content = "NEW";
@@ -244,11 +244,11 @@ if (!defined('HoorayWeb'))
         ?>            
             <div class="cat-col-4">
                 <div class="cat-col-col">
-                    <div><?= $secoes['Descricao'] ?></div>
+                    <div><a href="#"><?= $secoes['Descricao'] ?></a></div>
                     <?php
                     foreach ((array) $secoes['Categorias'] as $subtitulo) 
                     {                        
-                        echo "<div><a href=\"" . $subtitulo['ID'] . "\">" . $subtitulo['Descricao'] . "</a></div>";
+                        echo "<div><a href=\"/categoria?id=" . $subtitulo['ID'] . "\">" . $subtitulo['Descricao'] . "</a></div>";
                     }
                     ?>                        
                 </div>
