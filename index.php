@@ -546,8 +546,15 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 include_once ("/_pages/minhaConta.php");
                 break;
 
-            case "recuperarsenha" :
-                include_once ("/_pages/recuperarSenha.php");
+            case "login" :
+                if (!empty($paginas[2]) && strtolower($paginas[2]) == "recuperarsenha")
+                {
+                    include_once ("/_pages/recuperarSenha.php");
+                }
+                else
+                {
+                    include_once ("/_pages/404.php");
+                }
                 break;            
             
             case "carrinho" :
@@ -704,7 +711,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                     </div>
                                     <button type="submit" class="btn btn-lg">ENTRAR</button>
                                 </form>
-                                <form name="autForm" id="autForm" method="post" action="<?= $URISite ?>">
+                                <form name="autForm" id="autForm" method="post" action="<?= (!empty($paginas[2]) && strtolower($paginas[2]) == "recuperarsenha") ? "/" : $URISite ?>">
                                     <input type="hidden" name="loginResult" id="loginResult" value="<?= md5("login") ?>">
                                     <input type="hidden" name="addwhislist" id="addwhislist" value="0">
                                 </form>

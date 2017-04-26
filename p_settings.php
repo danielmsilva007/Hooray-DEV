@@ -4,9 +4,9 @@ if (!defined('HoorayWeb'))
     die;
 }
 
-//define ('URLSite', 'http://localhost:8000/');
+define ('URLSite', 'http://localhost:8000/');
 //define ('URLSite', 'http://dev.hooray.com.br/');
-define ('URLSite', 'https://www.hooray.com.br/');
+//define ('URLSite', 'https://www.hooray.com.br/');
 define ('URLWebAPI', 'https://prdloja.hooray.com.br/');
 
 $endPoint = ['token'           => URLWebAPI . "Token",
