@@ -56,6 +56,7 @@ $esperaResultado = '<div class="panel-heading">Atualizando seu carrinho...</div>
         function(dataCarrinho)
         {
             $('#dadosCarrinho').html(dataCarrinho);
+            atualizarFrete();
         });                
     }    
     

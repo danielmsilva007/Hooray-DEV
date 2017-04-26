@@ -6,13 +6,13 @@ if (!defined('HoorayWeb'))
 
 $phpGet = filter_input_array(INPUT_GET);
 
-if (empty($phpGet['loginid']) || empty($phpGet['cod']))
+if (empty($phpGet['ID']) || empty($phpGet['ticket']))
 {
     include_once ("/_pages/404.php");
 }
 else
 {
-    $recuperarSenha = getRest(str_replace(['{IDLogin}','{IDToken}'], ['-1',$phpGet['cod']], $endPoint['tokensenha']));
+    $recuperarSenha = getRest(str_replace(["{IDLogin}","{IDToken}"], ['-1', $phpGet['ticket']], $endPoint['tokensenha']));
     
     if ($recuperarSenha)
     {
@@ -27,7 +27,7 @@ else
 
             $.post('/_pages/atualizarCadastro.php', {postnovasenha:recSenha,
                                                      postconfnovasenha:recConfSenha,
-                                                     posttoken:'<?= $phpGet['cod'] ?>',
+                                                     posttoken:'<?= $phpGet['ticket'] ?>',
                                                      postcadastrarsenha:'<?= md5("cadastrarSenha") ?>'},
             function(dataRecSenha)
             {
