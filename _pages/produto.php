@@ -399,7 +399,7 @@ if (!empty($phpPost['addwhislist']))
                         <div>
                             <a href="javascript: void(0);" onclick="window.open('https://twitter.com/intent/tweet?text=Gostei+de+um+produto+da+Hooray&url=<?= urlencode(URLSite . ltrim($URISite,"/")) ?>&hashtags=hooraybrasil','twitter', 'toolbar=0, status=0, width=650, height=450');"><img src="/images/site/hooray_twitter.png" border="0"></a>
                             &nbsp;&nbsp;
-                            <a href="javascript: void(0);" onclick="window.open('https://www.facebook.com/sharer.php?u=<?= urlencode(URLSite . ltrim($URISite,"/")) ?>$t=Gostei+de+um+produto+da+Hooray','twitter', 'toolbar=0, status=0, width=650, height=450');"><img src="/images/site/hooray_facebook.png" border="0"></a>
+                            <a href="javascript: void(0);" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=<?= urlencode(URLSite . ltrim($URISite,"/")) ?>','facebook', 'toolbar=0, status=0, width=650, height=450');"><img src="/images/site/hooray_facebook.png" border="0"></a>
                         </div>
                     </div>
                 </form>
@@ -487,6 +487,7 @@ if (!empty($prodRelacionados))
                                 <a href="/produto?id=<?= $produto['ID'] ?>">
                                     <span><?= $produto['Marca']['Descricao'] ?></span>
                                     <span><?= (!empty($produto['PrecoDePor']['PrecoDe'])) ? "<s>" . formatar_moeda($produto['PrecoDePor']['PrecoDe']) . "</s> | " : "" ?><?= formatar_moeda($produto['PrecoVigente']) ?></span>
+                                    <span><?= (!empty($produto['SubCategoria']['Descricao'])) ? $produto['SubCategoria']['Descricao'] : "&nbsp;" ?></span>
                                 </a>
                                 <style type="text/css">
                                     .row div.p-thumb .<?= $label ?>::before{

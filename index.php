@@ -620,23 +620,30 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                 }
                                 else
                                 {
-                                    if ($item['Html'] == "#")
+                                    if ($item['Ferramentas'] == 2)
                                     {
-                                        $abreLink = '';
-                                        $fechaLink = '';
+                                        echo "<li>" . $item['Html'] . "</li>";
                                     }
-                                    else
+                                    else 
                                     {
-                                        $abreLink  = '<a href="';
-                                        $abreLink .= ($item['Ferramentas'] == 1) ? $item['Html'] : "/" . str_replace(" ", "", $rodape['Descricao']) . "?secao=" . $item['ID'] . "#" . $item['ID'];
-                                        $abreLink .= '"';
-                                        $abreLink .= ($item['Ferramentas'] == 1) ? " target=\"_blank\"" : "";
-                                        $abreLink .= '>';
-                                        $fechaLink = '</a>';
-                                    }
-                                ?>
-                                    <li><?= $abreLink ?><?= $item['Descricao'] ?><?= $fechaLink ?></li>
+                                        if ($item['Html'] == "#")
+                                        {
+                                            $abreLink = '';
+                                            $fechaLink = '';
+                                        }
+                                        else
+                                        {
+                                            $abreLink  = '<a href="';
+                                            $abreLink .= ($item['Ferramentas'] == 1) ? $item['Html'] : "/" . str_replace(" ", "", $rodape['Descricao']) . "?secao=" . $item['ID'] . "#" . $item['ID'];
+                                            $abreLink .= '"';
+                                            $abreLink .= ($item['Ferramentas'] == 1) ? " target=\"_blank\"" : "";
+                                            $abreLink .= '>';
+                                            $fechaLink = '</a>';
+                                        }
+                                    ?>
+                                        <li><?= $abreLink ?><?= $item['Descricao'] ?><?= $fechaLink ?></li>
                                 <?php
+                                    }
                                 }
                             }
                             ?>

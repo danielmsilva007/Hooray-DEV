@@ -336,7 +336,7 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
                             "Hash" => ($phpPost['pgFormaPgto'] == "zero") ? $phpPost['pgHash'] : ""
                     ],
     ];
-    
+
     $finalizarPedido = sendRest($endPoint['checkout'], $dadosPedido, "POST");
     
     if (empty($finalizarPedido['Gravou']))

@@ -669,10 +669,11 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                 <div class="col-md-3">
                                     Data: <?= date_format(date_create($pedido['DataVenda']), "d/m/Y") ?>
                                 </div>
-                                <div class="col-md-3">
-                                    Valor pedido: <?= formatar_moeda($pedido['ValorTotal']) ?>
+                                <div class="col-md-5">
+                                    Valor: <?= formatar_moeda($pedido['ValorTotal']) ?>
+                                    <?= (!empty($pedido['UrlImpressaoBoleto'])) ? " <a href=\"" . $pedido['UrlImpressaoBoleto'] . "\" target=\"_blank\">(baixar boleto)</a>" : "" ?>
                                 </div>
-                                <div class="col-md-3 text-right">
+                                <div class="col-md-1 text-right">
                                     <a href="#meus-ped-hide-<?= $pedido['ID'] ?>" class="conta-painel-toggle" data-toggle="collapse">
                                         <?= count($itensPedido[0]['PedidoItens']) ?> <?= (count($itensPedido[0]['PedidoItens']) > 1) ? "Itens" : "Item" ?>
                                     </a>
@@ -1059,7 +1060,12 @@ else //não logado ou login expirado
                                     <input type="password" name="cadConfSenhaMC" id="cadConfSenhaMC" class="form-control" placeholder="Senha" required="required" />
                                 </div>
                             </div>
-                            
+                            <div class="form-group row">
+                                <label class="control-label col-sm-3">CEP</label>
+                                <div class="col-sm-9 col-md-6">
+                                    <input type="text" name="cadConfSenhaMC" id="cadConfSenhaMC" class="form-control" placeholder="CEP" required="required" />
+                                </div>
+                            </div>                            
                             <div class="col-sm-12 col-md-12" id="resultCadastroMC"></div>
 
                             <button type="reset" class="btn btn-default">Cancelar</button>
