@@ -173,6 +173,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 });
             }
         </script>
+        <?php include_once ("/_pages/analyticstracking.php"); ?>
     </head>
     <body>
 

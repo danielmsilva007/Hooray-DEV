@@ -408,7 +408,7 @@ if (!empty($phpPost['posttipoedicao']) && $phpPost['posttipoedicao'] == md5("fin
 
                                     echo "<span>Valor total do pedido: " . formatar_moeda($valorBoleto) . "</span>";
 
-                                    echo "<div><a href=\"" . $finalizarPedido['RetornoGateway']['Redirect'] . "\" target=\"_blank\" class=\"btn btn-lg btn-primary\">Baixar o boleto</a></div>";
+                                    echo "<div><a href=\"" . $finalizarPedido['RetornoGateway']['Redirect'] . "/print\" target=\"_blank\" class=\"btn btn-lg btn-primary\">Baixar o boleto</a></div>";
                                 }
                                 ?> 
                             <?php

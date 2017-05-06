@@ -55,6 +55,10 @@ if (!empty($phpPost['postenviarcadcompleto']) && $phpPost['postenviarcadcompleto
     
     $numTel = preg_replace('/\D/', '', $phpPost['posttelefone']);
     
+    $cepTratado = preg_replace('/\D/', '', $phpPost['postcep']);
+    $cepConsulta = (!empty($cepTratado)) ? $cepTratado : "0";
+    $enderecoPorCEP = getRest(str_replace("{CEP}", $cepConsulta, $endPoint['enderecoporcep']));    
+    
     if (trim($phpPost['postnome']) == "")
     {
         echo "!!Por favor informe seu nome.";
@@ -80,6 +84,34 @@ if (!empty($phpPost['postenviarcadcompleto']) && $phpPost['postenviarcadcompleto
     {
         echo "!!Por favor informe o CPF com 11 digitos.";
     }
+    elseif (trim($phpPost['postcep']) == "")
+    {
+        echo "!!Por favor informe o CEP.";
+    }
+    elseif (empty($enderecoPorCEP))
+    {
+        echo "!!O CEP informado é inválido.";
+    }
+    elseif (trim($phpPost['postlogradouro']) == "")
+    {
+        echo "!!Por favor informe o CEP e clique em \"Buscar endereço\"";
+    }
+    elseif (trim($phpPost['postendnumero']) == "")
+    {
+        echo "!!Por favor informe o número.";
+    }
+    elseif (trim($phpPost['postbairro']) == "")
+    {
+        echo "!!Por favor informe o bairro.";
+    }
+    elseif (trim($phpPost['postcidade']) == "")
+    {
+        echo "!!Por favor informe o CEP e clique em \"Buscar endereço\"";
+    }
+    elseif (trim($phpPost['postuf']) == "")
+    {
+        echo "!!Por favor informe o CEP e clique em \"Buscar endereço\"";
+    }    
     elseif ($phpPost['postsenha'] != $phpPost['postconfsenha'])
     {
         echo "!!As senhas informadas não coincidem.";
@@ -104,8 +136,38 @@ if (!empty($phpPost['postenviarcadcompleto']) && $phpPost['postenviarcadcompleto
             ];
         
         $fazerCadastro = sendRest($endPoint['cadastroparte1'], $dadosCadastro, "POST");
-    
-        echo ($fazerCadastro['Erro']) ? "!!" . $fazerCadastro['Mensagem'] : $fazerCadastro['Mensagem'] . " Faça seu login e boas compras.";
+        
+        if (!empty($fazerCadastro['Erro']))
+        {
+            echo "!!" . $fazerCadastro['Mensagem'];
+        }
+        else
+        {
+            $dadosEnderecoPrincipal = ["ParceiroID" => $fazerCadastro['ParceiroID'],
+                                        "Destinatario" => $phpPost['postnome'],
+                                        "Identificacao" => "Endereço Principal",
+                                        "CEP" => $cepTratado,
+                                        "Logradouro" => $phpPost['postlogradouro'],
+                                        "Numero" => $phpPost['postendnumero'],
+                                        "Complemento" => (!empty($phpPost['postcomplemento'])) ? $phpPost['postcomplemento'] : "",
+                                        "Bairro" => $phpPost['postbairro'],
+                                        "CidadeID" => $enderecoPorCEP['Cidade']['ID'],
+                                        "Principal" => TRUE,
+                ];
+
+            $cadastrarEndereco = sendRest($endPoint['addendereco'], $dadosEnderecoPrincipal, "POST");
+            
+            if (!empty($cadastrarEndereco['ID']))
+            {
+                $endPadrao = sendRest(str_replace("{IDEndereco}", $cadastrarEndereco['ID'], $endPoint['endpadrao']), [], "PUT");
+                
+                echo $fazerCadastro['Mensagem'] . " Faça seu login e boas compras.";
+            }
+            else
+            {
+                echo "!!Erro ao cadastrar endereço.";
+            }            
+        }
     }
 }    
 
