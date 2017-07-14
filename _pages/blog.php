@@ -27,11 +27,11 @@ $artigosDestaque = getRest(str_replace(['{IDBlog}','{count}'], [$dadosBlog['ID']
                     {
                     ?>
                         <div class="col-md-12">
-                            <a href="/blogpost?id=<?= $artigosDestaque['Artigos']['0']['ID'] ?>">
+                            <a href="/blogpost/<?= $artigosDestaque['Artigos']['0']['SEO'] ?>">
                                 <img src="<?= $artigosDestaque['Artigos']['0']['Imagem'] ?>" title="<?= $artigosDestaque['Artigos']['0']['Titulo'] ?>"/>
                             </a>
                             <span>(<?= date_format(date_create($artigosDestaque['Artigos']['0']['Data']), "d.m.Y") ?>)</span>
-                            <a href="/blogpost?id=<?= $artigosDestaque['Artigos']['0']['ID'] ?>">
+                            <a href="/blogpost/<?= $artigosDestaque['Artigos']['0']['SEO'] ?>">
                                 <?= $artigosDestaque['Artigos']['0']['Titulo'] ?>
                             </a>
                         </div>
@@ -54,11 +54,11 @@ $artigosDestaque = getRest(str_replace(['{IDBlog}','{count}'], [$dadosBlog['ID']
                         }
                     ?>
                         <div class="col-md-6">
-                            <a href="/blogpost?id=<?= $artigo['ID'] ?>">
+                            <a href="/blogpost/<?= $artigo['SEO'] ?>">
                                 <img src="<?= $artigo['Imagem'] ?>" title="<?= $artigo['Titulo'] ?>"/>
                             </a>
                             <span>(<?= date_format(date_create($artigo['Data']), "d.m.Y") ?>)</span>
-                            <a href="/blogpost?id=<?= $artigo['ID'] ?>">
+                            <a href="/blogpost/<?= $artigo['SEO'] ?>">
                                 <?= $artigo['Titulo'] ?>
                             </a>
                         </div>
@@ -85,7 +85,7 @@ $artigosDestaque = getRest(str_replace(['{IDBlog}','{count}'], [$dadosBlog['ID']
                             $categoriasBlog = getRest($endPoint['blogcategorias']);
                             foreach ((array) $categoriasBlog  as $categoria)
                             {
-                                echo "<li><a href=\"/blogcategoria?id=" . $categoria['ID'] .  "\">" . $categoria['Descricao'] . "</a></li>";
+                                echo "<li><a href=\"/blogcategoria/" . $categoria['SEO'] .  "\">" . $categoria['Descricao'] . "</a></li>";
                             }
                         ?>
                     </ul>
@@ -102,7 +102,7 @@ $artigosDestaque = getRest(str_replace(['{IDBlog}','{count}'], [$dadosBlog['ID']
                         ?>
                             <li>
                                 <span>(<?= date_format($dataPost,"d.m.Y") ?>)</span>
-                                <a href="/blogpost?id=<?= $recente['ID'] ?>"><?= $recente['Titulo'] ?></a>
+                                <a href="/blogpost/<?= $recente['SEO'] ?>"><?= $recente['Titulo'] ?></a>
                             </li>
                         <?php
                             $contPost ++;
@@ -117,3 +117,4 @@ $artigosDestaque = getRest(str_replace(['{IDBlog}','{count}'], [$dadosBlog['ID']
     <div class="make-space-bet clearfix"></div>
 
 </div>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

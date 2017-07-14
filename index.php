@@ -80,14 +80,15 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name ="description" content="As melhores marcas de equipamentos esportivos outdoor, você encontra aqui na Hooray. Surf, Stand Up Paddle, Kite, Wakeboard, Canoa, Kayak, Windsurf, roupas e muito mais.">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>Hooray</title>
+         <title>Hooray | Esporte Outdoor</title>
 
         <!-- Bootstrap -->
         <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
         <link href="/stylesheets/rangeslider.css" rel="stylesheet" type="text/css" />
-        <link href="./javascripts/nouislider.css" rel="stylesheet" type="text/css" />
+        <link href="/javascripts/nouislider.css" rel="stylesheet" type="text/css" />
         <link href="/stylesheets/styles.css" rel="stylesheet" type="text/css" />
         <script src="/javascripts/jquery-3.1.1.js"></script>
         <script src="/javascripts/jquery.maskedinput.js"></script>
@@ -206,6 +207,16 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                     <input class="form-control" type="text" name="termobusca" placeholder="o que você procura ?" required="required" />
                                 </div>
                             </form>
+                            <!--Evandro script RD Station 31-05-17 -->
+                            <script type="text/javascript" src="https://d335luupugsy2.cloudfront.net/js/integration/stable/rd-js-integration.min.js"></script>  
+                            <script type="text/javascript">
+                                    var meus_campos = {
+                                            'termobusca': 'email'
+                                     };
+                                    options = { fieldMapping: meus_campos };
+                                    RdIntegration.integrate('19be3ce6a7bd0b40fbe376160c87784f', 'Formulário de Busca', options);  
+                            </script>
+                            <!--Evandro script RD Station 31-05-17 -->
                         </div>
                         <div class="col-xs-5">
                             <ul class="nav submenu-header">
@@ -251,6 +262,16 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                             <input class="form-control" type="text" name="termobusca" placeholder="o que você procura ?" required="required" />
                         </div>
                     </form>
+                    <!--Evandro script RD Station 31-05-17 -->
+                    <script type="text/javascript" src="https://d335luupugsy2.cloudfront.net/js/integration/stable/rd-js-integration.min.js"></script>  
+                    <script type="text/javascript">
+                            var meus_campos = {
+                                    'termobusca': 'email'
+                             };
+                            options = { fieldMapping: meus_campos };
+                            RdIntegration.integrate('19be3ce6a7bd0b40fbe376160c87784f', 'BuscaResposnsiva', options);  
+                    </script>
+                    <!--Evandro script RD Station 31-05-17 -->
                 </div>
                 
                 <div id="slidemenu" class="hidden-lg hidden-md hidden-sm">
@@ -270,13 +291,13 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                 {
                                 ?>                                                                              
                                     <li class="divider"></li>
-                                    <li><a href="/categoria?id=<?= $categoria['ID'] ?>" style="color:black;"><?= htmlentities($categoria['Descricao']) ?></a></li>
+                                    <li><a href="/categoria/<?= $categoria['SEO'] ?>" style="color:black;"><?= htmlentities($categoria['Descricao']) ?></a></li>
                             
                                     <?php
                                     foreach ((array) $categoria['Categorias'] as $subcategoria) 
                                     {
                                     ?>
-                                        <li><a href="/categoria?id=<?= $subcategoria['ID'] ?>"><?= htmlentities($subcategoria['Descricao']) ?></a></li>
+                                        <li><a href="/categoria/<?= $subcategoria['SEO'] ?>"><?= htmlentities($subcategoria['Descricao']) ?></a></li>
                                     <?php
                                     }
                                     ?>                                
@@ -304,7 +325,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                         {
                         ?>
                             <li class="_dropdown">
-                                <a href="/secao?id=<?= $secao['SecaoID'] ?>" class="dropbtn"><?= htmlentities($secao['Descricao']) ?></a>
+                                <a href="/secao/<?= $secao['SEO'] ?>" class="dropbtn"><?= htmlentities($secao['Descricao']) ?></a>
                                 <div class="dropdown-conteudo">
                                     <div class="container">
                                         <div class="row">
@@ -313,12 +334,12 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                             {
                                             ?>                                          
                                                 <ul class="col-md-2">
-                                                    <li><a href="/categoria?id=<?= $categoria['ID'] ?>" style="color:black;"><?= htmlentities($categoria['Descricao']) ?></a></li>
+                                                    <li><a href="/categoria/<?= $categoria['SEO'] ?>" style="color:black;"><?= htmlentities($categoria['Descricao']) ?></a></li>
                                                     <?php
                                                     foreach ((array) $categoria['Categorias'] as $subcategoria) 
                                                     {
                                                     ?>
-                                                        <li><a href="/categoria?id=<?= $subcategoria['ID'] ?>"><?= htmlentities($subcategoria['Descricao']) ?></a></li>
+                                                        <li><a href="/categoria/<?= $subcategoria['SEO'] ?>"><?= htmlentities($subcategoria['Descricao']) ?></a></li>
                                                     <?php
                                                     }
                                                     ?>
@@ -369,19 +390,13 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
             case "blogpost" :
                 $dadosBlog = getRest($endPoint['blog']);
                 
-                $phpGet = filter_input_array(INPUT_GET);
-                if (!empty($phpGet))
-                {
-                    $IDArtigoBlog = $phpGet[array_keys($phpGet)[0]];
-                }
-                
-                if (empty($IDArtigoBlog) || !is_numeric($IDArtigoBlog))
+                if (empty($paginas[2]))
                 {
                     include_once ("/_pages/404.php");
                 }
-                else
+                else 
                 {
-                    $detalheArtigo = getRest(str_replace("{IDArtigo}", $IDArtigoBlog , $endPoint['blogartigo']));
+                    $detalheArtigo = getRest(str_replace("{artigoBlogSEO}", $paginas[2], $endPoint['artigoblogseo']));
                     
                     if (empty($detalheArtigo))
                     {
@@ -390,28 +405,32 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                     else
                     {
                         include_once ("/_pages/blogPost.php");
-                    }
+                    }                    
                 }
                 break;            
 
             case "blogcategoria" :
                 $dadosBlog = getRest($endPoint['blog']);
                 
-                $phpGet = filter_input_array(INPUT_GET);
-                if (!empty($phpGet))
-                {
-                    $IDCategoria = $phpGet[array_keys($phpGet)[0]];
-                }
+                $SEOBlogCategoria = (!empty($paginas[2])) ? explode("-", $paginas[2]) : [];
+                $IDCategoria = array_pop($SEOBlogCategoria);
                 
-                if (empty($IDCategoria) || !is_numeric($IDCategoria))
-                {
+                if (!isset($IDCategoria) || !is_numeric($IDCategoria))
+                {                
                     include_once ("/_pages/404.php");
                 }
-                else
+                else 
                 {
                     $artigosCategoria = getRest(str_replace(["{IDBlog}", "{IDCategoria}"], [$dadosBlog['ID'], $IDCategoria], $endPoint['blogartigoscat']));
                     
-                    include_once ("/_pages/blogCategoria.php");
+                    if (empty($artigosCategoria))
+                    {
+                        include_once ("/_pages/404.php");
+                    }
+                    else
+                    {
+                        include_once ("/_pages/blogCategoria.php");
+                    }
                 }
                 break;
             
@@ -433,11 +452,8 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
             case "secao" :
                 $tipoBusca = "secao";
                 
-                $phpGet = filter_input_array(INPUT_GET);
-                if (!empty($phpGet))
-                {
-                    $IDSecao = $phpGet[array_keys($phpGet)[0]];                
-                }
+                $SEOMarca = (!empty($paginas[2])) ? explode("-", $paginas[2]) : [];
+                $IDSecao = array_pop($SEOMarca);
                 
                 if (!isset($IDSecao) || !is_numeric($IDSecao))
                 {
@@ -452,11 +468,8 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
             case "categoria" :
                 $tipoBusca = "categoria";
                 
-                $phpGet = filter_input_array(INPUT_GET);
-                if (!empty($phpGet))
-                {
-                    $IDCategoria = $phpGet[array_keys($phpGet)[0]];
-                }
+                $SEOCategoria = (!empty($paginas[2])) ? explode("-", $paginas[2]) : [];
+                $IDCategoria = array_pop($SEOCategoria);
                 
                 if (!isset($IDCategoria) || !is_numeric($IDCategoria))
                 {
@@ -480,19 +493,13 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
             case "marca" :
                 $tipoBusca = "marca";
                 
-                $phpGet = filter_input_array(INPUT_GET);
-                if (!empty($phpGet))
-                {
-                    $IDMarca = $phpGet[array_keys($phpGet)[0]];
-                }
-                
-                if (!isset($IDMarca) || !is_numeric($IDMarca))
+                if (empty($paginas[2]))
                 {
                     include_once ("/_pages/404.php");
                 }
                 else
-                {
-                    $detalheMarca = getRest(str_replace("{IDMarca}", $IDMarca, $endPoint['detalhesmarca']));
+                {                
+                    $detalheMarca = getRest(str_replace("{marcaseo}", $paginas[2], $endPoint['marcaseo']));
                     
                     if (empty($detalheMarca))
                     {
@@ -501,25 +508,19 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                     else
                     {
                         include_once ("/_pages/busca.php");
-                    }
+                     }
                 }
-                break;                                        
+                break;
                 
             case "produto" :
-                $phpGet = filter_input_array(INPUT_GET);
-                if (!empty($phpGet))
-                {
-                    $IDProduto = $phpGet[array_keys($phpGet)[0]];
-                }
-                
-                if (empty($IDProduto) || !is_numeric($IDProduto))
+                if (empty($paginas[2]))
                 {
                     include_once ("/_pages/404.php");
                 }
                 else
                 {
-                    $dadosProduto = getRest(str_replace("{IDProduto}", $IDProduto, $endPoint['produto']));
-                
+                    $dadosProduto = getRest(str_replace("{produtoseo}", $paginas[2], $endPoint['produtoseo']));
+                    
                     if (empty($dadosProduto))
                     {
                         include_once ("/_pages/404.php");
@@ -719,6 +720,15 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                     </div>
                                     <button type="submit" class="btn btn-lg">ENTRAR</button>
                                 </form>
+                                <!--Evandro script RD Station 31-05-17 -->
+                                <script type="text/javascript">
+                                    var meus_campos = {
+                                            'loginEmail': 'email'
+                                     };
+                                    options = { fieldMapping: meus_campos };
+                                    RdIntegration.integrate('19be3ce6a7bd0b40fbe376160c87784f', 'Login', options);  
+                                </script>
+                                <!--Evandro script RD Station 31-05-17 -->
                                 <form name="autForm" id="autForm" method="post" action="<?= (!empty($paginas[2]) && strtolower($paginas[2]) == "recuperarsenha") ? "/" : $URISite ?>">
                                     <input type="hidden" name="loginResult" id="loginResult" value="<?= md5("login") ?>">
                                     <input type="hidden" name="addwhislist" id="addwhislist" value="0">
@@ -742,6 +752,18 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                     <input type="hidden" name="cadastroResult" id="cadastroResult" value="<?= md5("cadastro") ?>">
                                     <button type="submit" class="btn btn-lg">CADASTRAR</button>
                                 </form>
+								
+                                <!--Evandro script RD Station 31-05-17 -->
+                                <script type="text/javascript" src="https://d335luupugsy2.cloudfront.net/js/integration/stable/rd-js-integration.min.js"></script>  
+                                <script type="text/javascript">
+                                    var meus_campos = {
+                                            'cadEmail': 'email',
+                                            'cadNome': 'nome'
+                                     };
+                                    options = { fieldMapping: meus_campos };
+                                    RdIntegration.integrate('19be3ce6a7bd0b40fbe376160c87784f', 'Formulario_Cadastro_Inicial_Cliente', options);  
+                                </script>
+                                <!--Evandro script RD Station 31-05-17 -->
                             </div>
                             <div role="tabpanel" class="tab-pane" id="tab-esqueci">
                                 <h4>Esqueci a senha</h4>
@@ -759,6 +781,17 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                                     <button type="button" onclick="recuperarSenha();" class="btn btn-lg">Enviar</button>
                                     <p class="text-left"><a href="#tab-login" aria-controls="tab-cadastre" role="tab" data-toggle="tab">Voltar</a></p>
                                 </form>
+                                <!--Evandro script RD Station 31-05-17 -->
+                                <script type="text/javascript" src="https://d335luupugsy2.cloudfront.net/js/integration/stable/rd-js-integration.min.js"></script>  
+                                <script type="text/javascript">
+                                        var meus_campos = {
+                                                'recEmail': 'email'
+                                         };
+                                        options = { fieldMapping: meus_campos };
+                                        RdIntegration.integrate('19be3ce6a7bd0b40fbe376160c87784f', 'RecuperarSenha', options);  
+                                </script>
+                                <!--Evandro script RD Station 31-05-17 -->
+								
                             </div>
                         </div>
                     </div>
@@ -884,12 +917,40 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                     $('#postvalormin').val(values[0]);
                     $('#postvalormax').val(values[1]);
                     filtrarBusca(-1);
-                });                
+                });
+            </script>
+            
+            <script type="text/javascript">
+		var snapSlider2 = document.getElementById('slider-handles2');
+
+                noUiSlider.create(snapSlider2, {
+                    start: ['<?= $minVolume ?>','<?= $maxVolume ?>'],
+                    connect: true,
+                    range: {
+                        'min': [<?= $minVolume ?>],
+                        'max': [<?= $maxVolume ?>]
+                    }
+                });
+
+                var snapValues2 = [
+                    document.getElementById('slider-snap-value-lower2'),
+                    document.getElementById('slider-snap-value-upper2')
+                ];
+
+                snapSlider2.noUiSlider.on('update', function( values2, handle2 ) {
+                    snapValues2[handle2].innerHTML = Math.round(values2[handle2]);
+                });
+                
+                snapSlider2.noUiSlider.on('change', function (values2, handle2) {
+                    $('#postvolumemin').val(values2[0]);
+                    $('#postvolumemax').val(values2[1]);
+                    filtrarBusca(-1);
+                });
             </script>
         <?php
         }
         ?>
-        
+            
         <?php
         if (in_array($paginas[1], ['recursos', 'sobreahooray'])) // ancoragem das paginas de ajuda
         {
@@ -912,6 +973,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
             </script>
         <?php  
         }
-        ?>    
+        ?>
+    <script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>   		
     </body>
 </html>

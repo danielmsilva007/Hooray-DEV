@@ -97,6 +97,13 @@
 #slider-snap-value-until {
   display: inline-block;
 }
+
+#slider-snap-value-lower2,
+#slider-snap-value-upper2,
+#slider-snap-value-until2 {
+  display: inline-block;
+}
+
 .noUi-connect {
   background: #f66;
   /*box-shadow: inset 0 0 3px rgba(51, 51, 51, 0.45);

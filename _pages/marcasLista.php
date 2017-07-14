@@ -7,6 +7,7 @@ if (!defined('HoorayWeb'))
 $listaMarcas = getRest($endPoint['marcas']);
 ?>
 
+
 <section class="site-breadcrumb">
     <div class="container">
         <div class="row">
@@ -19,6 +20,7 @@ $listaMarcas = getRest($endPoint['marcas']);
             </div>
         </div>
     </div>
+	
 </section>
 
 <section class="marcas-full cf">
@@ -53,7 +55,7 @@ $listaMarcas = getRest($endPoint['marcas']);
                 
                 array_push($listaAlfabetica[$inicioCat], $infoMarca); //adiciona ao array de lista de marcas
                         
-                echo "<li><a href=\"/marca?id=" . $marca['ID'] . "\"><img src=\"" . $marca['Logo'] . "\" /></a></li>";
+                echo "<li><a href=\"/marca/" . $marca['SEO'] . "\"><img src=\"" . $marca['Logo'] . "\" /></a></li>";
             }
             
             if (!empty($listaAlfabetica))
@@ -83,7 +85,7 @@ $listaMarcas = getRest($endPoint['marcas']);
                     <?php
                     foreach ((array) $listaAlfabetica[array_keys($listaAlfabetica)[$i]] as $nomeMarca)
                     {
-                        echo "<li><a href=\"/marca?id=" . $nomeMarca['ID'] . "\">" . $nomeMarca['Descricao'] . "</a></li>";
+                        echo "<li><a href=\"/marca/" . $nomeMarca['SEO'] . "\">" . $nomeMarca['Descricao'] . "</a></li>";
                     }
                     ?>
                 </ul>
@@ -104,3 +106,4 @@ $listaMarcas = getRest($endPoint['marcas']);
 -->
 
 <div class="make-space-bet"></div>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

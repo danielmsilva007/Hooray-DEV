@@ -141,6 +141,7 @@ if (!empty($IDCarrinho) && $IDCarrinho > 0)
                     <a href="http://www.buscacep.correios.com.br/sistemas/buscacep/BuscaCepEndereco.cfm" target="_blank">Não sei o meu CEP</a>
             </div>
             </form>
+			
         </div>
 
         <div class="footer-cart-mailling clearfix">
@@ -150,6 +151,16 @@ if (!empty($IDCarrinho) && $IDCarrinho > 0)
                     <button type="submit" class="btn btn-lg btn-primary">Finalizar a compra</button>
                 </div>
             </form>
+			   <!--Evandro script RD Station 31-05-17 -->
+				<script type="text/javascript" src="https://d335luupugsy2.cloudfront.net/js/integration/stable/rd-js-integration.min.js"></script>  
+				<script type="text/javascript">
+					var meus_campos = {
+						'mailling': 'mailling'
+					 };
+					options = { fieldMapping: meus_campos };
+					RdIntegration.integrate('19be3ce6a7bd0b40fbe376160c87784f', 'ofertas', options);  
+				</script>
+				<!--Evandro script RD Station 31-05-17 -->
         </div>
     </div>
 <?php
@@ -157,3 +168,4 @@ if (!empty($IDCarrinho) && $IDCarrinho > 0)
 ?>
 
 <div class="make-space-bet clearfix"></div>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

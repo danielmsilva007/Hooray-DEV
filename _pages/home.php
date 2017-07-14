@@ -86,7 +86,7 @@ if (!defined('HoorayWeb'))
         foreach ((array) $marcasDestaque as $marca)
         {
         ?>
-            <li><a href="/marca?id=<?= $marca['ID'] ?>"><img src="<?= $marca['Logo'] ?>" /></a></li>
+            <li><a href="/marca/<?= $marca['SEO'] ?>"><img src="<?= $marca['Logo'] ?>" /></a></li>
         <?php
         }
         ?>
@@ -120,19 +120,19 @@ if (!defined('HoorayWeb'))
                     
             if (!empty($vitrine['Produto']))
             {
-                $linkVitrine = "/produto?id=" . $vitrine['Produto']['ID'];
+                $linkVitrine = "/produto/" . $vitrine['Produto']['SEO'];
             }
             elseif (!empty($vitrine['BlogArtigo']))
             {
-                $linkVitrine = "/blogpost?id=" . $vitrine['BlogArtigo']['ID'];
+                $linkVitrine = "/blogpost/" . $vitrine['BlogArtigo']['SEO'];
             }
             elseif (!empty($vitrine['Categoria']))
             {
-                $linkVitrine = "/categoria?id=" . $vitrine['Categoria']['ID'];
+                $linkVitrine = "/categoria/" . $vitrine['Categoria']['SEO'];
             }            
             elseif (!empty($vitrine['Marca']))
             {
-                $linkVitrine = "/blogpost?id=" . $vitrine['Marca']['ID'];
+                $linkVitrine = "/marca/" . $vitrine['Marca']['SEO'];
             }
 
         ?>
@@ -192,13 +192,13 @@ if (!defined('HoorayWeb'))
                     ?>
                         <div class="col-md-3 p-thumb">
                             <div class="<?= $label ?>">
-                                <a href="/produto?id=<?= $maisvendidos['Produto']['ID'] ?>">
+                                <a href="/produto/<?= $maisvendidos['Produto']['SEO'] ?>">
                                     <img src="<?= $maisvendidos['Produto']['Imagem'] ?>" />
                                 </a>
-                                <a href="/produto?id=<?= $maisvendidos['Produto']['ID'] ?>" title="<?= (strlen($maisvendidos['Produto']['Descricao']) > 35) ? $maisvendidos['Produto']['Descricao'] : "" ?>">
+                                <a href="/produto/<?= $maisvendidos['Produto']['SEO'] ?>" title="<?= (strlen($maisvendidos['Produto']['Descricao']) > 35) ? $maisvendidos['Produto']['Descricao'] : "" ?>">
                                     <span><?= (strlen($maisvendidos['Produto']['Descricao']) > 35) ? substr($maisvendidos['Produto']['Descricao'],0,32) . "..." : $maisvendidos['Produto']['Descricao'] ?></span>
                                 </a>
-                                <a href="/produto?id=<?= $maisvendidos['Produto']['ID'] ?>">
+                                <a href="/produto/<?= $maisvendidos['Produto']['SEO'] ?>">
                                     <span><?= $maisvendidos['Produto']['Marca']['Descricao'] ?></span>
                                     <span><?= (!empty($maisvendidos['Produto']['PrecoDePor'])) ? "<s>" . formatar_moeda($maisvendidos['Produto']['PrecoDePor']['PrecoDe']) . "</s> | " : "" ?><?= formatar_moeda($maisvendidos['Produto']['PrecoVigente']) ?></span>
                                     <span><?= (!empty($maisvendidos['Produto']['SubCategoria']['Descricao'])) ? $maisvendidos['Produto']['SubCategoria']['Descricao'] : "&nbsp;" ?></span>
@@ -249,7 +249,7 @@ if (!defined('HoorayWeb'))
                     <?php
                     foreach ((array) $secoes['Categorias'] as $subtitulo) 
                     {                        
-                        echo "<div><a href=\"/categoria?id=" . $subtitulo['ID'] . "\">" . $subtitulo['Descricao'] . "</a></div>";
+                        echo "<div><a href=\"/categoria/" . $subtitulo['SEO'] . "\">" . $subtitulo['Descricao'] . "</a></div>";
                     }
                     ?>                        
                 </div>
@@ -275,7 +275,10 @@ if (!defined('HoorayWeb'))
             </div>
             <input class="form-control" type="text" name="termobusca" placeholder="o que você procura ?" required="required" />
         </div>
-    </form>	
+    </form>
+
+
+	
 </section>
 
 
@@ -327,3 +330,4 @@ $dadosEmpresa = getRest(str_replace("{IDParceiro}","1031", $endPoint['dadoscadas
         </div>
 
 </section>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

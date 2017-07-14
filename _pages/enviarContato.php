@@ -33,7 +33,7 @@ if (!empty($phpPost['postcontato']) && $phpPost['postcontato'] == md5("enviarCon
 
         if ($envioContato['Gravou']) 
         {
-            echo "Obrigado! Sua mensagem foi enviada.";
+            echo "Obrigado! Sua mensagem foi enviada." . " Número Protocolo: ". $envioContato['NumeroProtocolo'];
         } 
         else 
         {
@@ -67,3 +67,4 @@ if (!empty($phpPost['postnews']) && $phpPost['postnews'] == md5("enviarNewsLette
     }
 }
 ?>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

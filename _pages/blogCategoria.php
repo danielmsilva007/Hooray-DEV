@@ -36,7 +36,7 @@ $dadosCategoria = (!empty($artigosCategoria)) ? $artigosCategoria[0]['Categoria'
                         <div class="col-md-6">
                             <img src="<?= $artigo['Imagem'] ?>" title="<?= $artigo['Titulo'] ?>"/>
                             <span>(<?= date_format(date_create($artigo['Data']), "d.m.Y") ?>)</span>
-                            <a href="/blogpost?id=<?= $artigo['ID'] ?>"><?= $artigo['Titulo'] ?></a>
+                            <a href="/blogpost/<?= $artigo['SEO'] ?>"><?= $artigo['Titulo'] ?></a>
                         </div>
                     <?php
                         if (($contArt > 1) && ($contArt <> count($artigosCategoria)) && (($contArt % 2) == 0)) // novo row a cada duas linhas
@@ -58,7 +58,7 @@ $dadosCategoria = (!empty($artigosCategoria)) ? $artigosCategoria[0]['Categoria'
                         <button type="submit" class="btn glyphicon glyphicon-search"></button>
                     </div>
                 </form>
-
+				
                 <div>
                     <?php
                     if (count($artigosCategoria) > 6) // se houver mais de 6 artigos, serão exidos na lateral
@@ -76,7 +76,7 @@ $dadosCategoria = (!empty($artigosCategoria)) ? $artigosCategoria[0]['Categoria'
                             ?>
                                 <li>
                                     <span>(<?= date_format(date_create($artigo['Data']), "d.m.Y") ?>)</span>				
-                                    <a href="/blogpost?id=<?= $artigo['ID'] ?>"><?= $artigo['Titulo'] ?></a>
+                                    <a href="/blogpost/<?= $artigo['SEO'] ?>"><?= $artigo['Titulo'] ?></a>
                                 </li>
                             <?php
                                 $contOut ++;
@@ -94,7 +94,7 @@ $dadosCategoria = (!empty($artigosCategoria)) ? $artigosCategoria[0]['Categoria'
                             {
                                 if ($categoria['ID'] != $dadosCategoria['ID']) // Listas as demais categorias
                                 {
-                                    echo "<li><a href=\"/blogcategoria?id=" . $categoria['ID'] .  "\">" . $categoria['Descricao'] . "</a></li>";
+                                    echo "<li><a href=\"/blogcategoria/" . $categoria['SEO'] .  "\">" . $categoria['Descricao'] . "</a></li>";
                                 }
                             }
                         ?>
@@ -111,3 +111,4 @@ $dadosCategoria = (!empty($artigosCategoria)) ? $artigosCategoria[0]['Categoria'
     <div class="make-space-bet clearfix"></div>
 
 </div>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

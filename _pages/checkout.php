@@ -265,7 +265,7 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
                 </div>
                 <div class="col-md-4">
                     <div class="panel panel-default" id="accordion">
-                        <div class="panel-heading">2. OPÇÕES DE ENTREGA</div>
+                        <div class="panel-heading">2. ESCOLHA A OPÇÃO DE ENTREGA</div>
                         <div class="panel-body ordem-pagamento-entrega" id="opcoesEntregaCarrinho"></div>
                     </div>
                     <div class="panel panel-default ordem-forma-pagamento">
@@ -415,3 +415,4 @@ $enderecoCarrinho = (!empty($enderecos['Enderecos'][1]['ID'])) ? $enderecos['End
         </script>
     </div>
 </section>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

@@ -4,8 +4,8 @@ if (!defined('HoorayWeb'))
     die;
 }
 
-define ('URLSite', 'http://localhost:8000/');
-//define ('URLSite', 'http://dev.hooray.com.br/');
+//define ('URLSite', 'http://localhost:8000/');
+define ('URLSite', 'http://dev.hooray.com.br/');
 //define ('URLSite', 'https://www.hooray.com.br/');
 //define ('URLWebAPI', 'https://prdloja.hooray.com.br/');
 define ('URLWebAPI', 'http://qasloja.hooray.com.br/');
@@ -43,6 +43,7 @@ $endPoint = ['token'           => URLWebAPI . "Token",
             'blogbusca'        => URLWebAPI . "v1/vitrine/blog/{IDBlog}/{termoBusca}/buscartexto/",
             'blogartigo'       => URLWebAPI . "v1/vitrine/blog/{IDArtigo}/obterdetalheartigo/",
             'blogartigoscat'   => URLWebAPI . "v1/vitrine/blog/{IDBlog}/{IDCategoria}/buscarcategoria/",
+            'artigoblogseo'    => URLWebAPI . "v1/blog/{artigoBlogSEO}",
             'parcelamento'     => URLWebAPI . "v1/pagamento/{IDProduto}/{valorProduto}/obterparcelamento/",
             'enderecoporcep'   => URLWebAPI . "v1/cadastro/{CEP}/obterlogradourocep/",
             'delendereco'      => URLWebAPI . "v1/cadastro/{IDEndereco}/deletarendereco/",
@@ -64,7 +65,9 @@ $endPoint = ['token'           => URLWebAPI . "Token",
             'delwishlist'      => URLWebAPI . "v1/produto/removerwishlist/",
             'obterwishlist'    => URLWebAPI . "v1/produto/{IDLogin}/obterwishlistporlogin/",
             'meuspedidos'      => URLWebAPI . "v1/pedido/{IDParceiro}/meuspedidosheader/",
-            'meuspedidosdet'   => URLWebAPI . "v1/pedido/{IDPedido}/meuspedidosdetail/"
+            'meuspedidosdet'   => URLWebAPI . "v1/pedido/{IDPedido}/meuspedidosdetail/",
+            'produtoseo'       => URLWebAPI . "{produtoseo}",
+            'marcaseo'         => URLWebAPI . "v1/marca/{marcaseo}"    
     ];
 
 define ('MoedaDecimal', ',');
@@ -103,6 +106,8 @@ $tipoDisponibilidade = [0 => "Em estoque",
                         1 => "Sob encomenda",
                         2 => "Indisponível"
     ];
+
+$IDDeslizanteVolume = 327;
 
 function login (string $url, string $bearer)
 {

@@ -23,7 +23,7 @@ $textoBlog = str_ireplace('</IFRAME>', '</IFRAME></div>', $textoBlog);
             <section class="blog-posts">
                 <ol class="breadcrumb">
                     <li><a href="/blog"><?= $dadosBlog['Mensagem'] ?></a></li>
-                    <li><a href="/blogcategoria?id=<?= $detalheArtigo['Categoria']['ID'] ?>"><?= $detalheArtigo['Categoria']['Descricao'] ?> </a></li>
+                    <li><a href="/blogcategoria/<?= $detalheArtigo['Categoria']['SEO'] ?>"><?= $detalheArtigo['Categoria']['Descricao'] ?> </a></li>
                     <li class="active"><?= $detalheArtigo['Titulo'] ?></li>
                 </ol>
                 <p><img src="<?= $detalheArtigo['Imagem'] ?>" title="<?= $detalheArtigo['Titulo'] ?>"/></p>
@@ -37,8 +37,8 @@ $textoBlog = str_ireplace('</IFRAME>', '</IFRAME></div>', $textoBlog);
                 <p>
                 
                 <div class="blog-posts-navegacao clearfix">
-                    <?= ($detalheArtigo['IDArtigoAnterior'] > 0) ? "<div class=\"pull-left\"><a href=\"/blogpost?id=" . $detalheArtigo['IDArtigoAnterior'] . "\"><i class=\"glyphicon glyphicon-triangle-left\"></i> Artigo anterior</a></div>" : "" ?>
-                    <?= ($detalheArtigo['IDArtigoPosterior'] > 0) ? "<div class=\"pull-right\"><a href=\"/blogpost?id=" . $detalheArtigo['IDArtigoPosterior'] . "\">Próximo artigo<i class=\"glyphicon glyphicon-triangle-right\"></i></a></div>" : "" ?>
+                    <?= (!empty($detalheArtigo['SEOArtigoAnterior'])) ? "<div class=\"pull-left\"><a href=\"/blogpost/" . $detalheArtigo['SEOArtigoAnterior'] . "\"><i class=\"glyphicon glyphicon-triangle-left\"></i> Artigo anterior</a></div>" : "" ?>
+                    <?= (!empty($detalheArtigo['SEOArtigoPosterior'])) ? "<div class=\"pull-right\"><a href=\"/blogpost/" . $detalheArtigo['SEOArtigoPosterior'] . "\">Próximo artigo<i class=\"glyphicon glyphicon-triangle-right\"></i></a></div>" : "" ?>
                 </div>
             </section>
         </div>
@@ -50,7 +50,7 @@ $textoBlog = str_ireplace('</IFRAME>', '</IFRAME></div>', $textoBlog);
                         <i class="glyphicon glyphicon-search"></i>
                     </div>
                 </form>
-
+				
                 <div>
                     <ul class="">
                         <li><h5>Categorias</h5></li>
@@ -58,7 +58,7 @@ $textoBlog = str_ireplace('</IFRAME>', '</IFRAME></div>', $textoBlog);
                             $categoriasBlog = getRest($endPoint['blogcategorias']);
                             foreach ((array) $categoriasBlog  as $categoria)
                             {
-                                echo "<li><a href=\"/blogcategoria?id=" . $categoria['ID'] .  "\">" . $categoria['Descricao'] . "</a></li>";
+                                echo "<li><a href=\"/blogcategoria/" . $categoria['SEO'] .  "\">" . $categoria['Descricao'] . "</a></li>";
                             }
                         ?>
                     </ul>
@@ -72,7 +72,7 @@ $textoBlog = str_ireplace('</IFRAME>', '</IFRAME></div>', $textoBlog);
                         ?>
                             <li>
                                 <span>(<?= date_format($dataPost,"d.m.Y") ?>)</span>
-                                <a href="/blogpost?id=<?= $recente['ID'] ?>"><?= $recente['Titulo'] ?></a>
+                                <a href="/blogpost/<?= $recente['SEO'] ?>"><?= $recente['Titulo'] ?></a>
                             </li>
                         <?php
                         }
@@ -82,8 +82,7 @@ $textoBlog = str_ireplace('</IFRAME>', '</IFRAME></div>', $textoBlog);
             </section>
         </div>
 
-
-
         <div class="make-space-bet clearfix"></div>
 
 </div>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

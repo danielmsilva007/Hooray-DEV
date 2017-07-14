@@ -1,0 +1,87 @@
+<html>
+<head>
+    <title>iisnode logs</title>
+    <style type="text/css">
+        body
+        {
+            font-family: "Trebuchet MS" , Arial, Helvetica, sans-serif;
+        }
+        table
+        {
+            border-collapse: collapse;
+        }
+        td, th
+        {
+            border: 1px solid lightgray;
+            padding: 3px 7px 2px 7px;
+        }
+        th
+        {
+            text-align: left;
+            padding-top: 5px;
+            padding-bottom: 4px;
+            background-color: Gray;
+            color: #ffffff;
+        }
+        td.stderr
+        {
+            color: Red;
+        }
+    </style>
+</head>
+<body>
+    <table id="logFilesTable">
+        <tr>
+            <th>
+                Computer name
+            </th>
+            <th>
+                PID
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Created
+            </th>
+            <th>
+                Link
+            </th>
+        </tr>
+    </table>
+    <p id="lastUpdated"></p>
+    <script type="text/javascript">
+
+        // this is replaced with actual data at runtime by code in interceptor.js
+        var logFiles = [{"file":"APISRVECOMMBR01-1672-stderr-1486562985364.txt","computername":"APISRVECOMMBR01","pid":1672,"type":"stderr","created":1486562985364},{"file":"APISRVECOMMBR01-1672-stdout-1486562810264.txt","computername":"APISRVECOMMBR01","pid":1672,"type":"stdout","created":1486562810264},{"file":"APISRVECOMMBR01-2356-stderr-1486562609023.txt","computername":"APISRVECOMMBR01","pid":2356,"type":"stderr","created":1486562609023},{"file":"APISRVECOMMBR01-3484-stderr-1486563338265.txt","computername":"APISRVECOMMBR01","pid":3484,"type":"stderr","created":1486563338265},{"file":"APISRVECOMMBR01-3800-stderr-1486563473709.txt","computername":"APISRVECOMMBR01","pid":3800,"type":"stderr","created":1486563473709},{"file":"APISRVECOMMBR01-3996-stderr-1486563293446.txt","computername":"APISRVECOMMBR01","pid":3996,"type":"stderr","created":1486563293446},{"file":"APISRVECOMMBR01-4356-stderr-1486562757210.txt","computername":"APISRVECOMMBR01","pid":4356,"type":"stderr","created":1486562757210},{"file":"APISRVECOMMBR01-5188-stdout-1486565795385.txt","computername":"APISRVECOMMBR01","pid":5188,"type":"stdout","created":1486565795385},{"file":"APISRVECOMMBR01-5500-stdout-1486562907718.txt","computername":"APISRVECOMMBR01","pid":5500,"type":"stdout","created":1486562907718},{"file":"APISRVECOMMBR01-5532-stderr-1486562754894.txt","computername":"APISRVECOMMBR01","pid":5532,"type":"stderr","created":1486562754894},{"file":"APISRVECOMMBR01-5800-stderr-1486565901937.txt","computername":"APISRVECOMMBR01","pid":5800,"type":"stderr","created":1486565901937},{"file":"APISRVECOMMBR01-6468-stderr-1486563165317.txt","computername":"APISRVECOMMBR01","pid":6468,"type":"stderr","created":1486563165317},{"file":"APISRVECOMMBR01-6632-stderr-1486562982775.txt","computername":"APISRVECOMMBR01","pid":6632,"type":"stderr","created":1486562982775},{"file":"APISRVECOMMBR01-6776-stderr-1486563061934.txt","computername":"APISRVECOMMBR01","pid":6776,"type":"stderr","created":1486563061934},{"file":"APISRVECOMMBR01-7484-stderr-1486563400881.txt","computername":"APISRVECOMMBR01","pid":7484,"type":"stderr","created":1486563400881},{"file":"APISRVECOMMBR01-7672-stdout-1486566368806.txt","computername":"APISRVECOMMBR01","pid":7672,"type":"stdout","created":1486566368806},{"file":"APISRVECOMMBR01-7904-stdout-1486566077948.txt","computername":"APISRVECOMMBR01","pid":7904,"type":"stdout","created":1486566077948},{"file":"APISRVECOMMBR01-7968-stderr-1486563418713.txt","computername":"APISRVECOMMBR01","pid":7968,"type":"stderr","created":1486563418713},{"file":"APISRVECOMMBR01-8116-stdout-1486562708584.txt","computername":"APISRVECOMMBR01","pid":8116,"type":"stdout","created":1486562708584},{"file":"APISRVECOMMBR01-992-stderr-1486563155928.txt","computername":"APISRVECOMMBR01","pid":992,"type":"stderr","created":1486563155928},{"file":"APISRVECOMMBR01-996-stderr-1486563064224.txt","computername":"APISRVECOMMBR01","pid":996,"type":"stderr","created":1486563064224}];
+        var lastUpdated = 1486566370509;
+        var date = new Date();
+
+        date.setTime(lastUpdated);
+        document.getElementById('lastUpdated').innerHTML = 'Index was last updated ' + date;
+
+        logFiles.sort(function (a, b) {
+            return b.created - a.created;
+        });
+
+        var logFilesTable = document.getElementById("logFilesTable");
+        for (var i = 0; i < logFiles.length; i++) {
+            var logFile = logFiles[i];
+            date.setTime(logFile.created);
+            var row = logFilesTable.insertRow(-1);
+            var computerNameCell = row.insertCell(0);
+            var pidCell = row.insertCell(1);
+            var typeCell = row.insertCell(2);
+            var dateCell = row.insertCell(3);
+            var logCell = row.insertCell(4);
+            computerNameCell.innerHTML = logFile.computername;
+            pidCell.innerHTML = logFile.pid.toString();
+            typeCell.innerHTML = logFile.type;
+            typeCell.setAttribute('class', logFile.type);
+            dateCell.innerHTML = date.toString();
+            logCell.innerHTML = '<a href="' + logFile.file + '">log</a>';
+        };
+
+    </script>
+</body>
+</html>

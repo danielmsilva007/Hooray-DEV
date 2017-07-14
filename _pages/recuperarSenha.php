@@ -75,6 +75,8 @@ else
                             <button type="reset" class="btn btn-default">Cancelar</button>
                             <button type="submit" class="btn btn-primary">Alterar</button>
                         </form>
+						
+							
                     </div>
                 </div>
                 <!-- fim pane -->                    
@@ -95,3 +97,4 @@ else
     }
 }
 ?>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

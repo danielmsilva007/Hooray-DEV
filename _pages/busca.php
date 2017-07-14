@@ -4,6 +4,8 @@ if (!defined('HoorayWeb'))
     die;
 }
 
+$elementosSEO = (!empty($paginas[2])) ? explode("-", $paginas[2]) : [];
+
 if (empty($tipoBusca))
 {
     include_once ("/_pages/404.php");
@@ -30,11 +32,13 @@ else
             break;
         
         case "secao":
-            $postBusca = $IDSecao; 
+            $postBusca = $IDSecao;
+            $indiceSecao = array_search($IDSecao, array_column($menuSite, 'SecaoID'));
+            $descricaoSecao = $menuSite[$indiceSecao]['Descricao'];
             break;
 
         case "marca":
-            $postBusca = $IDMarca; 
+            $postBusca = array_pop($elementosSEO);
             break;
 
         case "categoria":
@@ -45,7 +49,7 @@ else
     $infoBreadcrumb = ["busca" => ["URL" => "/busca", 
                                    "Descricao" => "Busca"],
                        "secao" => ["URL" => "/", 
-                                   "Descricao" => "secao"],
+                                   "Descricao" => (!empty($descricaoSecao)) ? $descricaoSecao : ""],
                        "categoria" => ["URL" => "/", 
                                        "Descricao" => (!empty($categoriaSite['Descricao'])) ? $categoriaSite['Descricao'] : ""],
                        "marca" => ["URL" => "/marcas", 
@@ -60,7 +64,7 @@ else
                     "TipoOrdenacao" => 0,
                     "ProdutoID" => -1,
                     "SecaoID" => ($tipoBusca == "secao") ? $IDSecao : -1,
-                    "MarcaID" => ($tipoBusca == "marca") ? $IDMarca : -1,
+                    "MarcaID" => ($tipoBusca == "marca") ? array_pop($elementosSEO) : -1,
                     "ProdutoCategoriaID" => ($tipoBusca == "categoria") ? $IDCategoria : -1,
                     "ProdutoSubCategoriaID" => -1
         ];
@@ -68,7 +72,10 @@ else
     $resultadoBuscaCat = sendRest($endPoint['buscaestendida'], $dadosBuscaCat, "POST");
     
     $filtros = [];
+    $filtrosNumerico = [];
+    $opcoesDeslizantes = [];
     $precos = [];
+    $volumes = [];
     
     foreach ((array) $resultadoBuscaCat as $produtoBuscaCat)
     {
@@ -81,30 +88,71 @@ else
                 $caracteristica['Posicao'] = 999999999; // não definida posição
             }
             
+            if ($caracteristica['Numerico']) // deslizante
+            {
+                if (!array_key_exists($caracteristica['TipoID'], $filtrosNumerico)) //cria a chave com o tipo, se nao existir
+                {
+                    $filtrosNumerico[$caracteristica['TipoID']] = ["TipoID" => $caracteristica['TipoID'],
+                                                                   "ValorID" => $caracteristica['ValorID'],
+                                                                   "Descricao" => $caracteristica['Descricao'],
+                                                                   "Posicao" => $caracteristica['Posicao'],
+                                                                   "Numerico" => $caracteristica['Numerico'],
+                                                                   "Opcoes" => []
+                        ];
+                }
+
+                if (!array_key_exists($caracteristica['ValorID'], $filtrosNumerico[$caracteristica['TipoID']]['Opcoes'])) // cria o valor, se nao houver
+                {
+                    $opcaoFiltroNumerico = ["ValorID" => $caracteristica['ValorID'],
+                                            "Valor" => str_replace([".",","], [",","."], $caracteristica['Valor'])
+                        ];
+
+                    $filtrosNumerico[$caracteristica['TipoID']]['Opcoes'][$caracteristica['ValorID']] = $opcaoFiltroNumerico;
+                }
+                
+                if (!array_key_exists($caracteristica['TipoID'], $opcoesDeslizantes))
+                {
+                    $opcoesDeslizantes[$caracteristica['TipoID']] = [];
+                }
+                
+                array_push($opcoesDeslizantes[$caracteristica['TipoID']], floatval(str_replace([".",","], [",","."], $caracteristica['Valor'])));
+                
+                if ($caracteristica['TipoID'] == $IDDeslizanteVolume)
+                {
+                    array_push($volumes, floatval(str_replace([".",","], [",","."], $caracteristica['Valor'])));
+                }
+            }
+
             if (!array_key_exists($caracteristica['TipoID'], $filtros)) //cria a chave com o tipo, se nao existir
             {
                 $filtros[$caracteristica['TipoID']] = ["TipoID" => $caracteristica['TipoID'],
                                                        "ValorID" => $caracteristica['ValorID'],
                                                        "Descricao" => $caracteristica['Descricao'],
                                                        "Posicao" => $caracteristica['Posicao'],
+                                                       "Numerico" => $caracteristica['Numerico'],
                                                        "Opcoes" => []
                     ];
             }
-            
+
             if (!array_key_exists($caracteristica['ValorID'], $filtros[$caracteristica['TipoID']]['Opcoes'])) // cria o valor, se nao houver
             {
                 $opcaoFiltro = ["ValorID" => $caracteristica['ValorID'],
                                 "Valor" => $caracteristica['Valor']
                     ];
-                
+
                 $filtros[$caracteristica['TipoID']]['Opcoes'][$caracteristica['ValorID']] = $opcaoFiltro;
             }
+            
         }
         array_push($precos, $produtoBuscaCat['PrecoVigente']);
     }
     
     $minPreco = (!empty($precos) && is_array($precos)) ? floor(min($precos)) : 0;
     $maxPreco = (!empty($precos) && is_array($precos)) ? ceil(max($precos)) : 0;
+    
+    $minVolume = (!empty($volumes) && is_array($volumes)) ? min($volumes) : 0;
+    $maxVolume = (!empty($volumes) && is_array($volumes)) ? max($volumes) : 0;    
+
 ?>
 
 <?php
@@ -265,12 +313,12 @@ else
                             <div class="panel">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" href="#categoria-filtros-tamanho" class="tab-toggle collapsed">
+                                        <a data-toggle="collapse" href="#categoria-filtro-preco" class="tab-toggle collapsed">
                                             Faixa de preço
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="categoria-filtros-tamanho" class="panel-collapse collapse">
+                                <div id="categoria-filtro-preco" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         <div class="handles-wrap">
                                             <div id="slider-handles"></div>
@@ -307,11 +355,44 @@ else
                             usort($filtros, "odernacaoFiltro"); // ordenas as caracteristicas por ordem alfabetica                        
                         }
                         
-                        $i = 0;
+                        ?>
+                        <?php
+                            if (!empty($volumes))
+                            {
+                        ?>
+                            <div class="panel">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#categoria-filtros-volume" class="tab-toggle collapsed">
+                                        Volume
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="categoria-filtros-volume" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="handles-wrap">
+		                      	<div class="handles-wrap">
+                                            <div id="slider-handles2"></div>
+                                            <div id="slider-snap-value-lower2"></div>
+                                            <div id="slider-snap-value-until2">até</div>
+                                            <div id="slider-snap-value-upper2"></div>
+		                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                            }
+                        ?>
+                            
+                        <?php
+                        
+                        $i = 1;
+                        
                         foreach ((array) $filtros as $filtro)
                         {
                         ?>
-                            <div class="panel">
+                            <div class="panel"<?= (!empty($filtro['Numerico'])) ? " style=\"DISPLAY: none\"" : "" ?>>
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" href="#categoria-filtros-<?= $i ?>" class="tab-toggle collapsed">
@@ -330,7 +411,7 @@ else
                                         foreach ((array) $filtro['Opcoes'] as $opcao)
                                         {
                                         ?>
-                                            <label><input type="checkbox" name="<?= $filtro['TipoID'] . "_" . $opcao['ValorID'] ?>" value="<?= $filtro['TipoID'] . '##' . $opcao['ValorID'] ?>" onclick="filtrarBusca(-1);"> <?= $opcao['Valor'] ?></label>
+                                            <label><input type="checkbox" name="<?= $filtro['TipoID'] . "_" . $opcao['ValorID'] ?>" value="<?= $filtro['TipoID'] . '##' . $opcao['ValorID'] . '##' . str_replace([".",","], [",","."], $opcao['Valor']) ?>" onclick="filtrarBusca(-1);"<?= (!empty($filtro['Numerico']))? " CHECKED" : "" ?>> <?= $opcao['Valor'] ?></label>
                                         <?php
                                         }
                                         ?>
@@ -347,8 +428,11 @@ else
                             <input type="hidden" name="postordenacao" id="postordenacao" value="-1">
                             <input type="hidden" name="postvalormin" id="postvalormin" value="<?= $minPreco ?>">
                             <input type="hidden" name="postvalormax" id="postvalormax" value="<?= $maxPreco ?>">
+                            <input type="hidden" name="postvolumemin" id="postvolumemin" value="<?= $minVolume ?>">
+                            <input type="hidden" name="postvolumemax" id="postvolumemax" value="<?= $maxVolume ?>">                            
                         </form>
                     </div>
+				
                 </div>
                 <!-- end facets -->            
 
@@ -394,5 +478,16 @@ else
             </div>
             <input class="form-control" type="text" name="termobusca" placeholder="o que você procura ?" required="required" />
         </div>
-    </form>	
+    </form>
+				<!--Evandro script RD Station 31-05-17 -->
+				<script type="text/javascript" src="https://d335luupugsy2.cloudfront.net/js/integration/stable/rd-js-integration.min.js"></script>  
+				<script type="text/javascript">
+					var meus_campos = {
+						'buscarefinada': 'termobusca'
+					 };
+					options = { fieldMapping: meus_campos };
+					RdIntegration.integrate('19be3ce6a7bd0b40fbe376160c87784f', 'BuscaResposnsiva', options);  
+				</script>
+				<!--Evandro script RD Station 31-05-17 -->
 </section>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

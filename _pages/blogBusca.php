@@ -42,7 +42,7 @@ $buscaBlog = getRest(str_replace(['{IDBlog}','{termoBusca}'], [$dadosBlog['ID'],
                                 </div>
                                 <div class="col-sm-9">							
                                     <p class="blog-posts-autor">(<?= date_format(date_create($busca['Data']), "d.m.Y") ?>)</p>
-                                    <span><a href="/blogpost?id=<?= $busca['ID'] ?>"><?= $busca['Titulo'] ?></a></span>
+                                    <span><a href="/blogpost/<?= $busca['SEO'] ?>"><?= $busca['Titulo'] ?></a></span>
                                     <p>Por: <?= $busca['Autor'] ?></p>
                                 </div>
                             </div>
@@ -63,15 +63,15 @@ $buscaBlog = getRest(str_replace(['{IDBlog}','{termoBusca}'], [$dadosBlog['ID'],
 
                     </div>
                 </form>
-
-                <div>
+				
+					<div>
                     <ul>
                         <li><h5>Categorias</h5></li>
                         <?php
                             $categoriasBlog = getRest($endPoint['blogcategorias']);
                             foreach ((array) $categoriasBlog  as $categoria)
                             {
-                                echo "<li><a href=\"/blogcategoria?id=" . $categoria['ID'] .  "\">" . $categoria['Descricao'] . "</a></li>";
+                                echo "<li><a href=\"/blogcategoria/" . $categoria['SEO'] .  "\">" . $categoria['Descricao'] . "</a></li>";
                             }
                         ?>
                     </ul>
@@ -89,7 +89,7 @@ $buscaBlog = getRest(str_replace(['{IDBlog}','{termoBusca}'], [$dadosBlog['ID'],
                         ?>
                             <li>
                                 <span>(<?= date_format($dataPost,"d.m.Y") ?>)</span>
-                                <a href="/blogpost?id=<?= $recente['ID'] ?>"><?= $recente['Titulo'] ?></a>
+                                <a href="/blogpost/<?= $recente['SEO'] ?>"><?= $recente['Titulo'] ?></a>
                             </li>
                         <?php
                             $dataPost ++;
@@ -105,3 +105,4 @@ $buscaBlog = getRest(str_replace(['{IDBlog}','{termoBusca}'], [$dadosBlog['ID'],
     <div class="make-space-bet clearfix"></div>
 
 </div>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

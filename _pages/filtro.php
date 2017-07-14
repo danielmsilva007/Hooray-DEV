@@ -21,16 +21,30 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
         ];
     
     $caracteristicasFiltro = [];
-    
+
     for ($i = 0; $i < count($phpPost); $i++)
     {
-        if (in_array(array_keys($phpPost)[$i], ['posttermobusca', 'posttipofiltro', 'postordenacao', 'posttipobusca', 'postvalormin', 'postvalormax'])) continue; // variaveis de controle que nao entram no filtro.
+        if (in_array(array_keys($phpPost)[$i], ['posttermobusca', 
+                                                'posttipofiltro', 
+                                                'postordenacao', 
+                                                'posttipobusca', 
+                                                'postvalormin', 
+                                                'postvalormax',
+                                                'postvolumemin',
+                                                'postvolumemax']
+                )) continue; // variaveis de controle que nao entram no filtro.
         
         $opcoesFiltro = explode('##', $phpPost[array_keys($phpPost)[$i]]);
         
-        $caracteristicasFiltro[$i] = ["TipoID" => $opcoesFiltro[0],
-                                      "ValorID" => $opcoesFiltro[1]
-            ];
+        if (($opcoesFiltro[0] != $IDDeslizanteVolume) || ($opcoesFiltro[0] == $IDDeslizanteVolume && $opcoesFiltro[2] >= $phpPost['postvolumemin'] && $opcoesFiltro[2] <= $phpPost['postvolumemax']))
+        {
+            
+            $dadosCaracteristicas = ["TipoID" => $opcoesFiltro[0],
+                                    "ValorID" => $opcoesFiltro[1]
+                    ];
+            
+            array_push($caracteristicasFiltro, $dadosCaracteristicas);
+        }
     }
     
     if (!empty($caracteristicasFiltro))
@@ -46,7 +60,7 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
         
         $dadosBusca['FaixaPreco'] = $faixaPreco;
     }
-    
+
     $resultadoBusca = sendRest($endPoint['busca'], $dadosBusca, "POST");
 
     if (!empty($resultadoBusca['ProdutoBuscaItens']) && count($resultadoBusca['ProdutoBuscaItens']) > 0)
@@ -76,7 +90,7 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
             }
         ?>    
             <li>
-                <a href="/produto?id=<?= $produtoBusca['ID'] ?>">
+                <a href="/produto/<?= $produtoBusca['SEO'] ?>">
                     <div class="list-wrapper<?= $label ?>">
                         <img class="img-responsive" src="<?= $produtoBusca['Imagem'] ?>" />
                         <div class="vitrine-produtos-titulo"><?= $produtoBusca['Descricao'] ?></div>
@@ -133,3 +147,4 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
     }
 }
 ?>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

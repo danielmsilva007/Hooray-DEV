@@ -95,8 +95,8 @@ if (!empty($phpPost['addwhislist']))
             </div>
             <div class="col-md-10">
                 <a href="/">Home</a> <span class="glyphicon glyphicon-menu-right"></span>
-                <a href="/categoria?id=<?= $dadosProduto['Categoria']['ID'] ?>"><?= $dadosProduto['Categoria']['Descricao'] ?></a> <span class="glyphicon glyphicon-menu-right"></span>
-                <a href="/marca?id=<?= $dadosProduto['Marca']['ID'] ?>"><?= $dadosProduto['Marca']['Descricao'] ?></a> <span class="glyphicon glyphicon-menu-right"></span>
+                <a href="/categoria/<?= $dadosProduto['Categoria']['SEO'] ?>"><?= $dadosProduto['Categoria']['Descricao'] ?></a> <span class="glyphicon glyphicon-menu-right"></span>
+                <a href="/marca/<?= $dadosProduto['Marca']['SEO'] ?>"><?= $dadosProduto['Marca']['Descricao'] ?></a> <span class="glyphicon glyphicon-menu-right"></span>
                 <span class="page-title"><?= $dadosProduto['Descricao'] ?></span>
             </div>
         </div>
@@ -403,6 +403,8 @@ if (!empty($phpPost['addwhislist']))
                         </div>
                     </div>
                 </form>
+				
+
             </div>
         </div>
     </div>
@@ -418,7 +420,9 @@ if (!empty($phpPost['addwhislist']))
 </section>
 
 <?php
-$prodRelacionados = getRest(str_replace("{IDProduto}", $IDProduto, $endPoint['relacionados']));
+$elementosSEO = (!empty($paginas[2])) ? explode("-", $paginas[2]) : [];
+
+$prodRelacionados = getRest(str_replace("{IDProduto}", array_pop($elementosSEO), $endPoint['relacionados']));
 $tituloRelacionados = "Produtos relacionados";
 
 if (empty($prodRelacionados))
@@ -478,13 +482,13 @@ if (!empty($prodRelacionados))
                     ?>
                         <div class="col-md-3 p-thumb">
                             <div class="<?= $label ?>">
-                                <a href="/produto?id=<?= $produto['ID'] ?>">
+                                <a href="/produto/<?= $produto['SEO'] ?>">
                                     <img src="<?= $produto['Imagem'] ?>" />
                                 </a>
-                                <a href="/produto?id=<?= $produto['ID'] ?>" title="<?= (strlen($produto['Descricao']) > 35) ? $produto['Descricao'] : "" ?>">
+                                <a href="/produto/<?= $produto['SEO'] ?>" title="<?= (strlen($produto['Descricao']) > 35) ? $produto['Descricao'] : "" ?>">
                                     <span><?= (strlen($produto['Descricao']) > 35) ? substr($produto['Descricao'], 0, 32) . "..." : $produto['Descricao'] ?></span>
                                 </a>
-                                <a href="/produto?id=<?= $produto['ID'] ?>">
+                                <a href="/produto/<?= $produto['SEO'] ?>">
                                     <span><?= $produto['Marca']['Descricao'] ?></span>
                                     <span><?= (!empty($produto['PrecoDePor']['PrecoDe'])) ? "<s>" . formatar_moeda($produto['PrecoDePor']['PrecoDe']) . "</s> | " : "" ?><?= formatar_moeda($produto['PrecoVigente']) ?></span>
                                     <span><?= (!empty($produto['SubCategoria']['Descricao'])) ? $produto['SubCategoria']['Descricao'] : "&nbsp;" ?></span>
@@ -523,3 +527,4 @@ if (!empty($prodRelacionados))
 <?php
 }
 ?>
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>

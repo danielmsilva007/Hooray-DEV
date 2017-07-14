@@ -17,7 +17,7 @@ $assuntosContato = getRest($endPoint['assuntoscontato']);
     function enviarContato()
     {
        $('#retornoContato').html('Enviando mensagem...');
-       
+       document.getElementById('btnEnviaContato').disabled = true;
         var dataString  = 'contAssunto=' + document.getElementById('contAssunto').value;
             dataString += '&contNome=' + document.getElementById('contNome').value;
             dataString += '&contCPFCNPJ=' + document.getElementById('contCPFCNPJ').value;
@@ -37,11 +37,12 @@ $assuntosContato = getRest($endPoint['assuntoscontato']);
                 if (retornoPHP.substring(0,2) == "!!")
                 {
                     $('#retornoContato').html(retornoPHP.substring(2));
+					 document.getElementById('btnEnviaContato').disabled = false;
                 }
                 else
                 {
                     $('#retornoContato').html(retornoPHP);
-                    
+                    document.getElementById('btnEnviaContato').disabled = false;
                     document.contForm.reset();
                 }
             }
@@ -115,10 +116,26 @@ $assuntosContato = getRest($endPoint['assuntoscontato']);
         
         <div class="row">
             <div class="col-md-12 text-right">
-                <button type="reset" class="btn ">Cancelar</button> <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="reset" class="btn ">Cancelar</button> <button id="btnEnviaContato" name="btnEnviaContato" type="submit" class="btn btn-primary">Enviar</button>
             </div>
         </div>
     </form>
+	<!--Evandro RD Script para Formulário 02/06/2017 -->
+	<script type="text/javascript" src="https://d335luupugsy2.cloudfront.net/js/integration/stable/rd-js-integration.min.js"></script>  
+	<!--Evandro RD Script para Formulário 02/06/2017 -->
+	<script type="text/javascript">
+    var meus_campos = {
+        'contEmail': 'email',
+        'contNome': 'nome',
+        'contCPFCNPJ': 'CFPCNPJ',
+        'contPedido': 'Pedido',
+        'contTelefone': 'telefone',
+        'contMensagem': 'Mensagem',
+        'contAssunto': 'Assunto'
+     };
+    options = { fieldMapping: meus_campos };
+    RdIntegration.integrate('19be3ce6a7bd0b40fbe376160c87784f', 'Formulario_Atendimento_Contato', options);  
+</script>
 
     <script>
         jQuery(function($){

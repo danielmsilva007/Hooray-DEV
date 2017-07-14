@@ -1,0 +1,23 @@
+{
+  "api": {
+    "port": 3000
+  },
+  "mongo": {
+    "db": "hoorayDB",
+    "user": "hooray",
+    "pass": "curve-air-hookup",
+    "host": "applab.syligo.com",
+    "port": 23988
+  },
+  "mailchimp": {
+    "key": "45aa6d9674ced067d9c5a3bdf70ebb11-us15",
+    "list": "f84f11cec7"
+  },
+  "nodemailer": {
+    "auth": {
+      "user": "marketplace@hooray.com.br",
+      "pass": "hooray2019"
+    },
+    "to": "renato@hooray.com.br, marketplace@hooray.com.br"
+  }
+}
