@@ -94,7 +94,11 @@
 
 #slider-snap-value-lower,
 #slider-snap-value-upper,
-#slider-snap-value-until {
+#slider-snap-value-until,
+#moedamin,
+#moedamax,
+#decmin,
+#decmax {
   display: inline-block;
 }
 

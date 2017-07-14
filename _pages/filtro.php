@@ -46,7 +46,7 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
             array_push($caracteristicasFiltro, $dadosCaracteristicas);
         }
     }
-    
+
     if (!empty($caracteristicasFiltro))
     {
         $dadosBusca['CaracteristicasFiltro'] = $caracteristicasFiltro;

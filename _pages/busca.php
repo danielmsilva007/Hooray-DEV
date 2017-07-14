@@ -322,9 +322,9 @@ else
                                     <div class="panel-body">
                                         <div class="handles-wrap">
                                             <div id="slider-handles"></div>
-                                            <div id="slider-snap-value-lower"></div>
+                                            <div id="moedamin">R$&nbsp;</div><div id="slider-snap-value-lower"></div><div id="decmin">,00</div>
                                             <div id="slider-snap-value-until">até</div>
-                                            <div id="slider-snap-value-upper"></div>
+                                            <div id="moedamax">R$&nbsp;</div><div id="slider-snap-value-upper"></div><div id="decmax">,00</div>
                                         </div>
                                     </div>
                                 </div>
