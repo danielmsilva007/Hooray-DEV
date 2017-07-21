@@ -422,7 +422,7 @@ if (!empty($phpPost['addwhislist']))
 <?php
 $elementosSEO = (!empty($paginas[2])) ? explode("-", $paginas[2]) : [];
 
-$prodRelacionados = getRest(str_replace("{IDProduto}", array_pop($elementosSEO), $endPoint['relacionados']));
+$prodRelacionados = getRest(str_replace("{IDProduto}", end($elementosSEO), $endPoint['relacionados']));
 $tituloRelacionados = "Produtos relacionados";
 
 if (empty($prodRelacionados))

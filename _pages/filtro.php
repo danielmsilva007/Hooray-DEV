@@ -20,8 +20,10 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
                    "ProdutoSubCategoriaID" => -1
         ];
     
+    $caracteristicasFiltroTemp = [];
     $caracteristicasFiltro = [];
-
+    $valoresVolume = [];
+    
     for ($i = 0; $i < count($phpPost); $i++)
     {
         if (in_array(array_keys($phpPost)[$i], ['posttermobusca', 
@@ -43,13 +45,29 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
                                     "ValorID" => $opcoesFiltro[1]
                     ];
             
-            array_push($caracteristicasFiltro, $dadosCaracteristicas);
+            array_push($caracteristicasFiltroTemp, $dadosCaracteristicas);
+        }
+        
+        if ($opcoesFiltro[0] == $IDDeslizanteVolume)
+        {
+            array_push($valoresVolume, floatval($opcoesFiltro[2]));
         }
     }
 
-    if (!empty($caracteristicasFiltro))
+    if (!empty($caracteristicasFiltroTemp))
     {
-        $dadosBusca['CaracteristicasFiltro'] = $caracteristicasFiltro;
+        foreach ((array) $caracteristicasFiltroTemp as $caracTemp)
+        {
+            if (!(!empty($valoresVolume) && $caracTemp['TipoID'] == $IDDeslizanteVolume && floor($phpPost['postvolumemin']) == floor(min($valoresVolume)) && ceil($phpPost['postvolumemax']) == ceil(max($valoresVolume))))
+            {
+                array_push($caracteristicasFiltro, $caracTemp);
+            }
+        }
+        
+        if (!empty($caracteristicasFiltro))
+        {
+            $dadosBusca['CaracteristicasFiltro'] = $caracteristicasFiltro;
+        }
     }
     
     if (!empty($phpPost['postvalormin']) && !empty($phpPost['postvalormax']))
@@ -60,7 +78,7 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
         
         $dadosBusca['FaixaPreco'] = $faixaPreco;
     }
-
+    
     $resultadoBusca = sendRest($endPoint['busca'], $dadosBusca, "POST");
 
     if (!empty($resultadoBusca['ProdutoBuscaItens']) && count($resultadoBusca['ProdutoBuscaItens']) > 0)

@@ -38,7 +38,7 @@ else
             break;
 
         case "marca":
-            $postBusca = array_pop($elementosSEO);
+            $postBusca = end($elementosSEO);
             break;
 
         case "categoria":
@@ -64,11 +64,11 @@ else
                     "TipoOrdenacao" => 0,
                     "ProdutoID" => -1,
                     "SecaoID" => ($tipoBusca == "secao") ? $IDSecao : -1,
-                    "MarcaID" => ($tipoBusca == "marca") ? array_pop($elementosSEO) : -1,
+                    "MarcaID" => ($tipoBusca == "marca") ? end($elementosSEO) : -1,
                     "ProdutoCategoriaID" => ($tipoBusca == "categoria") ? $IDCategoria : -1,
                     "ProdutoSubCategoriaID" => -1
         ];
-
+    
     $resultadoBuscaCat = sendRest($endPoint['buscaestendida'], $dadosBuscaCat, "POST");
     
     $filtros = [];

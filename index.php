@@ -413,7 +413,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 $dadosBlog = getRest($endPoint['blog']);
                 
                 $SEOBlogCategoria = (!empty($paginas[2])) ? explode("-", $paginas[2]) : [];
-                $IDCategoria = array_pop($SEOBlogCategoria);
+                $IDCategoria = end($SEOBlogCategoria);
                 
                 if (!isset($IDCategoria) || !is_numeric($IDCategoria))
                 {                
@@ -453,7 +453,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 $tipoBusca = "secao";
                 
                 $SEOMarca = (!empty($paginas[2])) ? explode("-", $paginas[2]) : [];
-                $IDSecao = array_pop($SEOMarca);
+                $IDSecao = end($SEOMarca);
                 
                 if (!isset($IDSecao) || !is_numeric($IDSecao))
                 {
@@ -469,7 +469,7 @@ $paginas[1] = str_replace(" ", "", $paginas[1]);
                 $tipoBusca = "categoria";
                 
                 $SEOCategoria = (!empty($paginas[2])) ? explode("-", $paginas[2]) : [];
-                $IDCategoria = array_pop($SEOCategoria);
+                $IDCategoria = end($SEOCategoria);
                 
                 if (!isset($IDCategoria) || !is_numeric($IDCategoria))
                 {
