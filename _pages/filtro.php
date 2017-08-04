@@ -43,7 +43,7 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
             
             $dadosCaracteristicas = ["TipoID" => $opcoesFiltro[0],
                                     "ValorID" => $opcoesFiltro[1]
-                    ];
+                ];
             
             array_push($caracteristicasFiltroTemp, $dadosCaracteristicas);
         }
@@ -54,6 +54,8 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
         }
     }
 
+    $contCatVolume = 0;
+
     if (!empty($caracteristicasFiltroTemp))
     {
         foreach ((array) $caracteristicasFiltroTemp as $caracTemp)
@@ -61,15 +63,29 @@ if (!empty($phpPost['posttipofiltro']) && $phpPost['posttipofiltro'] == md5("bus
             if (!(!empty($valoresVolume) && $caracTemp['TipoID'] == $IDDeslizanteVolume && floor($phpPost['postvolumemin']) == floor(min($valoresVolume)) && ceil($phpPost['postvolumemax']) == ceil(max($valoresVolume))))
             {
                 array_push($caracteristicasFiltro, $caracTemp);
+                
+                if ($caracTemp['TipoID'] == $IDDeslizanteVolume)
+                {
+                    $contCatVolume++;
+                }                
             }
         }
-        
-        if (!empty($caracteristicasFiltro))
-        {
-            $dadosBusca['CaracteristicasFiltro'] = $caracteristicasFiltro;
-        }
     }
-    
+
+    if ($contCatVolume == 0 && !empty($valoresVolume) && (floor($phpPost['postvolumemin']) != floor(min($valoresVolume)) || ceil($phpPost['postvolumemax']) != ceil(max($valoresVolume))))
+    {
+        $opcaoSemVolume = ["TipoID" => $IDDeslizanteVolume,
+                          "ValorID" => -1
+            ];
+
+        array_push($caracteristicasFiltro, $opcaoSemVolume);
+    }
+
+    if (!empty($caracteristicasFiltro))
+    {
+        $dadosBusca['CaracteristicasFiltro'] = $caracteristicasFiltro;
+    }
+        
     if (!empty($phpPost['postvalormin']) && !empty($phpPost['postvalormax']))
     {
         $faixaPreco = ["PrecoInicial" => floor($phpPost['postvalormin']),
