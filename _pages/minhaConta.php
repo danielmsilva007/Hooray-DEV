@@ -669,10 +669,11 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                 <div class="col-md-3">
                                     Data: <?= date_format(date_create($pedido['DataVenda']), "d/m/Y") ?>
                                 </div>
-                                <div class="col-md-3">
-                                    Valor pedido: <?= formatar_moeda($pedido['ValorTotal']) ?>
+                                <div class="col-md-5">
+                                    Valor: <?= formatar_moeda($pedido['ValorTotal']) ?>
+                                    <?= (!empty($pedido['UrlImpressaoBoleto'])) ? " <a href=\"" . $pedido['UrlImpressaoBoleto'] . "/print\" target=\"_blank\">(imprimir boleto)</a>" : "" ?>
                                 </div>
-                                <div class="col-md-3 text-right">
+                                <div class="col-md-1 text-right">
                                     <a href="#meus-ped-hide-<?= $pedido['ID'] ?>" class="conta-painel-toggle" data-toggle="collapse">
                                         <?= count($itensPedido[0]['PedidoItens']) ?> <?= (count($itensPedido[0]['PedidoItens']) > 1) ? "Itens" : "Item" ?>
                                     </a>
@@ -688,7 +689,6 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                         {
                                             $itens[$itemPedido['Fornecedor']] = ["Fornecedor" => $itemPedido['Fornecedor'],
                                                                                  "Status" => $itemPedido['StatusMarketPlace'],
-																				 "StatusIndividual"=> $itemPedido['StatusDescricao'],
                                                                                  "DescricaoStatus" => $itensPedido[0]['Status'],
                                                                                  "Itens" => []
                                                 ];
@@ -727,7 +727,7 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                                                         <span>Entrega</span>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <?= htmlentities(ucwords(strtolower($item['StatusIndividual']))) ?>
+                                                        <?= htmlentities(ucwords(strtolower($item['DescricaoStatus']))) ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -808,12 +808,12 @@ if (!empty($dadosLogin['ID']) && $dadosLogin['ID'] > 0) //usuário logado
                             ?>
                                 <div class="row" id="retornoWishlist<?= $i ?>">
                                     <div class="col-md-2">
-                                        <a href="/produto/<?= $produtoWL['SEO'] ?>">
+                                        <a href="/produto?id=<?= $produtoWL['ID'] ?>">
                                             <img src="<?= $produtoWL['ImagemMobile'] ?>" title="<?= $produtoWL['Descricao'] ?>"/>
                                         </a>
                                     </div>
                                     <div class="col-md-8">
-                                        <a href="/produto/<?= $produtoWL['SEO'] ?>">
+                                        <a href="/produto?id=<?= $produtoWL['ID'] ?>">
                                             <?= $produtoWL['Descricao'] ?><br>
                                             <?= $produtoWL['Marca']['Descricao'] ?><br>
                                         </a>
@@ -897,6 +897,13 @@ else //não logado ou login expirado
             var cadDtNascimentoMC = $('#cadDtNascimentoMC').val();
             var cadSexoMC = $('#cadSexoMC').val();
             var cadCNPJMC = $('#cadCNPJMC').val();
+            var endPrinCEPMC = $('#endPrinCEPMC').val();
+            var endPrinLogradouroMC = $('#endPrinLogradouroMC').val();
+            var endPrinNumeroMC = $('#endPrinNumeroMC').val();
+            var endPrinComplementoMC = $('#endPrinComplementoMC').val();
+            var endPrinBairroMC = $('#endPrinBairroMC').val();
+            var endPrinCidadeMC = $('#endPrinCidadeMC').val();
+            var endPrinUFMC = $('#endPrinUFMC').val();
             var cadSenhaMC = $('#cadSenhaMC').val();
             var cadConfSenhaMC = $('#cadConfSenhaMC').val();
 
@@ -906,6 +913,13 @@ else //não logado ou login expirado
                                                     postnascimento:cadDtNascimentoMC,
                                                     postsexo:cadSexoMC,
                                                     postcnpj:cadCNPJMC,
+                                                    postcep:endPrinCEPMC,
+                                                    postlogradouro:endPrinLogradouroMC,
+                                                    postendnumero:endPrinNumeroMC,
+                                                    postcomplemento:endPrinComplementoMC,
+                                                    postbairro:endPrinBairroMC,
+                                                    postcidade:endPrinCidadeMC,
+                                                    postuf:endPrinUFMC,
                                                     postsenha:cadSenhaMC,
                                                     postconfsenha:cadConfSenhaMC,
                                                     postenviarcadcompleto:'<?= md5("cadastro") ?>'},
@@ -941,6 +955,36 @@ else //não logado ou login expirado
                 document.getElementById("recEmailMC").value = "";
             });
         }            
+        
+        function obterEnderecoMC()
+        {
+            var endCEPMC;
+            
+            $('#resultCEPPrincipalMC').html('');
+            document.cadFormCompleto.endPrinLogradouroMC.value = 'Buscando endereço...';
+            endCEPMC = $('#endPrinCEPMC').val();
+
+            $.post('/_pages/atualizarCadastro.php', {postcep:endCEPMC,
+                                                    postbuscarcep:'<?= md5 ("buscarCep") ?>'},
+            function(data)
+            {
+                if (data.substring(0,2) == "!!")
+                {
+                    $('#resultCEPPrincipalMC').html(data.substring(2));
+                    document.cadFormCompleto.endPrinCEPMC.value = '';
+                    document.cadFormCompleto.endPrinLogradouroMC.value = '';
+                    document.cadFormCompleto.endPrinCidadeMC.value = '';
+                    document.cadFormCompleto.endPrinUFMC.value = '';                        
+                }
+                else
+                {
+                    var dadosEndereco = data.split("#");
+                    document.cadFormCompleto.endPrinLogradouroMC.value = dadosEndereco[1];
+                    document.cadFormCompleto.endPrinCidadeMC.value = dadosEndereco[2];
+                    document.cadFormCompleto.endPrinUFMC.value = dadosEndereco[3];
+                }
+            });
+        }        
     </script>
 
     <section class="conta">
@@ -1049,6 +1093,52 @@ else //não logado ou login expirado
                                 </div>
                             </div>                            
                             <div class="form-group row">
+                                <label class="control-label col-sm-3">CEP</label>
+                                <div class="col-sm-9 col-md-6">
+                                    <div class="input-group">
+                                        <input name="endPrinCEPMC" id="endPrinCEPMC" type="text" placeholder="CEP" maxlength="9" class="form-control" required="required"/>
+                                        <span class="input-group-addon"><a href="javascript:obterEnderecoMC();">Buscar endereço</a></span>
+                                    </div>
+                                    <span id="resultCEPPrincipalMC"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-3">Logradouro</label>
+                                <div class="col-sm-9 col-md-6">
+                                    <input type="text" name="endPrinLogradouroMC" id="endPrinLogradouroMC" placeholder="Logradouro" disabled="disabled" class="form-control" required="required" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-3">Número</label>
+                                <div class="col-sm-9 col-md-6">
+                                    <input type="text" name="endPrinNumeroMC" id="endPrinNumeroMC" placeholder="Numero" class="form-control" required="required" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-3">Complemento</label>
+                                <div class="col-sm-9 col-md-6">
+                                    <input type="text" name="endPrinComplementoMC" id="endPrinComplementoMC" placeholder="Complemento" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-3">Bairro</label>
+                                <div class="col-sm-9 col-md-6">
+                                    <input type="text" name="endPrinBairroMC" id="endPrinBairroMC" placeholder="Bairro" class="form-control" required="required" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-3">Cidade</label>
+                                <div class="col-sm-9 col-md-6">
+                                    <input type="text" name="endPrinCidadeMC" id="endPrinCidadeMC" disabled="disabled" placeholder="Cidade" class="form-control" required="required" />
+                                </div>                                
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-3">Estado</label>
+                                <div class="col-sm-9 col-md-6">
+                                    <input type="text" name="endPrinUFMC" id="endPrinUFMC" disabled="disabled" class="form-control" placeholder="Estado" required="required" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label class="control-label col-sm-3">Senha</label>
                                 <div class="col-sm-9 col-md-6">
                                     <input type="password" name="cadSenhaMC" id="cadSenhaMC" class="form-control" placeholder="Senha" required="required" />
@@ -1059,12 +1149,12 @@ else //não logado ou login expirado
                                 <div class="col-sm-9 col-md-6">
                                     <input type="password" name="cadConfSenhaMC" id="cadConfSenhaMC" class="form-control" placeholder="Senha" required="required" />
                                 </div>
-                            </div>
-                            
-                            <div class="col-sm-12 col-md-12" id="resultCadastroMC"></div>
+                            </div>                            
 
+                            <div class="col-sm-12 col-md-12" id="resultCadastroMC"></div>
+                            
                             <button type="reset" class="btn btn-default">Cancelar</button>
-                            <button type="button" onclick="realizarCadastro()" class="btn btn-primary">Cadastrar</button>
+                            <button type="button" onclick="realizarCadastro();" class="btn btn-primary">Cadastrar</button>
                         </form>
                     </div>
                 </div>
@@ -1101,4 +1191,3 @@ else //não logado ou login expirado
 <?php    
 }
 ?>
-<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/e88341a9-780f-4d0c-8ebc-b5d4463ef21f-loader.js"></script>
